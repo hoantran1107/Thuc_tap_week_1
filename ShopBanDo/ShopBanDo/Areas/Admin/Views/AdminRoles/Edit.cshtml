@@ -1,0 +1,34 @@
+﻿@model ShopBanDo.Models.Role
+
+@{
+    ViewData["Title"] = "Chỉnh sửa quyền truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<p></p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Danh sách quyền truy cập</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa quyền truy cập</li>
+    </ol>
+</nav>
+    <div class="card-body">
+        <form class="forms-sample" asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<input type="hidden" asp-for="RoleId"/>*@
+            <div class="form-group">
+                <label>Tên Role </label>
+                <input asp-for="RoleName" class="form-control">
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Mô tả</label>
+                <input asp-for="Description" class="form-control">
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Cập nhật</button>
+            @*<button class="btn btn-dark">Hủy</button>*@
+            <a class="btn btn" asp-action="Index">Trở lại</a>
+        </form>
+    </div>
+

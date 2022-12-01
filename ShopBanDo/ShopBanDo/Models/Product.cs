@@ -7,6 +7,11 @@ namespace ShopBanDo.Models
 {
     public partial class Product
     {
+        public Product()
+        {
+            OrderDetails = new HashSet<OrderDetail>();
+        }
+
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string ShortDesc { get; set; }
@@ -28,5 +33,6 @@ namespace ShopBanDo.Models
         public int? UnitslnStock { get; set; }
 
         public virtual Category Cat { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

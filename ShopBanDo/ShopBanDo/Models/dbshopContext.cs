@@ -145,6 +145,11 @@ namespace ShopBanDo.Models
                 entity.Property(e => e.Salt)
                     .HasMaxLength(10)
                     .IsFixedLength(true);
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.Customers)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK_Customers_Locations");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -204,9 +209,9 @@ namespace ShopBanDo.Models
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_OrderDetails_Orders");
 
-                entity.HasOne(d => d.Product)
+                entity.HasOne(d => d.OrderNavigation)
                     .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.ProductId)
+                    .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_OrderDetails_Products");
             });
 
@@ -252,6 +257,8 @@ namespace ShopBanDo.Models
                 entity.Property(e => e.ShortDesc).HasMaxLength(250);
 
                 entity.Property(e => e.Thumb).HasMaxLength(250);
+
+                entity.Property(e => e.Title).HasMaxLength(250);
 
                 entity.Property(e => e.Video).HasMaxLength(255);
 

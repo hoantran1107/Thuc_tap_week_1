@@ -1,0 +1,132 @@
+﻿@model IEnumerable<ShopBanDo.Models.Account>
+
+@{
+    ViewData["Title"] = "Danh sách tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<p></p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item">Danh sách tài khoản quản trị</li>
+    </ol>
+</nav>
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminAccounts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới tài khoản</span></a>
+            </div>
+            <div class="col-lg-4 text-right">
+
+            </div>
+        </div>
+<br />
+        <div class="row m-b-30">
+            <div class="col-lg-12">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <select class="form-group" id="idrole" name="idrole" style="min-width: 200px;" asp-items="ViewBag.QuyenTruyCap">
+                            <option value="0" disabled selected>Chọn quyền truy cập</option>
+                        </select>
+
+                    </div>
+                    <div class="m-b-10">
+                        <select class="form-group" id="idstatus" name="idstatus" style="min-width: 200px;" asp-items="ViewBag.lsTrangThai">
+                            <option value="" disabled selected>Chọn trạng thái</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Họ và tên
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Mật khẩu
+                    </th>
+                    <th>
+                        Salt
+                    </th>
+                    <th>
+                        Trạng thái
+                    </th>
+                    <th>
+                        Số điện thoại
+                    </th>
+                    <th>
+                        Lần đăng nhập cuối
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Role)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AccountId)
+                            </td>
+                            <td>
+                                @item.Fullname
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Salt)
+                            </td>
+                            <td>
+                                @{
+                                    if (item.Active)
+                                    {
+                                        <label class="badge badge-danger">Block</label>
+                                    }
+                                    else
+                                    {
+                                        <label class="badge badge-success">Active</label>
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @item.Phone
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastLogin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role.RoleName)
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AccountId">Cập nhật</a>
+                                <a class="btn btn-danger btn-sm" asp-action="Details" asp-route-id="@item.AccountId">Chi tiết</a>
+                                <a class="btn btn-light btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Xóa</a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>

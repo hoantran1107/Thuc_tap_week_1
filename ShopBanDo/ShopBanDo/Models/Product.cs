@@ -31,6 +31,7 @@ namespace ShopBanDo.Models
         public string MetaDesc { get; set; }
         public string MetaKey { get; set; }
         public int? UnitslnStock { get; set; }
+        public string Title { get; set; }
 
         public virtual Category Cat { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

@@ -33,7 +33,7 @@ namespace ShopBanDo
             services.AddDbContext<dbshopContext>(options => options.UseSqlServer(stringConnectdb));
             //chinh phong chu tieng viet thanh unicode
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
-
+            //serices NotifY
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
         }

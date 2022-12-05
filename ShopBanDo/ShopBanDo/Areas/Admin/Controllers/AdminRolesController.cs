@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace ShopBanDo.Areas.Admin.Controllers
     public class AdminRolesController : Controller
     {
         private readonly dbshopContext _context;
+        public INotyfService _notifyService { get; }
 
-        public AdminRolesController(dbshopContext context)
+        public AdminRolesController(dbshopContext context,INotyfService notyfService)
         {
             _context = context;
+            _notifyService = notyfService;
         }
 
         // GET: Admin/AdminRoles
@@ -60,6 +63,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             {
                 _context.Add(role);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Tạo mới thành công");
                 return RedirectToAction(nameof(Index));
             }
             return View(role);
@@ -98,12 +102,16 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 try
                 {
                     _context.Update(role);
+                   
                     await _context.SaveChangesAsync();
+                    _notifyService.Success("Cập nhật thành công");
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!RoleExists(role.RoleId))
                     {
+                        _notifyService.Warning("Cập nhật thất bại");
                         return NotFound();
                     }
                     else
@@ -142,6 +150,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             var role = await _context.Roles.FindAsync(id);
             _context.Roles.Remove(role);
             await _context.SaveChangesAsync();
+            _notifyService.Success("Xóa quyền truy cập thành công");
             return RedirectToAction(nameof(Index));
         }
 

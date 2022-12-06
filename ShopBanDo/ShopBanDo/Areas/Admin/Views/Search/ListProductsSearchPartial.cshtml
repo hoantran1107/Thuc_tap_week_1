@@ -1,0 +1,41 @@
+﻿@model List<Product>
+@using ShopBanDo.Extension
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.ProductId
+            </td>
+            <td>
+                @item.ProductName
+            </td>
+            <td>
+                @item.Cat.CatName
+            </td>
+            <td>
+                @Extension.ToVnd(item.Price.Value)
+            </td>
+            <td>
+                @item.UnitslnStock
+            </td>
+            <td>
+                @if (item.UnitslnStock.Value > 0)
+                {
+                    <label class="badge badge-success">Còn bán</label>
+                }
+                else
+                {
+                    <label class="badge badge-danger">Hết hàng</label>
+                }
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@item.ProductId">Cập nhật</a>
+                <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Details" asp-route-id="@item.ProductId">Chi tiết</a>
+                <a class="btn btn-light btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.ProductId">Xóa</a>
+
+            </td>
+        </tr>
+    }
+}

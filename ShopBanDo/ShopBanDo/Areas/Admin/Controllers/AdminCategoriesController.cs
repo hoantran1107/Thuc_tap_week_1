@@ -14,36 +14,31 @@ using ShopBanDo.Models;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminTinTucsController : Controller
+    public class AdminCategoriesController : Controller
     {
         private readonly dbshopContext _context;
-
         public INotyfService _notyfService { get; }
-        public AdminTinTucsController(dbshopContext context, INotyfService notyfService)
+
+        public AdminCategoriesController(dbshopContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;
         }
 
-        // GET: Admin/AdminTinTucs
+        // GET: Admin/AdminCategories
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            //1 PAGE GOT 20 ROW
-            var pageSize = 10;
-            //ASNoTracking dont create snapshot when save to database
-            //better performent
-            var lsTinTuc = _context.TinTucs
+            var pageSize = 20;
+            var lsPage = _context.Categories
                 .AsNoTracking()
-                .OrderByDescending(x => x.PostId);
-            //IsCustomers IOrderQueryable <> ToList()
-            //Make change in View
-            PagedList<TinTuc> models = new PagedList<TinTuc>(lsTinTuc, pageNumber, pageSize);
+                .OrderByDescending(x => x.CatId);
+            PagedList<Category> models = new PagedList<Category>(lsPage, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
             return View(models);
         }
 
-        // GET: Admin/AdminTinTucs/Details/5
+        // GET: Admin/AdminCategories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -51,54 +46,51 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tinTuc = await _context.TinTucs
-                .FirstOrDefaultAsync(m => m.PostId == id);
-            if (tinTuc == null)
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(m => m.CatId == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(tinTuc);
+            return View(category);
         }
 
-        // GET: Admin/AdminTinTucs/Create
+        // GET: Admin/AdminCategories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/AdminTinTucs/Create
+        // POST: Admin/AdminCategories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostId,Title,Scontents,Contents,Thumb,Alias,CreatedDate,Published,Author,AccountId,Tags,CatId,IsHot,IsNewfeed,MetaKey,MetaDesc,Views")] TinTuc tinTuc, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Create([Bind("CatId,CatName,Description,ParentId,Levels,Ordering,Published,Thumb,Title,Alias,MetaDesc,MetaKey,Cover,SchemaMarkup")] Category category, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
             if (ModelState.IsValid)
             {
 
-                // chuan hoa la ten
-
-                //Xu ly Thumb
                 if (fThumb != null)
                 {
                     string extension = Path.GetExtension(fThumb.FileName);
-                    string imageName = Utilities.SEOUrl(tinTuc.Title) + extension;
-                    tinTuc.Thumb = await Utilities.UploadFile(fThumb, @"news", imageName.ToLower());
+                    string image = Utilities.SEOUrl(category.CatName) + extension;
+                    category.Thumb = await Utilities.UploadFile(fThumb, @"category", image.ToLower());
                 }
-                if (string.IsNullOrEmpty(tinTuc.Thumb)) tinTuc.Thumb = "default.jpg";
-                tinTuc.Alias = Utilities.SEOUrl(tinTuc.Title);
-                tinTuc.CreatedDate = DateTime.Now;
+                if (string.IsNullOrEmpty(category.Thumb)) category.Thumb = "default.jpg";
+                category.Alias = Utilities.SEOUrl(category.CatName);
+ 
 
-                _context.Add(tinTuc);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
-                _notyfService.Success("Thêm mới thành công");
+                _notyfService.Success("Thêm thành công");
                 return RedirectToAction(nameof(Index));
             }
-            return View(tinTuc);
+            return View(category);
         }
 
-        // GET: Admin/AdminTinTucs/Edit/5
+        // GET: Admin/AdminCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -106,22 +98,22 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tinTuc = await _context.TinTucs.FindAsync(id);
-            if (tinTuc == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return View(tinTuc);
+            return View(category);
         }
 
-        // POST: Admin/AdminTinTucs/Edit/5
+        // POST: Admin/AdminCategories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Scontents,Contents,Thumb,Alias,CreatedDate,Published,Author,AccountId,Tags,CatId,IsHot,IsNewfeed,MetaKey,MetaDesc,Views")] TinTuc tinTuc, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Edit(int id, [Bind("CatId,CatName,Description,ParentId,Levels,Ordering,Published,Thumb,Title,Alias,MetaDesc,MetaKey,Cover,SchemaMarkup")] Category category, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
-            if (id != tinTuc.PostId)
+            if (id != category.CatId)
             {
                 return NotFound();
             }
@@ -130,26 +122,24 @@ namespace ShopBanDo.Areas.Admin.Controllers
             {
                 try
                 {
-                    // chuan hoa la ten
 
-                    //Xu ly Thumb
                     if (fThumb != null)
                     {
                         string extension = Path.GetExtension(fThumb.FileName);
-                        string imageName = Utilities.SEOUrl(tinTuc.Title) + extension;
-                        tinTuc.Thumb = await Utilities.UploadFile(fThumb, @"news", imageName.ToLower());
+                        string image = Utilities.SEOUrl(category.CatName) + extension;
+                        category.Thumb = await Utilities.UploadFile(fThumb, @"category", image.ToLower());
                     }
-                    if (string.IsNullOrEmpty(tinTuc.Thumb)) tinTuc.Thumb = "default.jpg";
-                    tinTuc.Alias = Utilities.SEOUrl(tinTuc.Title);
-                    tinTuc.CreatedDate = DateTime.Now;
+                    if (string.IsNullOrEmpty(category.Thumb)) category.Thumb = "default.jpg";
+                    category.Alias = Utilities.SEOUrl(category.CatName);
 
-                    _context.Update(tinTuc);
-                    _notyfService.Success("Chỉnh sửa thành công");
+
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
+                    _notyfService.Success("Cập nhật thành công");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TinTucExists(tinTuc.PostId))
+                    if (!CategoryExists(category.CatId))
                     {
                         return NotFound();
                     }
@@ -160,10 +150,10 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tinTuc);
+            return View(category);
         }
 
-        // GET: Admin/AdminTinTucs/Delete/5
+        // GET: Admin/AdminCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -171,31 +161,31 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tinTuc = await _context.TinTucs
-                .FirstOrDefaultAsync(m => m.PostId == id);
-            if (tinTuc == null)
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(m => m.CatId == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(tinTuc);
+            return View(category);
         }
 
-        // POST: Admin/AdminTinTucs/Delete/5
+        // POST: Admin/AdminCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tinTuc = await _context.TinTucs.FindAsync(id);
-            _context.TinTucs.Remove(tinTuc);
+            var category = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TinTucExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.TinTucs.Any(e => e.PostId == id);
+            return _context.Categories.Any(e => e.CatId == id);
         }
     }
 }

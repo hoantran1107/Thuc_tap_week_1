@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="~/Adminassets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/Adminassets/images/favicon.png" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <div class="container-scroller">
@@ -267,6 +268,6 @@
     @await Component.InvokeAsync("Notyf")
     <!-- RenderSection active Scripts de viet ajax -->
     @await RenderSectionAsync("Scripts", required: false)
-    @await RenderSectionAsync("Styles", required: false)
+
 </body>
 </html>

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
+using ShopBanDo.Helpper;
 using ShopBanDo.Models;
 
 namespace ShopBanDo.Areas.Admin.Controllers
@@ -14,25 +17,21 @@ namespace ShopBanDo.Areas.Admin.Controllers
     public class AdminPagesController : Controller
     {
         private readonly dbshopContext _context;
-
-        public AdminPagesController(dbshopContext context)
+        public INotyfService _notyfService { get; }
+        public AdminPagesController(dbshopContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/AdminPages
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            //1 PAGE GOT 20 ROW
             var pageSize = 20;
-            //ASNoTracking dont create snapshot when save to database
-            //better performent
             var lsPage = _context.Pages
                 .AsNoTracking()
                 .OrderByDescending(x => x.PageId);
-            //IsCustomers IOrderQueryable <> ToList()
-            //Make change in View
             PagedList<Page> models = new PagedList<Page>(lsPage, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
             return View(models);
@@ -67,12 +66,24 @@ namespace ShopBanDo.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page)
+        public async Task<IActionResult> Create([Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
             if (ModelState.IsValid)
             {
+                if (fThumb != null)
+                {
+                    string extension = Path.GetExtension(fThumb.FileName);
+                    string image = Utilities.SEOUrl(page.PageName) + extension;
+                    page.Thumb = await Utilities.UploadFile(fThumb, @"pages", image.ToLower());
+                }
+                if (string.IsNullOrEmpty(page.Thumb)) page.Thumb = "default.jpg";
+                page.Alias = Utilities.SEOUrl(page.PageName);
+                page.CreateDate = DateTime.Now;
+     
+
                 _context.Add(page);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Thêm page thành công");
                 return RedirectToAction(nameof(Index));
             }
             return View(page);
@@ -99,7 +110,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page)
+        public async Task<IActionResult> Edit(int id, [Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
             if (id != page.PageId)
             {
@@ -110,8 +121,18 @@ namespace ShopBanDo.Areas.Admin.Controllers
             {
                 try
                 {
+                    if (fThumb != null)
+                    {
+                        string extension = Path.GetExtension(fThumb.FileName);
+                        string image = Utilities.SEOUrl(page.PageName) + extension;
+                        page.Thumb = await Utilities.UploadFile(fThumb, @"pages", image.ToLower());
+                    }
+                    if (string.IsNullOrEmpty(page.Thumb)) page.Thumb = "default.jpg";
+                    page.Alias = Utilities.SEOUrl(page.PageName);
+
                     _context.Update(page);
                     await _context.SaveChangesAsync();
+                    _notyfService.Success("Cập nhật thành công");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -155,6 +176,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             var page = await _context.Pages.FindAsync(id);
             _context.Pages.Remove(page);
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa page thành công");
             return RedirectToAction(nameof(Index));
         }
 

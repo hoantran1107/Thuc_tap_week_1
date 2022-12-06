@@ -126,6 +126,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Thêm sản phẩm thành công");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CatId"] = new SelectList(_context.Categories, "CatId", "CatName", product.CatId);
@@ -184,6 +185,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 {
                     if (!ProductExists(product.ProductId))
                     {
+                        _notyfService.Success("Sản phẩm không tồn tại");
                         return NotFound();
                     }
                     else
@@ -224,6 +226,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             var product = await _context.Products.FindAsync(id);
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

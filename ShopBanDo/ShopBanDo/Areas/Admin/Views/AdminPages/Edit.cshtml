@@ -1,77 +1,97 @@
 ﻿@model ShopBanDo.Models.Page
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Cập nhật Page : " + Model.PageName;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Page</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PageId" />
-            <div class="form-group">
-                <label asp-for="PageName" class="control-label"></label>
-                <input asp-for="PageName" class="form-control" />
-                <span asp-validation-for="PageName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contents" class="control-label"></label>
-                <input asp-for="Contents" class="form-control" />
-                <span asp-validation-for="Contents" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Thumb" class="control-label"></label>
-                <input asp-for="Thumb" class="form-control" />
-                <span asp-validation-for="Thumb" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MetaDesc" class="control-label"></label>
-                <input asp-for="MetaDesc" class="form-control" />
-                <span asp-validation-for="MetaDesc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MetaKey" class="control-label"></label>
-                <input asp-for="MetaKey" class="form-control" />
-                <span asp-validation-for="MetaKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Alias" class="control-label"></label>
-                <input asp-for="Alias" class="form-control" />
-                <span asp-validation-for="Alias" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" />
-                <span asp-validation-for="CreateDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ordering" class="control-label"></label>
-                <input asp-for="Ordering" class="form-control" />
-                <span asp-validation-for="Ordering" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+@section Styles{
+    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <a asp-area="Admin" asp-controller="AdminPages" asp-action="Index" class="breadcrumb-item">Danh sách page</a>
+            <span class="breadcrumb-item active">Cập nhật Page : @Model.PageName</span>
+        </nav>
     </div>
 </div>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4>Cập nhật page</h4>
+            <form asp-action="Edit" method="post" asp-route-id="@Model.PageId" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="PageId" />
+                <input type="hidden" asp-for="Thumb" />
+                <input type="hidden" asp-for="CreateDate" />
+                <div class="form-group">
+                    <label class="control-label">Tiêu đề</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Tên page</label>
+                    <input type="text" class="form-control" asp-for="PageName" placeholder="Tên page" required>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Published" /> Trạng thái
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Ordering" class="control-label"></label>
+                    <input asp-for="Ordering" class="form-control" />
+                    <span asp-validation-for="Ordering" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetaDesc" class="control-label"></label>
+                    <input asp-for="MetaDesc" class="form-control" />
+                    <span asp-validation-for="MetaDesc" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetaKey" class="control-label"></label>
+                    <input asp-for="MetaKey" class="form-control" />
+                    <span asp-validation-for="MetaKey" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Ảnh đại diện</label>
+                    <input type="file" name="fThumb" asp-for="Thumb" class="form-control-file">
+                    <span asp-validation-for="Thumb" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Nội dung Page</label>
+                    <textarea class="summernote" asp-for="Contents"></textarea>
+                </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary mr-2">Save</button>
+                    <button type="reset" class="btn btn-dark">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+            @section Scripts{
+                <script src="~/Adminassets/js/select2.js"></script>
+                <script src="~/Adminassets/vendors/select2/select2.min.js"></script>
+                <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/jquery.validate.min.js"></script>
+                <script src="~/Adminassets/summernote/summernote-bs4.js"></script>
+                <script>
+                    jQuery(document).ready(function () {
+                        $('.summernote').summernote({
+                            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                            styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
+                            height: 200,
+                            minHeight: null,
+                            maxHeight: null,
+                            focus: true
+                        });
+                    });
+                </script>
+            }

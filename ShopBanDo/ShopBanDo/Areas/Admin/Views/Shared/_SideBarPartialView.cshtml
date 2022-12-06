@@ -58,7 +58,7 @@
             <span class="nav-link">Navigation</span>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">
+            <a class="nav-link" aria-expanded="false" aria-controls="ui-basic"  asp-area="Admin" asp-controller="Home" asp-action="Index">
                 <span class="menu-icon">
                     <i class="mdi mdi-speedometer"></i>
                 </span>
@@ -72,7 +72,6 @@
                     <i class="mdi mdi-laptop"></i>
                 </span>
                 <span class="menu-title">Quản lý đơn hàng</span>
-
             </a>
             <div class="collapse" id="ui-basic-2">
                 <ul class="nav flex-column sub-menu">
@@ -143,40 +142,31 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="AdminAccounts" asp-action="Index">Quản lý tài khoản tài khoản</a></li>
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Quản lý quyền truy cập</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Quản lý danh mục</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index">Quản lý danh mục</a></li>
                     <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Quản lý quyền Tỉnh/Thành</a></li>
                 </ul>
             </div>
         </li>
         @*Quản lý tin tức*@
         <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-7" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" aria-expanded="false" aria-controls="ui-basic" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Index">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
                 <span class="menu-title">Quản lý tin tức</span>
-                <i class="menu-arrow"></i>
+                
             </a>
-            <div class="collapse" id="ui-basic-7">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Index">Danh sách tin tức</a></li>
-                </ul>
-            </div>
         </li>
         @*Quản lý Pages*@
         <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-7" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" asp-area="Admin" asp-controller="AdminPages" asp-action="Index" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
                 <span class="menu-title">Quản lý Pages</span>
-                <i class="menu-arrow"></i>
+               
             </a>
-            <div class="collapse" id="ui-basic-7">
-                <ul class="nav flex-column sub-menu">
-                   <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="AdminPages" asp-action="Index">Danh sách Page</a></li>
-                </ul>
-            </div>
+         
         </li>
         <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">

@@ -22,23 +22,6 @@
     </div>
 </div>
 <br />
-@*<div class="row m-b-30">
-    <div class="col-lg-12">
-        <div class="d-md-flex">
-            <div class="m-b-10 m-r-15">
-                <select class="form-group" id="idcat" name="idcat" style="min-width: 200px;" asp-items="ViewBag.Danhmuc">
-                    <option value="0" disabled selected>Chọn quyền truy cập</option>
-                </select>
-
-            </div>
-            <div class="m-b-10">
-                <select class="form-group" id="idstatus" name="idstatus" style="min-width: 200px;" asp-items="ViewBag.lsTrangThai">
-                    <option value="" disabled selected>Chọn trạng thái</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>*@
 <table class="table table-hover">
     <thead>
         <tr>
@@ -50,6 +33,16 @@
             </th>
             <th>
                 Trạng thái
+            </th>
+
+            <th>
+                IsHot
+            </th>
+            <th>
+                IsNewFeed
+            </th>
+            <th>
+                Ngày tạo
             </th>
             <th>#</th>
         </tr>
@@ -77,6 +70,33 @@
                                 <label class="badge badge-success">Active</label>
                             }
                         }
+                    </td>
+                    <td>
+                        @{
+                            if (!item.IsHot)
+                            {
+                                
+                            }
+                            else
+                            {
+                                <label class="badge badge-success">Hot New</label>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (!item.IsNewfeed)
+                            {
+                               
+                            }
+                            else
+                            {
+                                <label class="badge badge-success">NewFeed</label>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @item.CreatedDate.Value.ToShortDateString()
                     </td>
                     <td>
                         <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Edit" asp-route-id="@item.PostId">Cập nhật</a>

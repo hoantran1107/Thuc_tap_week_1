@@ -58,12 +58,13 @@
         {
             foreach (var item in Model)
             {
+                string url = $"/page/{item.Alias}";
                 <tr>
                     <td>
                         @item.PageId
                     </td>
                     <td>
-                       @item.PageName
+                        <a target="_blank" href="@url">@item.PageName</a>
                     </td>
                     <td>
                         @{

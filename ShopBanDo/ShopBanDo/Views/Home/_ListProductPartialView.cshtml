@@ -1,0 +1,41 @@
+﻿@model List<Product>
+@if (Model != null)
+{
+    @foreach (var item in Model)
+    {
+        string url = $"/{item.Alias}-{item.ProductId}.html";
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                    <ul class="product__hover">
+                        <li><a href="#"><img src="/Customerassets/img/icon/heart.png" /></a></li>
+                        <li><a href="#"><img src="/Customerassets/img/icon/compare.png" /> <span>Compare</span></a></li>
+
+                        <li><a href="@url"><img src="/Customerassets/img/icon/search.png" /></a>Chi tiết sản phẩm</li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6>@item.ProductName</h6>
+                    <a href="#" class="add-cart">+ Add To Cart</a>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <h5>@item.Price</h5>
+                    <div class="product__color__select">
+                        <label for="pc-7">
+                            <input type="radio" id="pc-7">
+                        </label>
+                        <label class="active black" for="pc-8">
+                            <input type="radio" id="pc-8">
+                        </label>
+                        <label class="grey" for="pc-9">
+                            <input type="radio" id="pc-9">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            }
+            }

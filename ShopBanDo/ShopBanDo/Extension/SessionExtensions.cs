@@ -9,6 +9,7 @@ namespace ShopBanDo.Extension
 {
     public static class SessionExtensions
     {
+        //luu session
         public static void Set<T>(this ISession session, string key, T value)
         {
             session.SetString(key, JsonConvert.SerializeObject(value));

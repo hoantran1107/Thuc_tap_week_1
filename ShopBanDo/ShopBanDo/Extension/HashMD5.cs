@@ -9,6 +9,7 @@ namespace ShopBanDo.Extension
 {
     public static class HashMD5
     {
+        //ma hoa pass md5 + them salt 0:x2 de them bao mat
         public static string ToMD5(this string str)
         {
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();

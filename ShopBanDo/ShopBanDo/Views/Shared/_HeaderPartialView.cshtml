@@ -1,4 +1,6 @@
 ﻿<!-- Page Preloder -->
+@using Microsoft.AspNetCore.Http;
+@using ShopBanDo.Extension
 <div id="preloder">
     <div class="loader"></div>
 </div>
@@ -8,9 +10,22 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="#">Đăng nhập</a>
-            <a href="#">Đăng ký</a>
-            <a href="#">Tài khoản của tôi</a>
+            @* <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+        <a href="/dangki/taikhoan.html">Đăng ký</a>
+        <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
+            @{ if (User.Identity.IsAuthenticated)
+                            {
+                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
+                <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
+                <a href="#">Chào mừng bạn @User.Identity.Name</a> 
+                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
+               else
+               {
+                <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+                <a href="/dangki/taikhoan.html">Đăng ký</a>
+                
+                } 
+                }
         </div>
     </div>
     <div class="offcanvas__nav__option">
@@ -31,16 +46,38 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-7">
-                 @*   <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
-                    </div>*@
+                    @*   <div class="header__top__left">
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                        </div>*@
                 </div>
-                <div class="col-lg-6 col-md-5">
+                <div class="col-lg-10 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Đăng nhập</a>
-                            <a href="#">Đăng kí</a>
-                            <a href="#">Tài khoản của tôi</a>
+                            @* @if (Context.Session.GetString("CustomerId") != null)
+            {
+        <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
+                        <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
+                                        <a href="#">Chào mừng bạn </a> }
+                                    else
+                                    {
+                        <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+                                        <a href="/dangki/taikhoan.html">Đăng ký</a>
+                                                        <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}*@
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                              
+                              
+                              <a href="#">Chào mừng bạn @User.Identity.Name</a> 
+                              <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
+                              <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
+                             else
+                             {
+                             <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+                             <a href="/dangki/taikhoan.html">Đăng ký</a>
+                             
+                             }
+
+
                         </div>
                     </div>
                 </div>
@@ -53,13 +90,13 @@
                 <div class="header__logo">
                     <a href="/"><img src="~/Customerassets/img/logo.png" alt=""></a>
                 </div>
-                
+
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-             
-                        <li class="active"><a href="/">Home</a></li>
+
+                        <li @*class="active"*@><a href="/">Home</a></li>
                         <li><a href="/shop-product.html">Shop</a></li>
                         <li><a href="/gioi-thieu.html">Về chúng tôi</a></li>
                         <li><a href="/blogs.html">Blog</a></li>
@@ -68,7 +105,7 @@
                             <a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="/page/huong-dan-mua-hang">Hướng dẫn mua hàng</a></li>
-                               
+
                                 <li><a href="./shopping-cart.html">Shopping Cart</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>

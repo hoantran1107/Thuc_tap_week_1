@@ -128,9 +128,7 @@ namespace ShopBanDo.Models
 
                 entity.Property(e => e.Email).HasMaxLength(150);
 
-                entity.Property(e => e.FullName)
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
+                entity.Property(e => e.FullName).HasMaxLength(250);
 
                 entity.Property(e => e.LastLogin).HasColumnType("datetime");
 

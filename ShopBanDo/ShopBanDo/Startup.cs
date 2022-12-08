@@ -1,4 +1,5 @@
 using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,7 +36,24 @@ namespace ShopBanDo
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
             //serices NotifY
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
+            //vi tri cua services notify
+            services.AddNotyf(config => { 
+                config.DurationInSeconds = 10; 
+                config.IsDismissable = true; 
+                config.Position = NotyfPosition.BottomRight; });
+            //add services session
+            services.AddSession();
+            //add authen cho cookie
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(p =>
+                {
+                    p.Cookie.Name = "UserLoginCookie";
+                    p.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    //p.LoginPath = "/dang-nhap.html";
+                    //p.LogoutPath = "/dang-xuat/html";
+                    p.AccessDeniedPath = "/not-found.html";
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,10 +70,14 @@ namespace ShopBanDo
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            //su dung session can phai khai bao
+            app.UseSession();
+
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            //su dung authentication
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

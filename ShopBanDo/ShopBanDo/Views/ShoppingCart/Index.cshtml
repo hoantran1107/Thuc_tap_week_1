@@ -1,0 +1,176 @@
+﻿@model List<ShopBanDo.ModelView.CartItem>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/">Trang chủ</a>
+                        <a href="/shop-product.html">Shop</a>
+                        <span>Giỏ Hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="product__cart__item">
+                                                <div class="product__cart__item__pic">
+                                                    <img src="~/images/products/@item.product.Thumb" alt="@item.product.Alias">
+                                                </div>
+                                                <div class="product__cart__item__text">
+                                                    <h6>@item.product.ProductName</h6>
+                                                    <h5>@item.product.Price.Value.ToString("#,##0") VND</h5>
+                                                </div>
+                                            </td>
+                                            <td class="quantity__item">
+                                                <div class="quantity">
+                                                    <div class="">
+                                                        <input class="cartItem pro-qty-2" data-mahh="@item.product.ProductId" min="1" data-dongia="@item.product.Price" type="number" value="@item.amount">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart__price">@item.TotalMoney.ToString("#,##0")</td>
+                                            <td><input type="button" value="X" class="removecart btn" data-mahh="@item.product.ProductId" /></td>
+                                            @*<td class="cart__close"><a class="fa fa-close removecart" href="/api/cart/remove?productID=@item.product.ProductId"></a></td>*@
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="/shop-product.html">Tiêp tục mua hàng</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Coupon code">
+                            <button type="submit">Apply</button>
+                        </form>
+                    </div>
+                    <div class="cart__total">
+                        <h6>Tổng đơn hàng</h6>
+                        <ul>
+                            <li>Thành tiền <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></li>
+                            @* <li>Total <span>$ 169.50</span></li>*@
+                        </ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                        }
+                        else
+                        {
+                            <a href="taikhoan/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                        }
+                        @*<a href="#" class="primary-btn">Thanh toán</a>*@
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h2>Chưa có hàng hóa trong giỏ hàng</h2>
+        }
+
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+@section Scripts{
+    <script>
+        $(function () {
+            function loadHeaderCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+            }
+            // code xoa san pham khi so luong =0;
+
+
+
+
+
+            $(".removecart").click(function () {
+                var productid = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { productID: productid },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();//Reload lai gio hang
+                            location.reload();
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            });
+            $(".cartItem").click(function () {
+                var productid = $(this).attr("data-mahh");
+                var soluong = parseInt($(this).val());
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soluong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();//Reload lai gio hang
+                            window.location = 'cart.html';
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Cập nhật Cart Error !")
+                    }
+                });
+            });
+        });
+    </script>
+}

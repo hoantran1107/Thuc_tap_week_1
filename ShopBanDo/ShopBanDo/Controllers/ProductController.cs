@@ -51,7 +51,6 @@ namespace ShopBanDo.Controllers
             try
             {
                 
-
                 var product = _context.Products.Include(x => x.Cat).FirstOrDefault(x => x.ProductId == id);
                 if (product == null)
                 {

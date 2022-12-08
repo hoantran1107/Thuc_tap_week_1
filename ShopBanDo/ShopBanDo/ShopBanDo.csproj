@@ -28,6 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\Components\HeaderCart\Default.cshtml" />
+    <None Include="Views\Shared\Components\NumberCart\Default.cshtml" />
     <None Include="wwwroot\assets\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\assets\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\assets\fonts\Pe-icon-7-stroke.svg" />

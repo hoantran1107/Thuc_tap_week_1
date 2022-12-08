@@ -169,6 +169,8 @@ namespace ShopBanDo.Models
             {
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
+                entity.Property(e => e.Address).HasMaxLength(250);
+
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
 
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
@@ -196,11 +198,11 @@ namespace ShopBanDo.Models
             {
                 entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-                entity.Property(e => e.ShipDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)

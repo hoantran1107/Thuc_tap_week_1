@@ -1,5 +1,5 @@
 ﻿@model ShopBanDo.Models.Product
-@using ShopBanDo.Extension  
+@using ShopBanDo.Extension
 @{
     ViewData["Title"] = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -23,7 +23,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
-                                <div class="product__thumb__pic set-bg" data-setbg="/images/products/@Model.Thumb"">
+                                <div class="product__thumb__pic set-bg" data-setbg="/images/products/@Model.Thumb" ">
                                 </div>
                             </a>
                         </li>
@@ -85,64 +85,65 @@
                     <div class="product__details__text">
                         <h4>@Model.ProductName</h4>
                         @*<div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                            <span> - 5 Reviews</span>
-                        </div>*@
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                                <span> - 5 Reviews</span>
+                            </div>*@
                         <h3>@Extension.ToVnd(Model.Price.Value) <span>@Model.Discount</span></h3>
                         <h4>
                             Mô tả gắn sản phẩm
                         </h4>
                         @Html.Raw(Model.ShortDesc)
-                       @* <div class="product__details__option">
-                            <div class="product__details__option__size">
-                                <span>Size:</span>
-                                <label for="xxl">
-                                    xxl
-                                    <input type="radio" id="xxl">
-                                </label>
-                                <label class="active" for="xl">
-                                    xl
-                                    <input type="radio" id="xl">
-                                </label>
-                                <label for="l">
-                                    l
-                                    <input type="radio" id="l">
-                                </label>
-                                <label for="sm">
-                                    s
-                                    <input type="radio" id="sm">
-                                </label>
-                            </div>
-                            <div class="product__details__option__color">
-                                <span>Color:</span>
-                                <label class="c-1" for="sp-1">
-                                    <input type="radio" id="sp-1">
-                                </label>
-                                <label class="c-2" for="sp-2">
-                                    <input type="radio" id="sp-2">
-                                </label>
-                                <label class="c-3" for="sp-3">
-                                    <input type="radio" id="sp-3">
-                                </label>
-                                <label class="c-4" for="sp-4">
-                                    <input type="radio" id="sp-4">
-                                </label>
-                                <label class="c-9" for="sp-9">
-                                    <input type="radio" id="sp-9">
-                                </label>
-                            </div>
-                        </div>*@
+                        @* <div class="product__details__option">
+                                <div class="product__details__option__size">
+                                    <span>Size:</span>
+                                    <label for="xxl">
+                                        xxl
+                                        <input type="radio" id="xxl">
+                                    </label>
+                                    <label class="active" for="xl">
+                                        xl
+                                        <input type="radio" id="xl">
+                                    </label>
+                                    <label for="l">
+                                        l
+                                        <input type="radio" id="l">
+                                    </label>
+                                    <label for="sm">
+                                        s
+                                        <input type="radio" id="sm">
+                                    </label>
+                                </div>
+                                <div class="product__details__option__color">
+                                    <span>Color:</span>
+                                    <label class="c-1" for="sp-1">
+                                        <input type="radio" id="sp-1">
+                                    </label>
+                                    <label class="c-2" for="sp-2">
+                                        <input type="radio" id="sp-2">
+                                    </label>
+                                    <label class="c-3" for="sp-3">
+                                        <input type="radio" id="sp-3">
+                                    </label>
+                                    <label class="c-4" for="sp-4">
+                                        <input type="radio" id="sp-4">
+                                    </label>
+                                    <label class="c-9" for="sp-9">
+                                        <input type="radio" id="sp-9">
+                                    </label>
+                                </div>
+                            </div>*@
                         <div class="product__details__cart__option">
                             <div class="quantity">
                                 <div class="pro-qty">
-                                    <input type="text" step="1" value="1">
+                                    @*add to cart*@
+                                    <input id="txtsoLuong" name="txtsoLuong" type="text" step="1" value="1" min="1">
                                 </div>
                             </div>
-                            <a href="#" class="primary-btn">add to cart</a>
+                            <a href="#"  class="primary-btn add-to-cart"><input hidden asp-for="ProductId" />add to cart</a>
                         </div>
                         <div class="product__details__btns__option">
                             <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
@@ -150,7 +151,7 @@
                         </div>
                         <div class="product__details__last__option">
                             <ul>
-                                
+
                                 <li><a href="@url"><span>Danh mục sản phẩm:</span> @Model.Cat.CatName</a></li>
                                 <li><span>Tag:</span> @Model.Tags</li>
                             </ul>
@@ -166,32 +167,32 @@
                                 <a class="nav-link active" data-toggle="tab" href="#tabs-5"
                                    role="tab">Description</a>
                             </li>
-                           @* <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">
-                                    Customer
-                                    Previews(5)
-                                </a>
-                            </li>*@
+                            @* <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">
+                                        Customer
+                                        Previews(5)
+                                    </a>
+                                </li>*@
                             @*<li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">
-                                    Additional
-                                    information
-                                </a>
-                            </li>*@
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">
+                                        Additional
+                                        information
+                                    </a>
+                                </li>*@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-5" role="tabpanel">
                                 <div class="product__details__tab__content">
-                                   
+
                                     <div class="product__details__tab__content__item">
                                         <h5>Mô tả sản phẩm</h5>
                                         @Html.Raw(Model.Description)
                                     </div>
-                                   
+
                                 </div>
                             </div>
-                  
-           
+
+
                         </div>
                     </div>
                 </div>
@@ -208,7 +209,7 @@
                 <h3 class="related-title">Sản phẩm tương tự</h3>
             </div>
         </div>
-       
+
         <div class="row">
             @if (list != null)
             {
@@ -218,7 +219,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
-                               @* <span class="label">New</span>*@
+                                @* <span class="label">New</span>*@
                                 <ul class="product__hover">
                                     <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
                                     <li><a href="@urlsanpham"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
@@ -236,7 +237,7 @@
                                     <i class="fa fa-star-o"></i>
                                 </div>
                                 <h5>@Extension.ToVnd(item.Price.Value)</h5>
-                              
+
                             </div>
                         </div>
                     </div>
@@ -247,3 +248,60 @@
     </div>
 </section>
 <!-- Related Section End -->
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $(function () {
+            $(".add-to-cart").click(function () {
+                var productid = $('#ProductId').val();
+                var soLuong = $('#txtsoLuong').val();
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soLuong
+                    },
+                    success: function (response) {
+                        if (response.result == 'Redirect') {
+                            window.location = response.url;
+                        }
+                        else {
+                            loadHeaderCart(); //Add Product success
+                            location.reload();
+                        }
+                        console.log(response); // log to the console to see whether it worked
+                    },
+                    error: function (error) {
+                        alert("There was an error posting the data to the server: " + error.responseText);
+                    }
+                });
+            });
+
+            @*$(".removecart").click(function () {
+                var productid = $(this).attr("data-productid");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { productID: productid },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();//Reload lai gio hang
+                            location.reload();
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            });*@
+        });
+        function loadHeaderCart() {
+            $('#miniCart').load("/AjaxContent/HeaderCart");
+            $('#numberCart').load("/AjaxContent/NumberCart");
+        }
+    });
+    </script>
+}

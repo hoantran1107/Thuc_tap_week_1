@@ -32,6 +32,8 @@ namespace ShopBanDo.Controllers
             PagedList<TinTuc> models = new PagedList<TinTuc>(lsTinTuc, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
             ViewBag.Total = models.PageCount;
+
+
             return View(models);
         }
         [Route("/tin-tuc/{Alias}-{id}.html", Name = "TinChiTiet")]

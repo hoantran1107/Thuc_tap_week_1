@@ -1,0 +1,84 @@
+﻿@model ShopBanDo.ModelView.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/Adminassets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/Adminassets/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/Adminassets/css/style.css">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="~/Adminassets/images/favicon.png" />
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="row w-100 m-0">
+                <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                    <div class="card col-lg-4 mx-auto">
+                        <div class="card-body px-5 py-5">
+                            <h3 class="card-title text-left mb-3">Đăng nhập  tài khoản</h3>
+                            <form asp-action="Login" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label class="control-label">Email</label>
+                                    <input type="email" asp-for="UserName" class="form-control p_input" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">Mật khẩu</label>
+                                    <input type="password" asp-for="Password" class="form-control p_input" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block enter-btn">Đăng nhập</button>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input"> Remember me
+                                    </label>
+                                </div>
+                                <p class="sign-up text-center">Already have an Account?<a href="#"> Sign Up</a></p>
+                                <p class="sign-up text-center">Về trang chủ <a href="/">Shop</a></p>
+                                <p class="terms">By creating an account you are accepting our<a href="#"> Terms & Conditions</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- content-wrapper ends -->
+            </div>
+            <!-- row ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="~/Adminassets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/Adminassets/js/off-canvas.js"></script>
+    <script src="~/Adminassets/js/hoverable-collapse.js"></script>
+    <script src="~/Adminassets/js/misc.js"></script>
+    <script src="~/Adminassets/js/settings.js"></script>
+    <script src="~/Adminassets/js/todolist.js"></script>
+    <!-- endinject -->
+</body>
+</html>

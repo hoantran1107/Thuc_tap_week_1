@@ -1,6 +1,7 @@
 ﻿<!-- Page Preloder -->
 @using Microsoft.AspNetCore.Http;
 @using ShopBanDo.Extension
+
 <div id="preloder">
     <div class="loader"></div>
 </div>
@@ -11,32 +12,33 @@
     <div class="offcanvas__option">
         <div class="offcanvas__links">
             @* <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
-        <a href="/dangki/taikhoan.html">Đăng ký</a>
-        <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
-            @{ if (User.Identity.IsAuthenticated)
-                            {
-                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
-                <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
-                <a href="#">Chào mừng bạn @User.Identity.Name</a> 
-                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
-               else
-               {
-                <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
                 <a href="/dangki/taikhoan.html">Đăng ký</a>
-                
-                } 
-                }
+                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
+            @{ if (User.Identity.IsAuthenticated)
+                {
+    <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
+                    <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
+                                    <a href="#">Chào mừng bạn @User.Identity.Name</a>
+                                                    <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
+                                                else
+                                                {
+                                    <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+                                                    <a href="/dangki/taikhoan.html">Đăng ký</a> } }
         </div>
     </div>
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
         <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
-        <a href="#"><img src="~/Customerassets/img/icon/cart.png" alt=""> <span>0</span></a>
+        <a href="/cart.html"><img src="~/Customerassets/img/icon/cart.png" alt=""> <span>0</span></a>
+        @* @await Component.InvokeAsync("NumberCart")
+            <div class="offcanvas-minicart_wrapper" id="miniCart">
+                @await Component.InvokeAsync("HeaderCart")
+            </div>*@
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__text">
-        <p>Free shipping, 30-day return or refund guarantee.</p>
+
     </div>
 </div>
 <!-- Offcanvas Menu End -->
@@ -54,28 +56,26 @@
                     <div class="header__top__right">
                         <div class="header__top__links">
                             @* @if (Context.Session.GetString("CustomerId") != null)
-            {
-        <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
-                        <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
-                                        <a href="#">Chào mừng bạn </a> }
-                                    else
                                     {
-                        <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
-                                        <a href="/dangki/taikhoan.html">Đăng ký</a>
-                                                        <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}*@
+                                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
+                                                <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
+                                                                <a href="#">Chào mừng bạn </a> }
+                                                            else
+                                                            {
+                                                <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+                                                                <a href="/dangki/taikhoan.html">Đăng ký</a>
+                                                                                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}*@
                             @if (User.Identity.IsAuthenticated)
                             {
-                              
-                              
-                              <a href="#">Chào mừng bạn @User.Identity.Name</a> 
-                              <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
-                              <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
-                             else
-                             {
-                             <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
-                             <a href="/dangki/taikhoan.html">Đăng ký</a>
-                             
-                             }
+
+
+                <a href="#">Chào mừng bạn @User.Identity.Name</a>
+                                <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
+                                                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
+                                            else
+                                            {
+                                <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
+                                                <a href="/dangki/taikhoan.html">Đăng ký</a>}
 
 
                         </div>
@@ -106,7 +106,7 @@
                             <ul class="dropdown">
                                 <li><a href="/page/huong-dan-mua-hang">Hướng dẫn mua hàng</a></li>
 
-                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
+                                <li><a href="/cart.html">Giỏ hàng</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
@@ -118,11 +118,38 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
                     <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="~/Customerassets/img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
+
+                    @await Component.InvokeAsync("NumberCart")
+                    
+                </div>
+                <div class="offcanvas-minicart_wrapper" id="miniCart">
+                    @await Component.InvokeAsync("HeaderCart")
                 </div>
             </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
-        <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
+@section Scripts{
+    @*<script>*@
+    @*$(document).ready(function () {
+            $("#keyword").keyup(function () {
+            var strkeyword = $('#keyword').val();
+            $.ajax({
+                url: '/Search/FindProduct/',
+                datatype: "json",
+                type: "POST",
+                data: { keyword: strkeyword },
+                async: true,
+                success: function (results) {
+                    $("#records_table").html("");
+                    $("#records_table").html(results);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        });
+        });*@
+
+}

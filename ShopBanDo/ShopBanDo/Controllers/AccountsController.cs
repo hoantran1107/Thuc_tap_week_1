@@ -169,7 +169,7 @@ namespace ShopBanDo.Controllers
         
         [AllowAnonymous]
         [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string returnUrl)
         {
             //trang dang nhap
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -255,7 +255,7 @@ namespace ShopBanDo.Controllers
         }
 
         [Route("taikhoan/orders.html", Name = "Orders")]
-        public IActionResult DanhSachOrder()
+        public IActionResult DanhSachOrder() //bo
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (taikhoanID != null)

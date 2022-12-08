@@ -1,0 +1,13 @@
+﻿@model List<ShopBanDo.ModelView.CartItem>
+@{ int k = 0; }
+@if (Model != null && Model.Count() > 0)
+{
+<a href="#miniCart" class="minicart-btn toolbar-btn"><img src="~/Customerassets/img/icon/cart.png" alt=""> <span>@Model.Count()</span></a>
+                @foreach (var item in Model)
+                {
+                    k = k + item.amount * item.product.Price.Value;
+                }
+                                <div class="price">@k VND </div> }
+                                            else
+                                            {
+                                <a href="#miniCart" class="minicart-btn toolbar-btn"><img src="~/Customerassets/img/icon/cart.png" alt=""> <span>0</span></a>}

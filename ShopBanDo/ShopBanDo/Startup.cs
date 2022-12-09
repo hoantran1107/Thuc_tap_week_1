@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShopBanDo.Extension;
 using ShopBanDo.Models;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,10 @@ namespace ShopBanDo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // middleware injection
+            app.RegisterMiddleware();
+
             app.UseHttpsRedirection();
             //su dung session can phai khai bao
             app.UseSession();

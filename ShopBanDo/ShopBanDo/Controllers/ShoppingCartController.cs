@@ -41,7 +41,7 @@ namespace ShopBanDo.Controllers
 
         // them moi san pham vao gio hang
         [HttpPost]
-        [Route("api/cart/add{productID}")]
+        [Route("api/cart/add")]
         public IActionResult AddToCart(int productID, int? amount)
         {
             List<CartItem> cart = GioHang;

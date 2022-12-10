@@ -35,7 +35,7 @@
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
-                    
+
                     <div class="shop__sidebar__accordion">
                         <div class="accordion" id="accordionExample">
                             <div class="card">
@@ -222,90 +222,89 @@
                 </div>
                 <div class="row">
                     @* <div class="col-lg-4 col-md-6 col-sm-6">
-            <div class="product__item">
-                <div class="product__item__pic set-bg" data-setbg="/Customerassets/img/product/product-2.jpg">
-                    <ul class="product__hover">
-                        <li><a href="#"><img src="/Customerassets/img/icon/heart.png" alt=""></a></li>
-                        <li>
-                            <a href="#"><img src="/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
-                        </li>
-                        <li><a href="#"><img src="/Customerassets/img/icon/search.png" alt=""></a></li>
-                    </ul>
-                </div>
-                <div class="product__item__text">
-                    <h6>Piqué Biker Jacket</h6>
-                    <a href="#" class="add-cart">+ Add To Cart</a>
-                    <div class="rating">
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
-                    <h5>$67.24</h5>
-                    <div class="product__color__select">
-                        <label for="pc-4">
-                            <input type="radio" id="pc-4">
-                        </label>
-                        <label class="active black" for="pc-5">
-                            <input type="radio" id="pc-5">
-                        </label>
-                        <label class="grey" for="pc-6">
-                            <input type="radio" id="pc-6">
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="/Customerassets/img/product/product-2.jpg">
+                                    <ul class="product__hover">
+                                        <li><a href="#"><img src="/Customerassets/img/icon/heart.png" alt=""></a></li>
+                                        <li>
+                                            <a href="#"><img src="/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                        </li>
+                                        <li><a href="#"><img src="/Customerassets/img/icon/search.png" alt=""></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>Piqué Biker Jacket</h6>
+                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <div class="rating">
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <h5>$67.24</h5>
+                                    <div class="product__color__select">
+                                        <label for="pc-4">
+                                            <input type="radio" id="pc-4">
+                                        </label>
+                                        <label class="active black" for="pc-5">
+                                            <input type="radio" id="pc-5">
+                                        </label>
+                                        <label class="grey" for="pc-6">
+                                            <input type="radio" id="pc-6">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
                     @if (Model != null && Model.Count > 0)
                     {
                         foreach (var item in Model)
                         {
-                            string url = $"/{item.Alias}-{item.ProductId}.html";
-                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                <div class="product__item sale">
+                        string url = $"/{item.Alias}-{item.ProductId}.html";
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item sale">
 
-                                    <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
-                                        @if (item.Discount != null && item.Discount > 0)
-                                        {
-                                            <span class="label">Sale</span>
-                                        }
-                                       
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
-                                            <li>
-                                                <a href="#"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
-                                            </li>
-                                            <li><a href="@url"><img src="~/Customerassets/img/icon/search.png" alt=""><span>Chi tiết sản phẩm</span></a></li>
-                                        </ul>
+                                <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                                    @if (item.Discount != null && item.Discount > 0)
+                                    {
+                                        <span class="label">Sale</span>
+                                    }
+
+                                    <ul class="product__hover">
+                                        <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
+                                        <li>
+                                            <a href="#"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                        </li>
+                                        <li><a href="@url"><img src="~/Customerassets/img/icon/search.png" alt=""><span>Chi tiết sản phẩm</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>@item.ProductName</h6>
+
+                                    <a href="#" class="add-to-cart"><input hidden asp-for="@item.ProductId" />+ Add To Cart</a>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </div>
-                                    <div class="product__item__text">
-                                        <h6>@item.ProductName</h6>
-                                       
-                                        <a href="#" class="add-cart">+ Add To Cart</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>@item.Price</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-7">
-                                                <input type="radio" id="pc-7">
-                                            </label>
-                                            <label class="active black" for="pc-8">
-                                                <input type="radio" id="pc-8">
-                                            </label>
-                                            <label class="grey" for="pc-9">
-                                                <input type="radio" id="pc-9">
-                                            </label>
-                                        </div>
+                                    <h5>@item.Price</h5>
+                                    <div class="product__color__select">
+                                        <label for="pc-7">
+                                            <input type="radio" id="pc-7">
+                                        </label>
+                                        <label class="active black" for="pc-8">
+                                            <input type="radio" id="pc-8">
+                                        </label>
+                                        <label class="grey" for="pc-9">
+                                            <input type="radio" id="pc-9">
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
                         }
 
                     }
@@ -324,3 +323,60 @@
         </div>
     </div>
 </section>
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $(function () {
+            $(".add-to-cart").click(function () {
+                var productid = $('#ProductId').val();
+                var soLuong = "1";
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soLuong
+                    },
+                    success: function (response) {
+                        if (response.result == 'Redirect') {
+                            window.location = response.url;
+                        }
+                        else {
+                            loadHeaderCart(); //Add Product success
+                            location.reload();
+                        }
+                        console.log(response); // log to the console to see whether it worked
+                    },
+                    error: function (error) {
+                        alert("There was an error posting the data to the server: " + error.responseText);
+                    }
+                });
+            });
+
+            @*$(".removecart").click(function () {
+                var productid = $(this).attr("data-productid");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { productID: productid },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();//Reload lai gio hang
+                            location.reload();
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            });*@
+        });
+        function loadHeaderCart() {
+            $('#miniCart').load("/AjaxContent/HeaderCart");
+            $('#numberCart').load("/AjaxContent/NumberCart");
+        }
+    });
+    </script>
+}

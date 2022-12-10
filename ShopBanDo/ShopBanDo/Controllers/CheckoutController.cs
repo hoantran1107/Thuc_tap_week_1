@@ -57,6 +57,7 @@ namespace WebShop.Controllers
                 model.TinhThanh = khachhang.LocationId.Value;
                 model.QuanHuyen = khachhang.Ward.Value;
             }
+            //day model sang
             ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
             ViewBag.GioHang = cart;
             return View(model);

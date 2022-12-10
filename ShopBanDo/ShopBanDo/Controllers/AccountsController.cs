@@ -123,7 +123,7 @@ namespace ShopBanDo.Controllers
                     try
                     {
                         
-                        if(_context.Customers.AsNoTracking().FirstOrDefaultAsync(x=>x.Email == khachhang.Email) != null)
+                        if(_context.Customers.AsNoTracking().SingleOrDefault(x=>x.Email.ToLower() == khachhang.Email.ToLower()) != null)
                         {
                             _notyfService.Success("Tài khoản đã tồn tại");
                             return RedirectToAction("DangkyTaiKhoan", "Accounts");
@@ -177,6 +177,7 @@ namespace ShopBanDo.Controllers
             {
                 return RedirectToAction("Dashboard", "Accounts");
             }
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
         
@@ -226,6 +227,7 @@ namespace ShopBanDo.Controllers
                     };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
                     await HttpContext.SignInAsync(claimsPrincipal);
                     _notyfService.Success("Đăng nhập thành công");
 
@@ -239,7 +241,7 @@ namespace ShopBanDo.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return RedirectToAction("DangkyTaiKhoan", "Accounts");
             }

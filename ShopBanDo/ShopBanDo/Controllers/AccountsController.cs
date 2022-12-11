@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using ShopBanDo.Extension;
 using ShopBanDo.Helpper;
 using ShopBanDo.Models;
@@ -11,6 +12,7 @@ using ShopBanDo.ModelView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -88,6 +90,35 @@ namespace ShopBanDo.Controllers
             //else tra lai ve trang login
             return RedirectToAction("Login");
         }
+        // Casecade delete order with confirm popup
+        [Route("xoa-don-hang.html", Name = "DeleteOrder")]
+        public IActionResult DeleteOrder(int id)
+        {
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            if (taikhoanID != null)
+            {
+                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+                if (khachhang != null)
+                {
+                    var donhang = _context.Orders.AsNoTracking().SingleOrDefault(x => x.OrderId == id);
+                    if (donhang != null)
+                    {
+                        var lsOrderDetail = _context.OrderDetails.AsNoTracking().Where(x => x.OrderId == donhang.OrderId).ToList();
+                        if (lsOrderDetail != null)
+                        {
+                            _context.OrderDetails.RemoveRange(lsOrderDetail);
+                            _context.SaveChanges();
+                        }
+                        _context.Orders.Remove(donhang);
+                        _context.SaveChanges();
+                        _notyfService.Success("Xóa đơn hàng thành công");
+                        return RedirectToAction("Dashboard");
+                    }
+                }
+            }
+            return RedirectToAction("Login");
+        }
+
         //dang ki
         [HttpGet]
         [AllowAnonymous]

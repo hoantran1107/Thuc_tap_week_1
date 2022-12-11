@@ -7,7 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShopBanDo.Extension;
+using ShopBanDo.Interface;
 using ShopBanDo.Models;
+using ShopBanDo.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +39,7 @@ namespace ShopBanDo
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
             //serices NotifY
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
             //vi tri cua services notify
             services.AddNotyf(config => { 
                 config.DurationInSeconds = 10; 
@@ -53,6 +57,11 @@ namespace ShopBanDo
                     //p.LogoutPath = "/dang-xuat/html";
                     p.AccessDeniedPath = "/not-found.html";
                 });
+            
+            #region Repositories
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            /*services.AddTransient<IProductRepository, ProductRepository>();*/
+            #endregion
 
         }
 
@@ -69,6 +78,8 @@ namespace ShopBanDo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.RegisterMiddleware();
+
             app.UseHttpsRedirection();
             //su dung session can phai khai bao
             app.UseSession();
@@ -89,6 +100,8 @@ namespace ShopBanDo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+              
+
             });
         }
     }

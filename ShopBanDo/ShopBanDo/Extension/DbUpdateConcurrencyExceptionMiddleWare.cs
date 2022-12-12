@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShopBanDo.Models;
 using System;
@@ -10,12 +11,11 @@ using System.Threading.Tasks;
 namespace ShopBanDo.Extension
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
-    public class ExceptionMiddleware
+    public class DbUpdateConcurrencyExceptionMiddleWare
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _loger;
-
-        public ExceptionMiddleware(RequestDelegate next,ILogger<ExceptionMiddleware> logger)
+        public DbUpdateConcurrencyExceptionMiddleWare(RequestDelegate next, ILogger<DbUpdateConcurrencyExceptionMiddleWare> logger)
         {
             _next = next;
             _loger = logger;
@@ -28,15 +28,15 @@ namespace ShopBanDo.Extension
             {
                 await _next(httpContext);
             }
-            catch (Exception ex)
+            catch (DbUpdateConcurrencyException ex)
             {
 
                 _loger.LogError($"Something went wrong: {ex}");
-                await HanleExeptionAsync(httpContext,ex);
+                await HanleExeptionAsync(httpContext, ex);
             }
         }
 
-        private  Task HanleExeptionAsync(HttpContext httpContext,Exception ex)
+        private Task HanleExeptionAsync(HttpContext httpContext, Exception ex)
         {
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)StatusCodes.Status500InternalServerError;
@@ -47,6 +47,4 @@ namespace ShopBanDo.Extension
             }.ToString()); ; ;
         }
     }
-
-    // Extension method used to add the middleware to the HTTP request pipeline.
 }

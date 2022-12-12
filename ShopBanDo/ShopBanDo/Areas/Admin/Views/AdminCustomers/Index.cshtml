@@ -51,9 +51,9 @@
             <th>
                 Địa chỉ
             </th>
-            <th>
+           @* <th>
                 Tỉnh thành
-            </th>
+            </th>*@
             <th>#</th>
         </tr>
     </thead>
@@ -74,9 +74,9 @@
                     <td>
                         @item.Address
                     </td>
-                    <td>
-                        @item.Location.Name
-                    </td>
+                  @*  <td>
+                        @item.Address
+                    </td>*@
                     <td>
                         <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminCustomers" asp-action="Edit" asp-route-id="@item.CustomerId">Cập nhật</a>
                         <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminCustomers" asp-action="Details" asp-route-id="@item.CustomerId">Chi tiết</a>

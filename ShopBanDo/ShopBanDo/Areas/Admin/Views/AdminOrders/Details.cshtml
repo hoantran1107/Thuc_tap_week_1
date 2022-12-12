@@ -1,0 +1,52 @@
+﻿@model ShopBanDo.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var OrderDetail = ViewBag.OrderDetails;
+}
+
+<h1>Details</h1>
+<h3>Order Infomation #@Model.OrderId</h3>
+<br />
+<p>Order day: @Model.OrderDate</p>
+<p>Order Transation: @Model.TransactStatus.Status</p>
+<p>Total money: <strong> @Model.Total VNĐ</strong></p>
+<p>Ship Date: @Model.ShipDate</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Amout</th>
+                <th>Price</th>
+                <th>Total Money</th>
+            </tr>
+            @if (OrderDetail == null)
+            {
+                <p>No Order Ye</p>
+            }
+            @{else
+                {
+                    foreach (OrderDetail item in OrderDetail)
+                    {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.OrderNavigation.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.OrderNavigation.Price</td>
+                    <td>@item.Total.Value.ToString("#,##0") VNĐ</td>
+                </tr>
+                        }
+                    }
+                }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.OrderId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

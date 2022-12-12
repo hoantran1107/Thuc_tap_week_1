@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using ShopBanDo.Extension;
 using ShopBanDo.Interface;
 using ShopBanDo.Models;
+using ShopBanDo.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,10 +58,10 @@ namespace ShopBanDo
                     p.AccessDeniedPath = "/not-found.html";
                 });
             
-           /* #region Repositories
+            #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            *//*services.AddTransient<IProductRepository, ProductRepository>();*//*
-            #endregion*/
+            /*services.AddTransient<IProductRepository, ProductRepository>();*/
+            #endregion
 
         }
 

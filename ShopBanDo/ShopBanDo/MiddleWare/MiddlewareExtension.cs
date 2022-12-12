@@ -12,7 +12,7 @@ namespace ShopBanDo.Extension
         {
             //add cac middleware muon su dung 
             app.UseMiddleware(typeof(ExceptionMiddleware));
-            
+            app.UseMiddleware(typeof(DbUpdateConcurrencyExceptionMiddleWare));
             return app;
         }
     }

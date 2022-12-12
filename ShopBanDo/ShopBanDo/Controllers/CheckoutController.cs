@@ -107,8 +107,7 @@ namespace WebShop.Controllers
                     donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
                     _context.Add(donhang);
                     _context.SaveChanges();
-                    //tao danh sach don hang
-
+                    //tao ordertail
                     foreach (var item in cart)
                     {
                         OrderDetail orderDetail = new OrderDetail();

@@ -59,7 +59,7 @@ namespace ShopBanDo.Controllers
                     return Json(data: "Email : " + Email + " đã được sử dụng");
                 return Json(data: true);
             }
-            catch (Exception ex)
+            catch
             {
                 return Json(data: true);
             }
@@ -180,7 +180,7 @@ namespace ShopBanDo.Controllers
                         //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
                         return RedirectToAction("Dashboard", "Accounts");
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         //tao tai khoan that bai tra ve lai trang dangky
                         return RedirectToAction("DangkyTaiKhoan", "Accounts");

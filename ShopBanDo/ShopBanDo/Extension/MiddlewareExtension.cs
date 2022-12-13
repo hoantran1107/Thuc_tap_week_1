@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using ShopBanDo.Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopBanDo.MiddleWare
+namespace ShopBanDo.Extension
 {
     public static class MiddlewareExtension
     {
@@ -13,7 +12,7 @@ namespace ShopBanDo.MiddleWare
         {
             //add cac middleware muon su dung 
             app.UseMiddleware(typeof(ExceptionMiddleware));
-            /*app.UseMiddleware(typeof(DbUpdateConcurrencyExceptionMiddleWare));*/
+            
             return app;
         }
     }

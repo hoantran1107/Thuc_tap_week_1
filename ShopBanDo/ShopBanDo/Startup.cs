@@ -57,10 +57,10 @@ namespace ShopBanDo
                     //p.LogoutPath = "/dang-xuat/html";
                     p.AccessDeniedPath = "/not-found.html";
                 });
-            
+
             #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            /*services.AddTransient<IProductRepository, ProductRepository>();*/
+            services.AddTransient<IOrderRepository, OrderRespository>();
             #endregion
 
         }

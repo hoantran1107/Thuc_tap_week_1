@@ -13,9 +13,10 @@ namespace ShopBanDo.Repositories
         public ProductRepository(dbshopContext context) : base(context)
         {
         }
-        public IEnumerable<Product> GetActiveProducts(int count)
+
+        public IEnumerable<Product> GetActiveProducts()
         {
-            return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated).Take(count).ToList();
+            return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated).ToList();
         }
     }
 }

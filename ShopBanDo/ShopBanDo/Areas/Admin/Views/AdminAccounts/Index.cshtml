@@ -8,12 +8,12 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="breadcrumb-item">Danh sách tài khoản quản trị</li>
+        <li class="breadcrumb-item">List of administrator accounts</li>
     </ol>
 </nav>
         <div class="row m-b-30">
             <div class="col-lg-8">
-                <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminAccounts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới tài khoản</span></a>
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminAccounts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Create new account</span></a>
             </div>
             <div class="col-lg-4 text-right">
 
@@ -25,13 +25,13 @@
                 <div class="d-md-flex">
                     <div class="m-b-10 m-r-15">
                         <select class="form-group" id="idrole" name="idrole" style="min-width: 200px;" asp-items="ViewBag.QuyenTruyCap">
-                            <option value="0" disabled selected>Chọn quyền truy cập</option>
+                            <option value="0" disabled selected>Select access role</option>
                         </select>
 
                     </div>
                     <div class="m-b-10">
                         <select class="form-group" id="idstatus" name="idstatus" style="min-width: 200px;" asp-items="ViewBag.lsTrangThai">
-                            <option value="" disabled selected>Chọn trạng thái</option>
+                            <option value="" disabled selected>Select status</option>
                         </select>
                     </div>
                 </div>
@@ -44,25 +44,25 @@
                         ID
                     </th>
                     <th>
-                        Họ và tên
+                        Full name
                     </th>
                     <th>
                         Email
                     </th>
                     <th>
-                        Mật khẩu
+                        Password
                     </th>
                     <th>
                         Salt
                     </th>
                     <th>
-                        Trạng thái
+                        Status
                     </th>
                     <th>
-                        Số điện thoại
+                        Phone number
                     </th>
                     <th>
-                        Lần đăng nhập cuối
+                        Last login
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.CreateDate)
@@ -120,9 +120,9 @@
                                 @Html.DisplayFor(modelItem => item.Role.RoleName)
                             </td>
                             <td>
-                                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AccountId">Cập nhật</a>
-                                <a class="btn btn-danger btn-sm" asp-action="Details" asp-route-id="@item.AccountId">Chi tiết</a>
-                                <a class="btn btn-light btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Xóa</a>
+                                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AccountId">Edit</a>
+                                <a class="btn btn-danger btn-sm" asp-action="Details" asp-route-id="@item.AccountId">Detail</a>
+                                <a class="btn btn-light btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
 
                             </td>
                         </tr>

@@ -12,33 +12,33 @@
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
-            <a asp-area="Admin" asp-controller="AdminPages" asp-action="Index" class="breadcrumb-item">Danh sách page</a>
-            <span class="breadcrumb-item active">Cập nhật Page : @Model.PageName</span>
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminPages" asp-action="Index" class="breadcrumb-item">List of pages</a>
+            <span class="breadcrumb-item active">Edit page : @Model.PageName</span>
         </nav>
     </div>
 </div>
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4>Cập nhật page</h4>
+            <h4>Edit page</h4>
             <form asp-action="Edit" method="post" asp-route-id="@Model.PageId" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="PageId" />
                 <input type="hidden" asp-for="Thumb" />
                 <input type="hidden" asp-for="CreateDate" />
                 <div class="form-group">
-                    <label class="control-label">Tiêu đề</label>
+                    <label class="control-label">Title</label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Tên page</label>
-                    <input type="text" class="form-control" asp-for="PageName" placeholder="Tên page" required>
+                    <label>Page's name</label>
+                    <input type="text" class="form-control" asp-for="PageName" placeholder="Page's name" required>
                 </div>
                 <div class="form-group form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Published" /> Trạng thái
+                        <input class="form-check-input" asp-for="Published" /> Status
                     </label>
                 </div>
                 <div class="form-group">
@@ -57,12 +57,12 @@
                     <span asp-validation-for="MetaKey" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Ảnh đại diện</label>
+                    <label>Profile picture</label>
                     <input type="file" name="fThumb" asp-for="Thumb" class="form-control-file">
                     <span asp-validation-for="Thumb" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label for="exampleTextarea1">Nội dung Page</label>
+                    <label for="exampleTextarea1">Page's content</label>
                     <textarea class="summernote" asp-for="Contents"></textarea>
                 </div>
 

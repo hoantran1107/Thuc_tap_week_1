@@ -11,13 +11,13 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminProducts" asp-action="Index">Danh sách sản phẩm</a></li>
-        <li class="breadcrumb-item">Danh sách sản phẩm : page @CurrentPage</li>
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminProducts" asp-action="Index">List of products</a></li>
+        <li class="breadcrumb-item">List of products : page @CurrentPage</li>
     </ol>
 </nav>
 <div class="row m-b-30">
     <div class="col-lg-8">
-        <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminProducts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới sản phẩm</span></a>
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminProducts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Create new product</span></a>
     </div>
     <div class="col-lg-4 text-right">
 
@@ -30,8 +30,8 @@
             <div class="col-md-4">
                 <div class="form-group row">
                     <select class="form-control" id="txtCatID" name="txtCatID" style="min-width: 200px;" asp-items="ViewBag.Danhmuc">
-                        <option disabled selected>Chọn danh mục sản phẩm</option>
-                        <option value="0">Chọn tất cả</option>
+                        <option disabled selected>Select product's category</option>
+                        <option value="0">Select all</option>
                     </select>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group row">
-                                <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                                <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Search product">
                 </div>
             </div>
         </div>
@@ -58,19 +58,19 @@
                 ID
             </th>
             <th>
-                Tên sản phẩm
+                Product's name
             </th>
             <th>
-                Danh mục
+                Category
             </th>
             <th>
-                Giá
+                Price
             </th>
             <th>
-                Tồn kho
+                Units in stock
             </th>
             <th>
-                Trạng thái
+                Status
             </th>
             <th></th>
         </tr>
@@ -99,17 +99,17 @@
                     <td>
                         @if (item.UnitslnStock.Value > 0)
                         {
-                            <label class="badge badge-success">Còn bán</label>
+                            <label class="badge badge-success">In stock</label>
                         }
                         else
                         {
-                            <label class="badge badge-danger">Hết hàng</label>
+                            <label class="badge badge-danger">Out of stock</label>
                         }
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@item.ProductId">Cập nhật</a>
-                        <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Details" asp-route-id="@item.ProductId">Chi tiết</a>
-                        <a class="btn btn-light btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.ProductId">Xóa</a>
+                        <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Details" asp-route-id="@item.ProductId">Detail</a>
+                        <a class="btn btn-light btn-sm" asp-area="Admin" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
 
                     </td>
                 </tr>

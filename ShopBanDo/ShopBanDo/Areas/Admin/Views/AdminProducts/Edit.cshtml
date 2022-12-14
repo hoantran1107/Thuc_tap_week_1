@@ -1,7 +1,7 @@
 ﻿@model ShopBanDo.Models.Product
 
 @{
-    ViewData["Title"] = "Câp nhật sản phẩm : " + Model.ProductName;
+    ViewData["Title"] = "Edit product : " + Model.ProductName;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @section Styles{
@@ -12,7 +12,7 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Cập nhật sản phẩm</h4>
+            <h4 class="card-title">Edit product</h4>
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="text" asp-for="ProductId" hidden />
@@ -20,12 +20,12 @@
                 <input type="text" asp-for="DateCreated" hidden />
                 <div class="form-group">
 
-                    <label>Tên sản phẩm</label>
-                    <input type="text" class="form-control" asp-for="ProductName" placeholder="Tên sản phẩm" required>
+                    <label>Product's name</label>
+                    <input type="text" class="form-control" asp-for="ProductName" placeholder="Product's name" required>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label class="control-label">Giá bán</label>
+                        <label class="control-label">Price</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-primary text-white">VNĐ</span>
@@ -44,20 +44,20 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label class="control-label">Danh mục sản phẩm</label>
+                        <label class="control-label">Product's category</label>
                         <select asp-for="CatId" class="form-control" asp-items="ViewBag.CatId" required>
-                            <option value="" disabled selected>Chọn danh mục</option>
+                            <option value="" disabled selected>Select category</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="control-label">Số lượng hàng tồn kho</label>
+                        <label class="control-label">Units in stock</label>
                         <input asp-for="UnitslnStock" class="form-control" type="number" step="1" min="0" defaultValue="0" required />
                         <span asp-validation-for="UnitslnStock" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Active" /> Trạng thái
+                        <input class="form-check-input" asp-for="Active" /> Status
                     </label>
                 </div>
                 <div class="form-group form-check">
@@ -72,12 +72,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Tiêu đề</label>
+                    <label class="control-label">Tilte</label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Ngày tạo</label>
+                    <label class="control-label">Created date</label>
                     <input asp-for="DateCreated" class="form-control" />
                     <span asp-validation-for="DateCreated" class="text-danger"></span>
                 </div>
@@ -97,13 +97,13 @@
                     <span asp-validation-for="Tags" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Ảnh đại diện</label>
+                    <label>Profile picture</label>
                     <input type="file" name="fThumb" asp-for="Thumb" class="form-control-file">
                     <span asp-validation-for="Thumb" class="text-danger"></span>
                 </div>
                 <div class="form-group">
 
-                    <label for="exampleTextarea1">Mô tả sản phẩm</label>
+                    <label for="exampleTextarea1">Description</label>
                     <textarea class="summernote" asp-for="Description"></textarea>
                 </div>
                 <div class="form-group">

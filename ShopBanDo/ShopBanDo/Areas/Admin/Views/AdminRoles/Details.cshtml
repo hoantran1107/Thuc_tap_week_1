@@ -8,8 +8,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Danh sách quyền truy cập</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Chi tiết quyền truy cập</li>
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">List of access roles</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Access role details</li>
     </ol>
 </nav>
 <div>
@@ -21,13 +21,13 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RoleId)
         </dd>  <dt class = "col-sm-2">
-            Tên quyền truy cập
+            Role's name
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RoleName)
         </dd>
         <dt class = "col-sm-2">
-            Mô tả
+            Description
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
@@ -36,10 +36,10 @@
 </div>
 <div>
     <a class="btn btn-dark btn-icon-text" asp-action="Edit" asp-route-id="@Model.RoleId">
-        Cập nhật
+        Edit
         <i class="mdi mdi-file-check btn-icon-append"></i>
     </a>
     <a type="button" class="btn btn-primary btn-icon-text" asp-action="Index">
-        <i class="mdi mdi mdi-keyboard-backspace btn-icon-prepend"></i> Trở lại
+        <i class="mdi mdi mdi-keyboard-backspace btn-icon-prepend"></i> Back to list
     </a>
 </div>

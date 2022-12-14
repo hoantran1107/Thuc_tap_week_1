@@ -12,7 +12,6 @@
         <div class="row">
             @if (Model != null)
             {
-
                 foreach (var item in Model)
                 {
                     string url = $"/tin-tuc/{item.Alias}-{item.PostId}.html";
@@ -22,12 +21,11 @@
                             <div class="blog__item__text">
                                 <span><img src="~/Customerassets/img/icon/calendar.png" alt="@item.Title">@item.CreatedDate.Value.ToShortDateString()</span>
                                 <h5>@item.Title</h5>
-                                <a href="@url">Xem thêm</a>
+                                <a href="@url">More</a>
                             </div>
                         </div>
                     </div>
                 }
-
             }
         </div>
         <div class="row">

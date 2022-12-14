@@ -13,14 +13,14 @@
                 <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
             @{ if (User.Identity.IsAuthenticated)
                 {
-    <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>
-                    <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
-                                    <a href="#">Chào mừng bạn @User.Identity.Name</a>
-                                                    <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
+    <a href="/tai-khoan-cua-toi.html">My account</a>
+                    <a href="/taikhoan/dang-xuat.html">Log out</a>
+                                    <a href="#">Welcome, @User.Identity.Name</a>
+                                                    <a href="/tai-khoan-cua-toi.html">My account</a>}
                                                 else
                                                 {
-                                    <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
-                                                    <a href="/dangki/taikhoan.html">Đăng ký</a> } }
+                                    <a href="/taikhoan/dang-nhap.html">Log in</a>
+                                                    <a href="/dangki/taikhoan.html">Sign in</a> } }
         </div>
     </div>
     <div class="offcanvas__nav__option">
@@ -66,15 +66,13 @@
                             {
 
 
-                <a href="#">Chào mừng bạn @User.Identity.Name</a>
-                                <a href="/taikhoan/dang-xuat.html">Đăng xuất</a>
-                                                <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>}
+                <a href="#">Welcome, @User.Identity.Name</a>
+                                <a href="/taikhoan/dang-xuat.html">Log out</a>
+                                                <a href="/tai-khoan-cua-toi.html">TMy account</a>}
                                             else
                                             {
-                                <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
-                                                <a href="/dangki/taikhoan.html">Đăng ký</a>}
-
-
+                                <a href="/taikhoan/dang-nhap.html">Log in</a>
+                                                <a href="/dangki/taikhoan.html">Sign in</a>}
                         </div>
                     </div>
                 </div>
@@ -95,15 +93,15 @@
 
                         <li @*class="active"*@><a href="/">Home</a></li>
                         <li><a href="/shop-product.html">Shop</a></li>
-                        <li><a href="/gioi-thieu.html">Về chúng tôi</a></li>
+                        <li><a href="/gioi-thieu.html">About us</a></li>
                         <li><a href="/blogs.html">Blog</a></li>
-                        <li><a href="/lien-he.html">Liên hệ</a></li>
+                        <li><a href="/lien-he.html">Contact</a></li>
                         <li>
                             <a href="#">Pages</a>
                             <ul class="dropdown">
-                                <li><a href="/page/huong-dan-mua-hang">Hướng dẫn mua hàng</a></li>
+                                <li><a href="/page/huong-dan-mua-hang">Shopping guide</a></li>
 
-                                <li><a href="/cart.html">Giỏ hàng</a></li>
+                                <li><a href="/cart.html">Cart</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>

@@ -6,10 +6,10 @@
                 <tbody>
                     <tr>
                         <th>ID</th>
-                        <th>Ngày mua hàng</th>
-                        <th>Ngày ship hàng</th>
-                        <th>Trạng thái</th>
-                        <th>Tổng tiền</th>
+                        <th>Purchase date</th>
+                        <th>Shipping date</th>
+                        <th>Status</th>
+                        <th>Total</th>
                     </tr>
                     @foreach (var item in Model)
                     {
@@ -20,7 +20,7 @@
                             <td>@item.TransactStatus.Status</td>
                             <td>@item.Total.Value.ToString("#,##0") VNĐ</td>
                             <td>
-                                <a href="javascript:void(0)" class="xemdonhang"><span>Xem đơn hàng</span></a>
+                                <a href="javascript:void(0)" class="xemdonhang"><span>View detail</span></a>
                             </td>
                         </tr>
                     }
@@ -37,5 +37,5 @@
     }
     else
     {
-        <p>Chưa có đơn hàng!</p>
+        <p>Order not found!</p>
     }

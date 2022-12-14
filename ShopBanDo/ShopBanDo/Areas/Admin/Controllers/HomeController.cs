@@ -50,9 +50,10 @@ namespace ShopBanDo.Areas.Admin.Controllers
             var income = r.Where(x => x.ShortDate != null && x.ShortDate == date  && x.Paid == true).Sum(x => x.Total);
             var passIncome = r.Where(x => x.ShortDate == pass && x.Paid == true).Sum(x => x.Total);
             var totalOrder = r.Where(x => x.ShortDate == date).Count();
-
+            
             ViewBag.Income = Extension.Extension.ToVnd(income.Value);
-            ViewBag.IncomePersent = (income - passIncome);
+            if (income == 0) ViewBag.IncomePersent = 0;
+            else ViewBag.IncomePersent = (income - passIncome) / income;
             ViewBag.TotalOrder = totalOrder;
             ViewBag.TotalItem = _product.GetActiveProducts().Count();
             ViewBag.TotalCustomer = _customer.GetAll().Where(x=>x.Active == true).Count();

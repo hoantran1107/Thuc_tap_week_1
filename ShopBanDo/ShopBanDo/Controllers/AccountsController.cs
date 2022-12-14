@@ -90,8 +90,7 @@ namespace ShopBanDo.Controllers
             //else tra lai ve trang login
             return RedirectToAction("Login");
         }
-        // Casecade delete order with confirm popup
-        [Route("xoa-don-hang.html", Name = "DeleteOrder")]
+        // cancel order
         public IActionResult DeleteOrder(int id)
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -103,21 +102,19 @@ namespace ShopBanDo.Controllers
                     var donhang = _context.Orders.AsNoTracking().SingleOrDefault(x => x.OrderId == id);
                     if (donhang != null)
                     {
-                        var lsOrderDetail = _context.OrderDetails.AsNoTracking().Where(x => x.OrderId == donhang.OrderId).ToList();
-                        if (lsOrderDetail != null)
-                        {
-                            _context.OrderDetails.RemoveRange(lsOrderDetail);
-                            _context.SaveChanges();
-                        }
-                        _context.Orders.Remove(donhang);
+                        // update delete to true
+                        donhang.Deleted = true;
+                        donhang.TransactStatusId = 5; // status cancel
+                        _context.Orders.Update(donhang);
                         _context.SaveChanges();
-                        _notyfService.Success("Xóa đơn hàng thành công");
+                        _notyfService.Success("Cancel order successful");
                         return RedirectToAction("Dashboard");
                     }
                 }
             }
             return RedirectToAction("Login");
         }
+
 
         //dang ki
         [HttpGet]

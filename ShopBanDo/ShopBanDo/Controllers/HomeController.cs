@@ -79,6 +79,7 @@ namespace ShopBanDo.Controllers
         {
             return View();
         }
+
         [Route("/gioi-thieu.html", Name = "About")]
         public IActionResult About()
         {

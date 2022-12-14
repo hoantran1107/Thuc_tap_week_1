@@ -1,10 +1,11 @@
 ﻿@using PagedList.Core.Mvc
 @model PagedList.Core.IPagedList<ShopBanDo.Models.Product>
+
 @{
     int PageCurrent = ViewBag.CurrentPage;
-    Category category = ViewBag.Cat;
     var Categori = ViewBag.Categories;
-    ViewData["Title"] = "Danh sách sản phẩm trong danh mục :"+ category.Alias + category.CatId + " page: " + PageCurrent;
+    string key = ViewBag.Key;
+    ViewData["Title"] = " page: " + PageCurrent;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int first = ViewBag.First;
 }
@@ -18,7 +19,7 @@
                     <div class="breadcrumb__links">
                         <a href="/">Trang chủ</a>
                         <a href="/shop-product.html">Danh sách sản phẩm</a>
-                        <span>Danh mục @category.CatName</span>
+                        <span>Danh mục </span>
                     </div>
                 </div>
             </div>
@@ -28,17 +29,17 @@
 <!-- Breadcrumb Section End -->
 <!-- Shop Section Begin -->
 <section class="shop spad">
-   
+
     <div class="container">
-        <h2 class="header__top__left">Loại sản phẩm @category.CatName</h2>
+        <h2 class="header__top__left">Loại sản phẩm</h2>
         <br />
         <div class="row">
             <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
                         @*search*@
-                        <form action="#">
-                            <input type="text" placeholder="Search...">
+                        <form asp-route="SearchProduct"  >
+                            <input type="text" placeholder="Search..." value="@key" name="searchString">
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
@@ -66,21 +67,21 @@
                                 </div>
                             </div>
                             @*Brand <div class="card">
-                                <div class="card-heading">
-                                    <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                </div>
-                                <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                      <div class="shop__sidebar__brand">
-                                            <ul>
-                                                <li><a href="#">Louis Vuitton</a></li>
-                                                <li><a href="#">Chanel</a></li>
-                                                <li><a href="#">Hermes</a></li>
-                                                <li><a href="#">Gucci</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                            </div>
+                            <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                            <div class="shop__sidebar__brand">
+                            <ul>
+                            <li><a href="#">Louis Vuitton</a></li>
+                            <li><a href="#">Chanel</a></li>
+                            <li><a href="#">Hermes</a></li>
+                            <li><a href="#">Gucci</a></li>
+                            </ul>
+                            </div>
+                            </div>
+                            </div>
                             </div>*@
                             <div class="card">
                                 <div class="card-heading">
@@ -101,86 +102,87 @@
                                     </div>
                                 </div>
                             </div>
+
                             @*Size <div class="card">
-                                <div class="card-heading">
-                                    <a data-toggle="collapse" data-target="#collapseFour">Size</a>
-                                </div>
-                                <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        <div class="shop__sidebar__size">
-                                            <label for="xs">
-                                                xs
-                                                <input type="radio" id="xs">
-                                            </label>
-                                            <label for="sm">
-                                                s
-                                                <input type="radio" id="sm">
-                                            </label>
-                                            <label for="md">
-                                                m
-                                                <input type="radio" id="md">
-                                            </label>
-                                            <label for="xl">
-                                                xl
-                                                <input type="radio" id="xl">
-                                            </label>
-                                            <label for="2xl">
-                                                2xl
-                                                <input type="radio" id="2xl">
-                                            </label>
-                                            <label for="xxl">
-                                                xxl
-                                                <input type="radio" id="xxl">
-                                            </label>
-                                            <label for="3xl">
-                                                3xl
-                                                <input type="radio" id="3xl">
-                                            </label>
-                                            <label for="4xl">
-                                                4xl
-                                                <input type="radio" id="4xl">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                            </div>
+                            <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                            <div class="shop__sidebar__size">
+                            <label for="xs">
+                            xs
+                            <input type="radio" id="xs">
+                            </label>
+                            <label for="sm">
+                            s
+                            <input type="radio" id="sm">
+                            </label>
+                            <label for="md">
+                            m
+                            <input type="radio" id="md">
+                            </label>
+                            <label for="xl">
+                            xl
+                            <input type="radio" id="xl">
+                            </label>
+                            <label for="2xl">
+                            2xl
+                            <input type="radio" id="2xl">
+                            </label>
+                            <label for="xxl">
+                            xxl
+                            <input type="radio" id="xxl">
+                            </label>
+                            <label for="3xl">
+                            3xl
+                            <input type="radio" id="3xl">
+                            </label>
+                            <label for="4xl">
+                            4xl
+                            <input type="radio" id="4xl">
+                            </label>
+                            </div>
+                            </div>
+                            </div>
                             </div>*@
                             @*Color <div class="card">
-                                <div class="card-heading">
-                                    <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
-                                </div>
-                                <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        <div class="shop__sidebar__color">
-                                            <label class="c-1" for="sp-1">
-                                                <input type="radio" id="sp-1">
-                                            </label>
-                                            <label class="c-2" for="sp-2">
-                                                <input type="radio" id="sp-2">
-                                            </label>
-                                            <label class="c-3" for="sp-3">
-                                                <input type="radio" id="sp-3">
-                                            </label>
-                                            <label class="c-4" for="sp-4">
-                                                <input type="radio" id="sp-4">
-                                            </label>
-                                            <label class="c-5" for="sp-5">
-                                                <input type="radio" id="sp-5">
-                                            </label>
-                                            <label class="c-6" for="sp-6">
-                                                <input type="radio" id="sp-6">
-                                            </label>
-                                            <label class="c-7" for="sp-7">
-                                                <input type="radio" id="sp-7">
-                                            </label>
-                                            <label class="c-8" for="sp-8">
-                                                <input type="radio" id="sp-8">
-                                            </label>
-                                            <label class="c-9" for="sp-9">
-                                                <input type="radio" id="sp-9">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
+                            </div>
+                            <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                            <div class="shop__sidebar__color">
+                            <label class="c-1" for="sp-1">
+                            <input type="radio" id="sp-1">
+                            </label>
+                            <label class="c-2" for="sp-2">
+                            <input type="radio" id="sp-2">
+                            </label>
+                            <label class="c-3" for="sp-3">
+                            <input type="radio" id="sp-3">
+                            </label>
+                            <label class="c-4" for="sp-4">
+                            <input type="radio" id="sp-4">
+                            </label>
+                            <label class="c-5" for="sp-5">
+                            <input type="radio" id="sp-5">
+                            </label>
+                            <label class="c-6" for="sp-6">
+                            <input type="radio" id="sp-6">
+                            </label>
+                            <label class="c-7" for="sp-7">
+                            <input type="radio" id="sp-7">
+                            </label>
+                            <label class="c-8" for="sp-8">
+                            <input type="radio" id="sp-8">
+                            </label>
+                            <label class="c-9" for="sp-9">
+                            <input type="radio" id="sp-9">
+                            </label>
+                            </div>
+                            </div>
+                            </div>
                             </div>*@
                             <div class="card">
                                 <div class="card-heading">
@@ -226,40 +228,40 @@
                 </div>
                 <div class="row">
                     @* <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="/Customerassets/img/product/product-2.jpg">
-                                <ul class="product__hover">
-                                    <li><a href="#"><img src="/Customerassets/img/icon/heart.png" alt=""></a></li>
-                                    <li>
-                                        <a href="#"><img src="/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
-                                    </li>
-                                    <li><a href="#"><img src="/Customerassets/img/icon/search.png" alt=""></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6>Piqué Biker Jacket</h6>
-                                <a href="#" class="add-cart">+ Add To Cart</a>
-                                <div class="rating">
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <h5>$67.24</h5>
-                                <div class="product__color__select">
-                                    <label for="pc-4">
-                                        <input type="radio" id="pc-4">
-                                    </label>
-                                    <label class="active black" for="pc-5">
-                                        <input type="radio" id="pc-5">
-                                    </label>
-                                    <label class="grey" for="pc-6">
-                                        <input type="radio" id="pc-6">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/Customerassets/img/product/product-2.jpg">
+                    <ul class="product__hover">
+                    <li><a href="#"><img src="/Customerassets/img/icon/heart.png" alt=""></a></li>
+                    <li>
+                    <a href="#"><img src="/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                    </li>
+                    <li><a href="#"><img src="/Customerassets/img/icon/search.png" alt=""></a></li>
+                    </ul>
+                    </div>
+                    <div class="product__item__text">
+                    <h6>Piqué Biker Jacket</h6>
+                    <a href="#" class="add-cart">+ Add To Cart</a>
+                    <div class="rating">
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    </div>
+                    <h5>$67.24</h5>
+                    <div class="product__color__select">
+                    <label for="pc-4">
+                    <input type="radio" id="pc-4">
+                    </label>
+                    <label class="active black" for="pc-5">
+                    <input type="radio" id="pc-5">
+                    </label>
+                    <label class="grey" for="pc-6">
+                    <input type="radio" id="pc-6">
+                    </label>
+                    </div>
+                    </div>
+                    </div>
                     </div>*@
                     @if (Model != null && Model.Count > 0)
                     {
@@ -319,20 +321,19 @@
                         <div class="product__pagination">
                             @for (int i = 1; i <= ViewBag.Total; i++)
                             {
-                                string url = $"/List/{category.Alias}-{category.CatId}.html";
-                                <a class="active" href="@url?page=@i">@i</a>
+                                <a class="active" href="/search.html?page=@i">@i</a> 
                             }
                         </div>
                         @*<div class="col-lg-12">
-                             
-                            <ul class="pagination">
-                                <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-area="" asp-controller="Product" asp-route-Alias="@category.Alias" asp-route-CatId="@category.CatId" asp-action="List" /></a>
-                            </ul>
-                     
+
+                        <ul class="pagination">
+                        <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-area="" asp-controller="Product" asp-route-Alias="@category.Alias" asp-route-CatId="@category.CatId" asp-action="List" /></a>
+                        </ul>
+
                         </div>*@
                     </div>
+                </div>
             </div>
         </div>
     </div>
-        </div>
 </section>

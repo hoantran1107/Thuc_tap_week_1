@@ -2,9 +2,12 @@
 @model PagedList.Core.IPagedList<ShopBanDo.Models.Product>
 @{
     int PageCurrent = ViewBag.CurrentPage;
+    var Category = ViewBag.Categories;
     ViewData["Title"] = "Thông tin sản phẩm page : " + PageCurrent;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -30,9 +33,10 @@
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
                         @*search*@
-                        <form action="#">
-                            <input type="text" placeholder="Search...">
-                            <button type="submit"><span class="icon_search"></span></button>
+                        <form asp-route="SearchProduct" > 
+                            <input type="text" name="searchString" placeholder="Search..." value="" >
+                            <button type="submit" ><span class="icon_search"></span></button>
+                            
                         </form>
                     </div>
                     
@@ -43,21 +47,21 @@
                                     <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
                                 </div>
                                 @*Danh mục sản phẩm *@
+
                                 <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
                                             <ul class="nice-scroll">
-                                                <li><a href="#">Men (20)</a></li>
-                                                <li><a href="#">Women (20)</a></li>
-                                                <li><a href="#">Bags (20)</a></li>
-                                                <li><a href="#">Clothing (20)</a></li>
-                                                <li><a href="#">Shoes (20)</a></li>
-                                                <li><a href="#">Accessories (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
+                                            @foreach(var item in Category)
+                                            {
+                                                 string url = $"/List/{item.Alias}-{item.CatId}.html";
+                                           
+                                                <li><a href="@url">@item.CatName</a></li>
+                                          
+                                            }
                                             </ul>
                                         </div>
+                                          
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +209,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                <p>Showing 1–12 of @ViewBag.TotalItem results</p>
+                                 <p>Showing @ViewBag.First – @ViewBag.Last of @ViewBag.TotalItem results</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -281,8 +285,8 @@
                                     </div>
                                     <div class="product__item__text">
                                         <h6>@item.ProductName</h6>
-                                       
-                                        <a href="#" class="add-cart">+ Add To Cart</a>
+
+                                        <a href="#" class="add-to-cart">+ Add To Cart</a>
                                         <div class="rating">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>

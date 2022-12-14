@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
 using ShopBanDo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication;
+using PagedList;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ShopBanDo.Controllers
 {
@@ -18,6 +23,7 @@ namespace ShopBanDo.Controllers
         {
             _context = context;
         }
+
         [Route("shop-product.html", Name = ("ShopProduct"))]
         public IActionResult Index(int? page)
         {
@@ -33,9 +39,15 @@ namespace ShopBanDo.Controllers
                 //IsCustomers IOrderQueryable <> ToList()
                 //Make change in View
                 PagedList<Product> models = new PagedList<Product>(lsProduct, pageNumber, pageSize);
+                var Categories = _context.Categories;
+                ViewBag.Categories = Categories.ToList();
+
                 ViewBag.CurrentPage = pageNumber;
                 ViewBag.Total = models.PageCount;
                 ViewBag.TotalItem = lsProduct.Count();
+                ViewBag.First = models.FirstItemOnPage;
+                ViewBag.Last = models.LastItemOnPage;
+
 
                 return View(models);
             }
@@ -75,7 +87,7 @@ namespace ShopBanDo.Controllers
           
         }
         [Route("/List/{Alias}-{Catid}.html", Name = ("ListProduct"))]
-        public IActionResult List(string Alias, int Catid, int page =1)
+        public IActionResult List( int Catid, int page =1)
         {
             try
             {
@@ -88,12 +100,17 @@ namespace ShopBanDo.Controllers
                 //IsCustomers IOrderQueryable <> ToList()
                 //Make change in View
                 PagedList<Product> models = new PagedList<Product>(lsProduct, page, pageSize);
+                var Categories = _context.Categories;
+                ViewBag.Categories = Categories.ToList();
+
                 ViewBag.CurrentPage = page;
                 ViewBag.Total = models.PageCount;
                 ViewBag.TotalItem = lsProduct.Count();
-                ViewBag.Cat= danhmuc;
+               
                 ViewBag.First = models.FirstItemOnPage;
                 ViewBag.Last = models.LastItemOnPage;
+
+                 ViewBag.Cat= danhmuc;
 
 
                 return View(models);
@@ -103,6 +120,58 @@ namespace ShopBanDo.Controllers
                 return RedirectToAction("Index", "Home");
             }
             
+        }
+       
+        [Route("/search.html", Name = ("SearchProduct"))]
+        
+        public  IActionResult Search(string searchString ,int page =1)
+        {  
+
+            try
+            {
+                var pageSize = 12;
+
+                var item = from mb in _context.Products.AsNoTracking()
+                           select mb;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+
+                    HttpContext.Session.SetString("Key", searchString);
+                    searchString = searchString.ToLower();
+                    item = item.Where(s => s.ProductName!.Contains(searchString));
+
+                }
+                else
+                {
+
+                    string key = HttpContext.Session.GetString("Key");
+                    if (key != null)
+                    {
+                        item = item.Where(s => s.ProductName!.Contains(key));
+                    }
+
+
+                }
+                PagedList<Product> models = new PagedList<Product>(item, page, pageSize);
+
+                    var Categories = _context.Categories;
+                    ViewBag.Categories = Categories.ToList();
+
+                    ViewBag.CurrentPage = page;
+                    ViewBag.Total = models.PageCount;
+                    ViewBag.TotalItem = item.Count();
+                    ViewBag.First =models.FirstItemOnPage;
+                    ViewBag.Last = models.LastItemOnPage;
+
+                    ViewBag.Key = searchString;
+                    return View(models);
+ 
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

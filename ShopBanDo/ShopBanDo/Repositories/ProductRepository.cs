@@ -18,5 +18,13 @@ namespace ShopBanDo.Repositories
         {
             return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated).ToList();
         }
+        public IEnumerable<Product> FindProducts()
+        {
+            return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
+        }
+        public IEnumerable<Product> FindProduct(string key)
+        {
+            return _context.Products.Where(x => x.ProductName!.Contains(key) || x.Alias!.Contains(key));
+        }
     }
 }

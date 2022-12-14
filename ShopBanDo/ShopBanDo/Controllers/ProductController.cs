@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
 using ShopBanDo.Models;
+using ShopBanDo.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace ShopBanDo.Controllers
     {
         //khai báo db dùng
         private readonly dbshopContext _context;
+        private ProductRepository _product;
         //khởi tạo cho class ProductController với tham số là dbContext
         public ProductController(dbshopContext context)
         {
             _context = context;
+            _product = new ProductRepository(context);
         }
         [Route("shop-product.html", Name = ("ShopProduct"))]
         public IActionResult Index(int? page)
@@ -33,6 +36,10 @@ namespace ShopBanDo.Controllers
                 //IsCustomers IOrderQueryable <> ToList()
                 //Make change in View
                 PagedList<Product> models = new PagedList<Product>(lsProduct, pageNumber, pageSize);
+
+                var Categories = _context.Categories;
+                ViewBag.Categories = Categories.ToList();
+
                 ViewBag.CurrentPage = pageNumber;
                 ViewBag.Total = models.PageCount;
                 ViewBag.TotalItem = lsProduct.Count();
@@ -88,6 +95,10 @@ namespace ShopBanDo.Controllers
                 //IsCustomers IOrderQueryable <> ToList()
                 //Make change in View
                 PagedList<Product> models = new PagedList<Product>(lsProduct, page, pageSize);
+
+                var Categories = _context.Categories;
+                ViewBag.Categories = Categories.ToList();
+
                 ViewBag.CurrentPage = page;
                 ViewBag.Total = models.PageCount;
                 ViewBag.TotalItem = lsProduct.Count();
@@ -103,6 +114,49 @@ namespace ShopBanDo.Controllers
                 return RedirectToAction("Index", "Home");
             }
             
+        }
+        [Route("/search.html", Name = ("SearchProduct"))]
+        public IActionResult Search(string searchString, int page = 1)
+        {
+
+
+            var pageSize = 12;
+
+            IEnumerable<Product> item;
+
+            if (searchString != null)
+            {
+                item = _product.FindProduct(searchString);
+
+                if (item.Count() == 0)
+                {
+                    ViewBag.Result = 0;
+                    item = _product.FindProducts();
+                }
+                ViewBag.Key = searchString;
+
+            }
+            else
+            {
+                item = _product.FindProducts();
+            }
+
+            PagedList<Product> models = new PagedList<Product>(item, page, pageSize);
+
+            var Categories = _context.Categories;
+            ViewBag.Categories = Categories.ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.Total = models.PageCount;
+            ViewBag.TotalItem = item.Count();
+
+            ViewBag.First = models.FirstItemOnPage;
+            ViewBag.Last = models.LastItemOnPage;
+
+
+            return View(models);
+
+
         }
     }
 }

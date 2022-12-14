@@ -1,12 +1,15 @@
 ﻿@using PagedList.Core.Mvc
 @model PagedList.Core.IPagedList<ShopBanDo.Models.Product>
+
 @{
     int PageCurrent = ViewBag.CurrentPage;
-    Category category = ViewBag.Cat;
     var Categori = ViewBag.Categories;
-    ViewData["Title"] = "Danh sách sản phẩm trong danh mục :" + category.Alias + category.CatId + " page: " + PageCurrent;
+    string key = ViewBag.Key;
+    ViewData["Title"] = " page: " + PageCurrent;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int first = ViewBag.First;
+    var Products = ViewBag.Product;
+
 }
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
@@ -18,7 +21,7 @@
                     <div class="breadcrumb__links">
                         <a href="/">Trang chủ</a>
                         <a href="/shop-product.html">Danh sách sản phẩm</a>
-                        <span>Danh mục @category.CatName</span>
+                        <span> Search @key </span>
                     </div>
                 </div>
             </div>
@@ -30,15 +33,15 @@
 <section class="shop spad">
 
     <div class="container">
-        <h2 class="header__top__left">Loại sản phẩm @category.CatName</h2>
+        <h2 class="header__top__left">Loại sản phẩm</h2>
         <br />
         <div class="row">
             <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
                         @*search*@
-                        <form asp-route="SearchProduct">
-                            <input type="text" placeholder="Search..." name="searchString">
+                        <form asp-route="SearchProduct" asp-route-page="1">
+                            <input type="text" placeholder="Search..." value="@key" name="searchString">
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
@@ -101,6 +104,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             @*Size <div class="card">
                             <div class="card-heading">
                             <a data-toggle="collapse" data-target="#collapseFour">Size</a>
@@ -207,9 +211,21 @@
             <div class="col-lg-9">
                 <div class="shop__product__option">
                     <div class="row">
+
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                <p>Showing @ViewBag.First – @ViewBag.Last of @ViewBag.TotalItem results</p>
+
+                                @if (@ViewBag.Result == 0)
+                                {
+                                    <p style="color:red;font-size:30px">Not found "@key"</p>
+
+                                }
+                                else
+                                {
+                                    <p>Showing @ViewBag.First – @ViewBag.Last of @ViewBag.TotalItem results</p>
+                                }
+
+
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -317,19 +333,14 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-12">
                         <div class="product__pagination">
+                            @* <ul class="pagination">
+                            <a> <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-controller="Product" asp-action="Search" asp-route-searchString="@key"/> </a>
+                            </ul>*@
                             @for (int i = 1; i <= ViewBag.Total; i++)
                             {
-                                string url = $"/List/{category.Alias}-{category.CatId}.html";
-                                <a class="active" href="@url?page=@i">@i</a>
+                                <a class="active" asp-controller="Product" asp-action="Search" asp-route-searchString="@key" asp-route-page="@i">@i </a>
                             }
                         </div>
-                        @*<div class="col-lg-12">
-
-                        <ul class="pagination">
-                        <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-area="" asp-controller="Product" asp-route-Alias="@category.Alias" asp-route-CatId="@category.CatId" asp-action="List" /></a>
-                        </ul>
-
-                        </div>*@
                     </div>
                 </div>
             </div>

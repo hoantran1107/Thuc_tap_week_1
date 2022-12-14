@@ -2,6 +2,8 @@
 @model PagedList.Core.IPagedList<ShopBanDo.Models.Product>
 @{
     int PageCurrent = ViewBag.CurrentPage;
+    var Categori = ViewBag.Categories;
+    string key = ViewBag.Key;
     ViewData["Title"] = "Thông tin sản phẩm page : " + PageCurrent;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -14,7 +16,7 @@
                     <h4>Shop</h4>
                     <div class="breadcrumb__links">
                         <a href="/">Trang chủ</a>
-                        <span>Product's list</span>
+                        <span>Danh sách sản phẩm</span>
                     </div>
                 </div>
             </div>
@@ -30,8 +32,8 @@
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
                         @*search*@
-                        <form action="#">
-                            <input type="text" placeholder="Search...">
+                        <form asp-route="SearchProduct">
+                            <input type="text" placeholder="Search..." name="searchString">
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
@@ -47,37 +49,34 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
                                             <ul class="nice-scroll">
-                                                <li><a href="#">Men (20)</a></li>
-                                                <li><a href="#">Women (20)</a></li>
-                                                <li><a href="#">Bags (20)</a></li>
-                                                <li><a href="#">Clothing (20)</a></li>
-                                                <li><a href="#">Shoes (20)</a></li>
-                                                <li><a href="#">Accessories (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
+                                                @foreach (var item in Categori)
+                                                {
+                                                    string url = $"/List/{item.Alias}-{item.CatId}.html";
+                                                    <li><a href="@url">@item.CatName</a></li>
+
+                                                }
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @*Brand <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                          <div class="shop__sidebar__brand">
-                                                <ul>
-                                                    <li><a href="#">Louis Vuitton</a></li>
-                                                    <li><a href="#">Chanel</a></li>
-                                                    <li><a href="#">Hermes</a></li>
-                                                    <li><a href="#">Gucci</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*@
+                            <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                            </div>
+                            <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                            <div class="shop__sidebar__brand">
+                            <ul>
+                            <li><a href="#">Louis Vuitton</a></li>
+                            <li><a href="#">Chanel</a></li>
+                            <li><a href="#">Hermes</a></li>
+                            <li><a href="#">Gucci</a></li>
+                            </ul>
+                            </div>
+                            </div>
+                            </div>
+                            </div>*@
                             <div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
@@ -98,86 +97,86 @@
                                 </div>
                             </div>
                             @*Size <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
-                                    </div>
-                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__size">
-                                                <label for="xs">
-                                                    xs
-                                                    <input type="radio" id="xs">
-                                                </label>
-                                                <label for="sm">
-                                                    s
-                                                    <input type="radio" id="sm">
-                                                </label>
-                                                <label for="md">
-                                                    m
-                                                    <input type="radio" id="md">
-                                                </label>
-                                                <label for="xl">
-                                                    xl
-                                                    <input type="radio" id="xl">
-                                                </label>
-                                                <label for="2xl">
-                                                    2xl
-                                                    <input type="radio" id="2xl">
-                                                </label>
-                                                <label for="xxl">
-                                                    xxl
-                                                    <input type="radio" id="xxl">
-                                                </label>
-                                                <label for="3xl">
-                                                    3xl
-                                                    <input type="radio" id="3xl">
-                                                </label>
-                                                <label for="4xl">
-                                                    4xl
-                                                    <input type="radio" id="4xl">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*@
+                            <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                            </div>
+                            <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                            <div class="shop__sidebar__size">
+                            <label for="xs">
+                            xs
+                            <input type="radio" id="xs">
+                            </label>
+                            <label for="sm">
+                            s
+                            <input type="radio" id="sm">
+                            </label>
+                            <label for="md">
+                            m
+                            <input type="radio" id="md">
+                            </label>
+                            <label for="xl">
+                            xl
+                            <input type="radio" id="xl">
+                            </label>
+                            <label for="2xl">
+                            2xl
+                            <input type="radio" id="2xl">
+                            </label>
+                            <label for="xxl">
+                            xxl
+                            <input type="radio" id="xxl">
+                            </label>
+                            <label for="3xl">
+                            3xl
+                            <input type="radio" id="3xl">
+                            </label>
+                            <label for="4xl">
+                            4xl
+                            <input type="radio" id="4xl">
+                            </label>
+                            </div>
+                            </div>
+                            </div>
+                            </div>*@
                             @*Color <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
-                                    </div>
-                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__color">
-                                                <label class="c-1" for="sp-1">
-                                                    <input type="radio" id="sp-1">
-                                                </label>
-                                                <label class="c-2" for="sp-2">
-                                                    <input type="radio" id="sp-2">
-                                                </label>
-                                                <label class="c-3" for="sp-3">
-                                                    <input type="radio" id="sp-3">
-                                                </label>
-                                                <label class="c-4" for="sp-4">
-                                                    <input type="radio" id="sp-4">
-                                                </label>
-                                                <label class="c-5" for="sp-5">
-                                                    <input type="radio" id="sp-5">
-                                                </label>
-                                                <label class="c-6" for="sp-6">
-                                                    <input type="radio" id="sp-6">
-                                                </label>
-                                                <label class="c-7" for="sp-7">
-                                                    <input type="radio" id="sp-7">
-                                                </label>
-                                                <label class="c-8" for="sp-8">
-                                                    <input type="radio" id="sp-8">
-                                                </label>
-                                                <label class="c-9" for="sp-9">
-                                                    <input type="radio" id="sp-9">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*@
+                            <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
+                            </div>
+                            <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                            <div class="shop__sidebar__color">
+                            <label class="c-1" for="sp-1">
+                            <input type="radio" id="sp-1">
+                            </label>
+                            <label class="c-2" for="sp-2">
+                            <input type="radio" id="sp-2">
+                            </label>
+                            <label class="c-3" for="sp-3">
+                            <input type="radio" id="sp-3">
+                            </label>
+                            <label class="c-4" for="sp-4">
+                            <input type="radio" id="sp-4">
+                            </label>
+                            <label class="c-5" for="sp-5">
+                            <input type="radio" id="sp-5">
+                            </label>
+                            <label class="c-6" for="sp-6">
+                            <input type="radio" id="sp-6">
+                            </label>
+                            <label class="c-7" for="sp-7">
+                            <input type="radio" id="sp-7">
+                            </label>
+                            <label class="c-8" for="sp-8">
+                            <input type="radio" id="sp-8">
+                            </label>
+                            <label class="c-9" for="sp-9">
+                            <input type="radio" id="sp-9">
+                            </label>
+                            </div>
+                            </div>
+                            </div>
+                            </div>*@
                             <div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
@@ -222,89 +221,89 @@
                 </div>
                 <div class="row">
                     @* <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="/Customerassets/img/product/product-2.jpg">
-                                    <ul class="product__hover">
-                                        <li><a href="#"><img src="/Customerassets/img/icon/heart.png" alt=""></a></li>
-                                        <li>
-                                            <a href="#"><img src="/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
-                                        </li>
-                                        <li><a href="#"><img src="/Customerassets/img/icon/search.png" alt=""></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6>Piqué Biker Jacket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                    <div class="rating">
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                    </div>
-                                    <h5>$67.24</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-4">
-                                            <input type="radio" id="pc-4">
-                                        </label>
-                                        <label class="active black" for="pc-5">
-                                            <input type="radio" id="pc-5">
-                                        </label>
-                                        <label class="grey" for="pc-6">
-                                            <input type="radio" id="pc-6">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
+                    <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/Customerassets/img/product/product-2.jpg">
+                    <ul class="product__hover">
+                    <li><a href="#"><img src="/Customerassets/img/icon/heart.png" alt=""></a></li>
+                    <li>
+                    <a href="#"><img src="/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                    </li>
+                    <li><a href="#"><img src="/Customerassets/img/icon/search.png" alt=""></a></li>
+                    </ul>
+                    </div>
+                    <div class="product__item__text">
+                    <h6>Piqué Biker Jacket</h6>
+                    <a href="#" class="add-cart">+ Add To Cart</a>
+                    <div class="rating">
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    </div>
+                    <h5>$67.24</h5>
+                    <div class="product__color__select">
+                    <label for="pc-4">
+                    <input type="radio" id="pc-4">
+                    </label>
+                    <label class="active black" for="pc-5">
+                    <input type="radio" id="pc-5">
+                    </label>
+                    <label class="grey" for="pc-6">
+                    <input type="radio" id="pc-6">
+                    </label>
+                    </div>
+                    </div>
+                    </div>
+                    </div>*@
                     @if (Model != null && Model.Count > 0)
                     {
                         foreach (var item in Model)
                         {
-                        string url = $"/{item.Alias}-{item.ProductId}.html";
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item sale">
+                            string url = $"/{item.Alias}-{item.ProductId}.html";
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item sale">
 
-                                <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
-                                    @if (item.Discount != null && item.Discount > 0)
-                                    {
-                                        <span class="label">Sale</span>
-                                    }
+                                    <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                                        @if (item.Discount != null && item.Discount > 0)
+                                        {
+                                            <span class="label">Sale</span>
+                                        }
 
-                                    <ul class="product__hover">
-                                        <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
-                                        <li>
-                                            <a href="#"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
-                                        </li>
-                                        <li><a href="@url"><img src="~/Customerassets/img/icon/search.png" alt=""><span>Product details</span></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6>@item.ProductName</h6>
-
-                                    <a href="#" class="add-to-cart"><input hidden asp-for="@item.ProductId" />+ Add To Cart</a>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-o"></i>
+                                        <ul class="product__hover">
+                                            <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
+                                            <li>
+                                                <a href="#"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                            </li>
+                                            <li><a href="@url"><img src="~/Customerassets/img/icon/search.png" alt=""><span>Chi tiết sản phẩm</span></a></li>
+                                        </ul>
                                     </div>
-                                    <h5>@item.Price</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-7">
-                                            <input type="radio" id="pc-7">
-                                        </label>
-                                        <label class="active black" for="pc-8">
-                                            <input type="radio" id="pc-8">
-                                        </label>
-                                        <label class="grey" for="pc-9">
-                                            <input type="radio" id="pc-9">
-                                        </label>
+                                    <div class="product__item__text">
+                                        <h6>@item.ProductName</h6>
+
+                                        <a href="#" class="add-to-cart"><input hidden asp-for="@item.ProductId" />+ Add To Cart</a>
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <h5>@item.Price</h5>
+                                        <div class="product__color__select">
+                                            <label for="pc-7">
+                                                <input type="radio" id="pc-7">
+                                            </label>
+                                            <label class="active black" for="pc-8">
+                                                <input type="radio" id="pc-8">
+                                            </label>
+                                            <label class="grey" for="pc-9">
+                                                <input type="radio" id="pc-9">
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         }
 
                     }
@@ -325,58 +324,58 @@
 </section>
 @section Scripts{
     <script>
-    $(document).ready(function () {
-        $(function () {
-            $(".add-to-cart").click(function () {
-                var productid = $('#ProductId').val();
-                var soLuong = "1";
-                $.ajax({
-                    url: '/api/cart/add',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: {
-                        productID: productid,
-                        amount: soLuong
-                    },
-                    success: function (response) {
-                        if (response.result == 'Redirect') {
-                            window.location = response.url;
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart").click(function () {
+                    var productid = $('#ProductId').val();
+                    var soLuong = "1";
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                            amount: soLuong
+                        },
+                        success: function (response) {
+                            if (response.result == 'Redirect') {
+                                window.location = response.url;
+                            }
+                            else {
+                                loadHeaderCart(); //Add Product success
+                                location.reload();
+                            }
+                            console.log(response); // log to the console to see whether it worked
+                        },
+                        error: function (error) {
+                            alert("There was an error posting the data to the server: " + error.responseText);
                         }
-                        else {
-                            loadHeaderCart(); //Add Product success
-                            location.reload();
-                        }
-                        console.log(response); // log to the console to see whether it worked
-                    },
-                    error: function (error) {
-                        alert("There was an error posting the data to the server: " + error.responseText);
-                    }
+                    });
                 });
-            });
 
-            @*$(".removecart").click(function () {
+        @*$(".removecart").click(function () {
                 var productid = $(this).attr("data-productid");
                 $.ajax({
-                    url: "api/cart/remove",
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { productID: productid },
-                    success: function (result) {
-                        if (result.success) {
-                            loadHeaderCart();//Reload lai gio hang
-                            location.reload();
-                        }
-                    },
-                    error: function (rs) {
-                        alert("Remove Cart Error !")
-                    }
+                url: "api/cart/remove",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function (result) {
+                if (result.success) {
+                loadHeaderCart();//Reload lai gio hang
+                location.reload();
+                }
+                },
+                error: function (rs) {
+                alert("Remove Cart Error !")
+                }
                 });
-            });*@
+                });*@
+                });
+            function loadHeaderCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+            }
         });
-        function loadHeaderCart() {
-            $('#miniCart').load("/AjaxContent/HeaderCart");
-            $('#numberCart').load("/AjaxContent/NumberCart");
-        }
-    });
     </script>
 }

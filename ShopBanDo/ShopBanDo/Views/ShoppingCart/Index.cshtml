@@ -12,9 +12,9 @@
                 <div class="breadcrumb__text">
                     <h4>Shopping Cart</h4>
                     <div class="breadcrumb__links">
-                        <a href="/">Trang chủ</a>
+                        <a href="/">Home</a>
                         <a href="/shop-product.html">Shop</a>
-                        <span>Giỏ Hàng</span>
+                        <span>Cart</span>
                     </div>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                             <thead>
                                 <tr>
                                     <th>Product</th>
-                                    <th>Số lượng</th>
-                                    <th>Thành tiền</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -73,7 +73,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="/shop-product.html">Tiêp tục mua hàng</a>
+                                <a href="/shop-product.html">Continue shopping</a>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -92,18 +92,18 @@
                         </form>
                     </div>
                     <div class="cart__total">
-                        <h6>Tổng đơn hàng</h6>
+                        <h6>Order total</h6>
                         <ul>
                             <li>Thành tiền <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></li>
                             @* <li>Total <span>$ 169.50</span></li>*@
                         </ul>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
                         }
                         else
                         {
-                            <a href="taikhoan/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                            <a href="taikhoan/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
                         }
                         @*<a href="#" class="primary-btn">Thanh toán</a>*@
                     </div>
@@ -112,7 +112,7 @@
         }
         else
         {
-            <h2>Chưa có hàng hóa trong giỏ hàng</h2>
+            <h2>Cart is empty</h2>
         }
 
     </div>
@@ -167,7 +167,7 @@
                         }
                     },
                     error: function (rs) {
-                        alert("Cập nhật Cart Error !")
+                        alert("Cart Update Error !")
                     }
                 });
             });

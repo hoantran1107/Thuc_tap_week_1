@@ -4,7 +4,7 @@
     <div class="harmic-offcanvas-body">
         <div class="minicart-content">
             <div class="minicart-heading">
-                <h4 class="mb-0">Giỏ hàng</h4>
+                <h4 class="mb-0">Cart</h4>
                 <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
             </div>
             <ul class="minicart-list">
@@ -28,14 +28,14 @@
             <span class="ammount">@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span>
         </div>
         <div class="group-btn_wrap d-grid gap-2">
-            <a href="cart.html" class="btn btn-secondary btn-primary-hover">Xem giỏ hàng</a>
+            <a href="cart.html" class="btn btn-secondary btn-primary-hover">View cart</a>
             @if (User.Identity.IsAuthenticated)
             {
-                <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
             }
             else
             {
-                <a href="taikhoan/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                <a href="taikhoan/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
             }
         </div>
     </div>
@@ -45,7 +45,7 @@ else
   <div class="harmic-offcanvas-body">
         <div class="minicart-content">
             <div class="minicart-heading">
-                <h4 class="mb-0">Giỏ hàng rỗng</h4>
+                <h4 class="mb-0">Cart's empty</h4>
                 <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
             </div>
         </div>

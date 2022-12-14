@@ -12,16 +12,16 @@
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
-            <a asp-area="Admin" asp-controller="AdminCategories" asp-action="Index" class="breadcrumb-item">Danh sách danh mục</a>
-            <span class="breadcrumb-item active">Cập nhật danh mục @Model.CatName</span>
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminCategories" asp-action="Index" class="breadcrumb-item">List of categories</a>
+            <span class="breadcrumb-item active">Edit category @Model.CatName</span>
         </nav>
     </div>
 </div>
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Tạo mới danh mục</h4>
+            <h4 class="card-title">Create new category</h4>
 
             <form asp-controller="AdminCategories" asp-action="Edit" asp-route-id="@Model.CatId" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,20 +32,20 @@
                         <div class="m-b-15">
                             <button class="btn btn-primary">
                                 <i class="anticon anticon-plus-circle"></i>
-                                <span>Cập nhật</span>
+                                <span>Edit</span>
                             </button>
-                            <input type="reset"  value="Hủy"/>
+                            <input type="reset"  value="Cancel"/>
                         </div>
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">THÔNG TIN DANH MỤC</a>
+                            <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">CATEGORY DETAILS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#product-edit-option">THÔNG TIN SEO</a>
+                            <a class="nav-link" data-toggle="tab" href="#product-edit-option">SEO DETAILS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#product-edit-description">MÔ TẢ</a>
+                            <a class="nav-link" data-toggle="tab" href="#product-edit-description">DESCRIPTION</a>
                         </li>
                     </ul>
                 </div>
@@ -54,7 +54,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label class="font-weight-semibold" for="productName">Tên danh mục</label>
+                                    <label class="font-weight-semibold" for="productName">Category's name</label>
                                     <input type="text" class="form-control" asp-for="CatName" required>
                                 </div>
                                 <div class="form-group">
@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
+                                    <label class="font-weight-semibold" for="productBrand">Profile picture</label>
                                     <input name="fThumb" type="file" class="form-control-file" asp-for="Thumb" />
                                     <span asp-validation-for="Thumb" class="text-danger"></span>
                                 </div>

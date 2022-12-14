@@ -14,7 +14,7 @@
                     <div class="product__details__breadcrumb">
                         <a asp-controller="Home" asp-action="Index">Home</a>
                         <a asp-controller="Product" asp-action="Index">Shop</a>
-                        <span>Chi tiết sản phẩm @Model.ProductName</span>
+                        <span>Product details: @Model.ProductName</span>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
-                                <div class="product__thumb__pic set-bg" data-setbg="/images/products/@Model.Thumb" ">
+                                <div class="product__thumb__pic set-bg" data-setbg="/images/products/@Model.Thumb">
                                 </div>
                             </a>
                         </li>
@@ -94,7 +94,7 @@
                             </div>*@
                         <h3>@Extension.ToVnd(Model.Price.Value) <span>@Model.Discount</span></h3>
                         <h4>
-                            Mô tả gắn sản phẩm
+                            Description
                         </h4>
                         @Html.Raw(Model.ShortDesc)
                         @* <div class="product__details__option">
@@ -152,7 +152,7 @@
                         <div class="product__details__last__option">
                             <ul>
 
-                                <li><a href="@url"><span>Danh mục sản phẩm:</span> @Model.Cat.CatName</a></li>
+                                <li><a href="@url"><span>Product's list:</span> @Model.Cat.CatName</a></li>
                                 <li><span>Tag:</span> @Model.Tags</li>
                             </ul>
                         </div>
@@ -185,7 +185,7 @@
                                 <div class="product__details__tab__content">
 
                                     <div class="product__details__tab__content__item">
-                                        <h5>Mô tả sản phẩm</h5>
+                                        <h5>Description</h5>
                                         @Html.Raw(Model.Description)
                                     </div>
 
@@ -206,7 +206,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h3 class="related-title">Sản phẩm tương tự</h3>
+                <h3 class="related-title">Related products</h3>
             </div>
         </div>
 
@@ -223,7 +223,7 @@
                                 <ul class="product__hover">
                                     <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
                                     <li><a href="@urlsanpham"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                    <li><a href="#"><img src="~/Customerassets/img/icon/search.png" alt=""></a>Chi tiết sản phẩm</li>
+                                    <li><a href="#"><img src="~/Customerassets/img/icon/search.png" alt=""></a>Product details</li>
                                 </ul>
                             </div>
                             <div class="product__item__text">

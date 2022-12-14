@@ -1,7 +1,7 @@
 ﻿@model ShopBanDo.Models.Product
 
 @{
-    ViewData["Title"] = "Xóa sản phẩm : " + Model.ProductName;
+    ViewData["Title"] = "Delete product : " + Model.ProductName;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -133,7 +133,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ProductId" />
-        <input type="submit" value="Xác nhận xóa" class="btn btn-danger" /> |
+        <input type="submit" value="Confirmdeleting" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

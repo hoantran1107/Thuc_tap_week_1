@@ -8,14 +8,14 @@
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
-            <a asp-area="Admin" asp-controller="AdminProducts" asp-action="Index" class="breadcrumb-item">Danh sách sản phẩm</a>
-            <span class="breadcrumb-item active">Thông tin sản phẩm : @Model.ProductName</span>
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminProducts" asp-action="Index" class="breadcrumb-item">List of products</a>
+            <span class="breadcrumb-item active">Product details : @Model.ProductName</span>
         </nav>
     </div>
 </div>
 <div class="card-body">
-    <h4 class="card-title">Thông tin sản phẩm : @Model.ProductName</h4>
+    <h4 class="card-title">Product details : @Model.ProductName</h4>
     <div class="">
         <table class="m-t-20">
             <tbody>
@@ -24,15 +24,15 @@
                     <td>@Model.ProductId</td>
                 </tr>
                 <tr>
-                    <td>Tên sản phẩm:</td>
+                    <td>Product's name:</td>
                     <td>@Model.ProductName</td>
                 </tr>
                 <tr>
-                    <td>Mô tả ngắn:</td>
+                    <td>Short description:</td>
                     <td>@Model.ShortDesc</td>
                 </tr>
                 <tr>
-                    <td>Giá:</td>
+                    <td>Price:</td>
                     <td>@Model.Price</td>
                 </tr>
                 <tr>
@@ -40,7 +40,7 @@
                     <td>@Model.Discount</td>
                 </tr>
                 <tr>
-                    <td>Trạng thái:</td>
+                    <td>Status:</td>
                     <td>
                         @if (Model.Active)
                         {
@@ -98,20 +98,19 @@
                 </td>
             </tr>
             <tr>
-                <td>Danh mục:</td>
+                <td>Category:</td>
                 <td>@Model.Cat.CatName</td>
             </tr>
             <tr>
-                <td>Ngày tạo:</td>
+                <td>Created date:</td>
                 <td>@Model.DateCreated</td>
             </tr>
             <tr>
-                <td>Ngày chỉnh sửa
-                </td>
+                <td>Modified date:</td>
                 <td>@Model.DateModified</td>
             </tr>
             <tr>
-                <td>Tiêu đề:</td>
+                <td>Tilte:</td>
                 <td>@Model.Title</td>
             </tr>
             <tr>
@@ -128,7 +127,7 @@
             </tr>
 
             <tr>
-                <td>Ảnh đại diện:</td>
+                <td>Profile picture:</td>
                 <td>
                   
                     <img  src="~/images/products/@Model.Thumb" width="200" height="200"/>
@@ -136,7 +135,7 @@
             </tr>
             <tr>
                 
-                <td>Mô tả sản phẩm:</td>
+                <td>Description:</td>
                 <td>@Html.Raw(Model.Description)</td>
             </tr>
 
@@ -145,6 +144,6 @@
 </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ProductId">Cập nhật sản phẩm</a> |
+    <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit product</a> |
     <a asp-action="Index">Back to List</a>
 </div>

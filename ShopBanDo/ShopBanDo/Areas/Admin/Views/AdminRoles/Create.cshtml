@@ -8,8 +8,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Danh sách quyền truy cập</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tạo mới quyền truy cập</li>
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">List of access roles</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create new access role</li>
     </ol>
 </nav>
 <div class="card-body">
@@ -17,16 +17,16 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @*<input type="hidden" asp-for="RoleId"/>*@
         <div class="form-group">
-            <label>Tên Role </label>
+            <label>Role's name</label>
             <input asp-for="RoleName" class="form-control">
             <span asp-validation-for="RoleName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label>Mô tả</label>
+            <label>Description</label>
             <input asp-for="Description" class="form-control">
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-        <button type="submit" value="Create" class="btn btn-primary mr-2">Thêm</button>
-        <a class="btn btn" asp-action="Index">Trở lại</a>
+        <button type="submit" value="Create" class="btn btn-primary mr-2">Add</button>
+        <a class="btn btn" asp-action="Index">Back to list</a>
     </form>
 </div>

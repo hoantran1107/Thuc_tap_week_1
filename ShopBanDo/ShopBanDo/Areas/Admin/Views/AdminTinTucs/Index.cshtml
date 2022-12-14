@@ -10,12 +10,12 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="breadcrumb-item">Danh sách tin tức : page @ViewBag.CurrentPage</li>
+        <li class="breadcrumb-item">List of news : page @ViewBag.CurrentPage</li>
     </ol>
 </nav>
 <div class="row m-b-30">
     <div class="col-lg-8">
-        <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới tin tức</span></a>
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Create news</span></a>
     </div>
     <div class="col-lg-4 text-right">
 
@@ -29,10 +29,10 @@
                 ID
             </th>
             <th>
-                Tiêu đề
+                Tilte
             </th>
             <th>
-                Trạng thái
+                Status
             </th>
 
             <th>
@@ -42,7 +42,7 @@
                 IsNewFeed
             </th>
             <th>
-                Ngày tạo
+                Created date
             </th>
             <th>#</th>
         </tr>
@@ -99,9 +99,9 @@
                         @item.CreatedDate.Value.ToShortDateString()
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Edit" asp-route-id="@item.PostId">Cập nhật</a>
-                        <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Details" asp-route-id="@item.PostId">Chi tiết</a>
-                        <a class="btn btn-light btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Delete" asp-route-id="@item.PostId">Xóa</a>
+                        <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Details" asp-route-id="@item.PostId">Detail</a>
+                        <a class="btn btn-light btn-sm" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
 
                     </td>
                 </tr>

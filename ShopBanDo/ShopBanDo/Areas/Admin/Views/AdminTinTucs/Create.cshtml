@@ -1,7 +1,7 @@
 ﻿@model ShopBanDo.Models.TinTuc
 
 @{
-    ViewData["Title"] = "Thêm mới Tin tức";
+    ViewData["Title"] = "Add news";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -12,9 +12,9 @@
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
-            <a asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Index" class="breadcrumb-item">Danh sách tin tức</a>
-            <span class="breadcrumb-item active">Thêm mới tin tức</span>
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Index" class="breadcrumb-item">List of news</a>
+            <span class="breadcrumb-item active">Add news</span>
         </nav>
     </div>
 </div>
@@ -24,16 +24,16 @@
             <form asp-action="Create" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label>Tên Tin tức</label>
-                    <input type="text" class="form-control" asp-for="Title" placeholder="Tên tin tức" required>
+                    <label>News' name</label>
+                    <input type="text" class="form-control" asp-for="Title" placeholder="News' name" required>
                 </div>
                 <div class="form-group form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Published" /> Trạng thái
+                        <input class="form-check-input" asp-for="Published" /> Status
                     </label>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Tiêu đề</label>
+                    <label class="control-label">Tilte</label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
@@ -53,7 +53,7 @@
                     <span asp-validation-for="Tags" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Ảnh đại diện</label>
+                    <label>Profile picture</label>
                     <input type="file" name="fThumb" asp-for="Thumb" class="form-control-file">
                     <span asp-validation-for="Thumb" class="text-danger"></span>
                 </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-group form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsNewfeed" /> Tin mới
+                        <input class="form-check-input" asp-for="IsNewfeed" /> News
                     </label>
                 </div>
                 <div class="form-group form-check">
@@ -90,7 +90,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label for="exampleTextarea1">Nội dung tin tức</label>
+                    <label for="exampleTextarea1">News' content</label>
                     <textarea class="summernote" asp-for="Contents"></textarea>
                 </div>
                 <div class="form-group">
@@ -103,7 +103,7 @@
             </div>
 
             <div>
-                <a asp-action="Index">Quay lại</a>
+                <a asp-action="Index">Back to list</a>
             </div>
             @section Scripts{
                 <script src="~/Adminassets/js/select2.js"></script>

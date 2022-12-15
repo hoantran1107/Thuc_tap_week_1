@@ -1,122 +1,91 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using ShopBanDo.Extension;
-using ShopBanDo.Helpper;
-using ShopBanDo.Models;
-using ShopBanDo.ModelView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-namespace ShopBanDo.Controllers
+﻿namespace ShopBanDo.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using ShopBanDo.Extension;
+    using ShopBanDo.Helpper;
+    using ShopBanDo.Models;
+    using ShopBanDo.ModelView;
+    using ShopBanDo.Repositories;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
     [Authorize]
     public class AccountsController : Controller
     {
+
         private readonly dbshopContext _context;
+  
+        private CustomerRespository _customer;
+
+        private OrderRespository _order;
+
         public INotyfService _notyfService { get; }
-        public AccountsController (dbshopContext context, INotyfService notyfService)
+
+        public AccountsController(dbshopContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;
+            _customer = new CustomerRespository(context);
+            _order = new OrderRespository(context);
         }
-        //kiem tra phone co bi chung tra ve json == true thi cho phep nhap == data thi khong cho phep
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ValidatePhone(string Phone)
         {
-            try
-            {
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Phone.ToLower() == Phone.ToLower());
-                if (khachhang != null)
-                    return Json(data: "Số điện thoại : " + Phone + "đã được sử dụng");
-
-                return Json(data: true);
-
-            }
-            catch
-            {
-                return Json(data: true);
-            }
+            var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Phone.ToLower() == Phone.ToLower());
+            if (khachhang != null)
+                return Json(data: "Số điện thoại : " + Phone + "đã được sử dụng");
+            return Json(data: true);
         }
-        //kiem tra email co bi chung
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ValidateEmail(string Email)
         {
-            try
-            {
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
-                if (khachhang != null)
-                    return Json(data: "Email : " + Email + " đã được sử dụng");
-                return Json(data: true);
-            }
-            catch
-            {
-                return Json(data: true);
-            }
+            var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
+            if (khachhang != null)
+                return Json(data: "Email : " + Email + " đã được sử dụng");
+            return Json(data: true);
         }
-        //trang chu khach hang
+
         [Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
-        public IActionResult Dashboard()
+        public IActionResult Dashboard() //done
         {
             //lay ra session sau khi dang nhap CustomerID
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
-            if (taikhoanID != null)
-            {
-                //Tra ve view Dashbroad 
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
-                if (khachhang != null)
-                {
-                    var lsDonHang = _context.Orders
-                        .Include(x => x.TransactStatus)
-                        .AsNoTracking()
-                        .Where(x => x.CustomerId == khachhang.CustomerId)
-                        .OrderByDescending(x => x.OrderDate)
-                        .ToList();
-                    ViewBag.DonHang = lsDonHang;
-                    return View(khachhang);
-                }
+            if (taikhoanID == null) return RedirectToAction("Login");
 
-            }
-            //else tra lai ve trang login
-            return RedirectToAction("Login");
+            var khachhang = _customer.FindCustomerUsingSession(taikhoanID);
+            var lsDonHang = _order.GetListOrderOfCustomer(khachhang.CustomerId);
+            ViewBag.DonHang = lsDonHang;
+            return View(khachhang);
         }
-        // cancel order
-        public IActionResult DeleteOrder(int id)
+
+        public IActionResult DeleteOrder(int id) //done
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
-            if (taikhoanID != null)
-            {
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
-                if (khachhang != null)
-                {
-                    var donhang = _context.Orders.AsNoTracking().SingleOrDefault(x => x.OrderId == id);
-                    if (donhang != null)
-                    {
-                        // update delete to true
-                        donhang.Deleted = true;
-                        donhang.TransactStatusId = 5; // status cancel
-                        _context.Orders.Update(donhang);
-                        _context.SaveChanges();
-                        _notyfService.Success("Cancel order successful");
-                        return RedirectToAction("Dashboard");
-                    }
-                }
-            }
-            return RedirectToAction("Login");
+            if (taikhoanID == null) return RedirectToAction("Login");
+
+            var khachhang = _customer.FindCustomerUsingSession(taikhoanID);
+            var donhang = _order.GetById(id);
+            var newdonhang = donhang;
+
+            newdonhang.Deleted = true;
+            newdonhang.TransactStatusId = 5;
+            _order.Update(donhang, newdonhang, true); //true = SaveChanges() to database
+            _notyfService.Success("Cancel order successful");
+            return RedirectToAction("Dashboard");
         }
 
-
-        //dang ki
         [HttpGet]
         [AllowAnonymous]
         [Route("dangki/taikhoan.html", Name = "DangKy")]
@@ -128,76 +97,53 @@ namespace ShopBanDo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("dangki/taikhoan.html", Name = "DangKy")]
-        public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan)
+        public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan) //done
         {
-            try
+            if (!ModelState.IsValid) return View(taikhoan);
+
+            //create salt + md5 for password
+            string salt = Utilities.GetRandomKey();
+            Customer khachhang = new Customer
             {
-                if (ModelState.IsValid)
-                {
+                //MD 5 PASS o trong extension
+                FullName = taikhoan.FullName,
+                Phone = taikhoan.Phone.Trim().ToLower(),
+                Email = taikhoan.Email.Trim().ToLower(),
+                Password = (taikhoan.Password + salt.Trim()).ToMD5(),
+                Active = true,
+                Salt = salt,
+                CreateDate = DateTime.Now
+            };
+            if (_customer.GetAll().AsEnumerable().SingleOrDefault(x => x.Email.ToLower() == khachhang.Email.ToLower()) != null)
+            {
+                _notyfService.Error("This email has been used");
+                return RedirectToAction("DangkyTaiKhoan", "Accounts");
+            }
 
-                    //create salt + md5 for password
-                    string salt = Utilities.GetRandomKey();
-                    Customer khachhang = new Customer
-                    {
-                        //MD 5 PASS o trong extension
-                        FullName = taikhoan.FullName,
-                        Phone = taikhoan.Phone.Trim().ToLower(),
-                        Email = taikhoan.Email.Trim().ToLower(),
-                        Password = (taikhoan.Password + salt.Trim()).ToMD5(),
-                        Active = true,
-                        Salt = salt,
-                        CreateDate = DateTime.Now
-                    };
-                    try
-                    {
-                        
-                        if(_context.Customers.AsNoTracking().SingleOrDefault(x=>x.Email.ToLower() == khachhang.Email.ToLower()) != null)
-                        {
-                            _notyfService.Success("Tài khoản đã tồn tại");
-                            return RedirectToAction("DangkyTaiKhoan", "Accounts");
-                        }
-                        //dang ki thanh cong luu vao co so du lieu
-                        _context.Add(khachhang);
-                        await _context.SaveChangesAsync();
-                        //Lưu Session MaKh khoi login lai CustomerId 
-                        HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
-                        var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            _customer.Add(khachhang, true);
 
-                        //Identity ten dinh danh , DUA Vao ten dinh danh
-                        var claims = new List<Claim>
+            //Lưu Session MaKh khoi login lai CustomerId 
+            HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+
+            //Identity ten dinh danh , DUA Vao ten dinh danh
+            var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name,khachhang.FullName),
                             new Claim("CustomerId", khachhang.CustomerId.ToString())
                         };
-                        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
-                        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                        //
-                        await HttpContext.SignInAsync(claimsPrincipal);
-                        _notyfService.Success("Đăng ký thành công");
-                        //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
-                        return RedirectToAction("Dashboard", "Accounts");
-                    }
-                    catch 
-                    {
-                        //tao tai khoan that bai tra ve lai trang dangky
-                        return RedirectToAction("DangkyTaiKhoan", "Accounts");
-                    }
-                }
-                else
-                {
-                    return View(taikhoan);
-                }
-            }
-            catch
-            {
-                return View(taikhoan);
-            }
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            //
+            await HttpContext.SignInAsync(claimsPrincipal);
+            _notyfService.Success("Resgister success");
+            //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
+            return RedirectToAction("Dashboard", "Accounts");
         }
-        // login co session roi dua ve trang dashbroad neu khong tra ve trang login
-        
+
         [AllowAnonymous]
         [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string returnUrl) //done
         {
             //trang dang nhap
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -208,76 +154,69 @@ namespace ShopBanDo.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
-        public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl) //done
         {
-            try
+
+            if (!ModelState.IsValid) return View(customer);
+
+            //kiem tra co phai email hop le hay ko
+            bool isEmail = Utilities.IsValidEmail(customer.UserName);
+            //khong phai email tra ve trang login lai
+            if (!isEmail) return View(customer);
+            //vao data base kiem tra co ton tai email khoan khach hang hay ko
+            var khachhang = _customer.FindCustomerUsingUserEmail(customer.UserName);
+            //neu khong ton tai khoan ve trang dang ky
+            if (khachhang == null)
             {
-                if (ModelState.IsValid)
-                {
-                    //kiem tra co phai email hop le hay ko
-                    bool isEmail = Utilities.IsValidEmail(customer.UserName);
-                    //khong phai email tra ve trang login lai
-                    if (!isEmail) return View(customer);
-                    //vao data base kiem tra co ton tai email khoan khach hang hay ko
-                    var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.Trim() == customer.UserName);
-                    //neu khong ton tai khoan ve trang dang ky
-                    if (khachhang == null)
-                    {
-                        _notyfService.Error("Thông tin đăng nhập chưa chính xác");
-                        /*return RedirectToAction("DangkyTaiKhoan");*/
-                        return View(customer);
-                    }
+                _notyfService.Error("Wrong email or password");
+                /*return RedirectToAction("DangkyTaiKhoan");*/
+                return View(customer);
+            }
 
-                    //ton tai thi hash lai pass = thong tin pass nhap + salt cua tai khoan do
-                    string pass = (customer.Password + khachhang.Salt.Trim()).ToMD5();
-                    if (khachhang.Password != pass)
-                    {
-                        _notyfService.Error("Thông tin đăng nhập chưa chính xác");
-                        return View(customer);
-                    }
-                    //kiem tra xem account co bi disable hay khong
-                    //To do: disable nhung tai khoan dat hang ma khong nhan
-                    if (khachhang.Active == false) return RedirectToAction("ThongBao", "Accounts");
+            //ton tai thi hash lai pass = thong tin pass nhap + salt cua tai khoan do
+            string pass = (customer.Password + khachhang.Salt.Trim()).ToMD5();
+            if (khachhang.Password != pass)
+            {
+                _notyfService.Error("Wrong email or password");
+                return View(customer);
+            }
+            //kiem tra xem account co bi disable hay khong
+            //To do: disable nhung tai khoan dat hang ma khong nhan
+            if (khachhang.Active == false) return RedirectToAction("ThongBao", "Accounts");
 
-                    //Luu Session MaKh
-                    HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
-                    var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            //Luu Session MaKh
+            HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
 
-                    //Identity
-                    var claims = new List<Claim>
+            //Identity
+            var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, khachhang.FullName),
                         new Claim("CustomerId", khachhang.CustomerId.ToString())
                     };
-                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
-                    ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                    await HttpContext.SignInAsync(claimsPrincipal);
-                    _notyfService.Success("Đăng nhập thành công");
+            await HttpContext.SignInAsync(claimsPrincipal);
+            _notyfService.Success("Login Success");
 
-                    if (string.IsNullOrEmpty(returnUrl))
-                    {
-                        return RedirectToAction("Dashboard", "Accounts");
-                    }
-                    else
-                    {
-                        return Redirect(returnUrl);
-                    }
-                }
-            }
-            catch 
+            if (string.IsNullOrEmpty(returnUrl))
             {
-                return RedirectToAction("DangkyTaiKhoan", "Accounts");
+                return RedirectToAction("Dashboard", "Accounts");
             }
-            return View(customer);
+            else
+            {
+                return Redirect(returnUrl);
+            }
         }
+
         [HttpGet]
         [Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
-        public IActionResult Logout()
+        public IActionResult Logout() //done
         {
             HttpContext.SignOutAsync();
             HttpContext.Session.Remove("CustomerId");
@@ -309,42 +248,30 @@ namespace ShopBanDo.Controllers
             }
             //else tra lai ve trang login
             return RedirectToAction("Login");
-           
         }
+
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        public IActionResult ChangePassword(ChangePasswordViewModel model) //done
         {
-            try
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            if (!ModelState.IsValid) return RedirectToAction("Dashboard", "Accounts");
+
+            var taikhoan = _customer.FindCustomerUsingSession(taikhoanID);
+            if (taikhoan == null) return RedirectToAction("Login", "Accounts");
+
+            var pass = (model.PasswordNow.Trim() + taikhoan.Salt.Trim()).ToMD5();
+
+            if (taikhoan.Password != pass)
             {
-                var taikhoanID = HttpContext.Session.GetString("CustomerId");
-                if (taikhoanID == null)
-                {
-                    return RedirectToAction("Login", "Accounts");
-                }
-                if (ModelState.IsValid)
-                {
-                    var taikhoan = _context.Customers.Find(Convert.ToInt32(taikhoanID));
-                    if (taikhoan == null) return RedirectToAction("Login", "Accounts");
-                    var pass = (model.PasswordNow.Trim() + taikhoan.Salt.Trim()).ToMD5();
-                    if(pass == taikhoan.Password)
-                    {
-                        string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
-                        taikhoan.Password = passnew;
-                        _context.Update(taikhoan);
-                        _context.SaveChanges();
-                        _notyfService.Success("Đổi mật khẩu thành công");
-                        return RedirectToAction("Dashboard", "Accounts");
-                    }
-                    _notyfService.Success("Mật khẩu hiện tại không đúng");
-                    return RedirectToAction("Dashboard", "Accounts");
-                }
-            }
-            catch
-            {
-                _notyfService.Success("Thay đổi mật khẩu không thành công");
+                _notyfService.Error("Wrong password");
                 return RedirectToAction("Dashboard", "Accounts");
             }
-            _notyfService.Success("Thay đổi mật khẩu không thành công");
+
+            string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
+            taikhoan.Password = passnew;
+
+            _customer.UpdatePass(taikhoan, true);
+            _notyfService.Success("Change password success");
             return RedirectToAction("Dashboard", "Accounts");
         }
     }

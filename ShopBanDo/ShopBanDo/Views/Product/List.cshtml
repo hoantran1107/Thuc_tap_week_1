@@ -4,7 +4,7 @@
     int PageCurrent = ViewBag.CurrentPage;
     Category category = ViewBag.Cat;
     var Categori = ViewBag.Categories;
-    ViewData["Title"] = "Danh sách sản phẩm trong danh mục :" + category.Alias + category.CatId + " page: " + PageCurrent;
+    ViewData["Title"] = "List product in:" + category.Alias + category.CatId + " page: " + PageCurrent;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int first = ViewBag.First;
 }

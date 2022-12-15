@@ -1,7 +1,7 @@
 ﻿@model ShopBanDo.Models.TinTuc
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = "Blogs page";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string url = $"/tin-tuc/{Model.Alias}-{Model.PostId}.html";
     List<TinTuc> tin = ViewBag.BaiVietLienQuan;

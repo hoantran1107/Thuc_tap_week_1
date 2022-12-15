@@ -7,7 +7,7 @@
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
-        <div class="offcanvas__links">
+        <div class="header__top__links">
             @* <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
                 <a href="/dangki/taikhoan.html">Đăng ký</a>
                 <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
@@ -26,12 +26,11 @@
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
         <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
-        <a href="/cart.html"><img src="~/Customerassets/img/icon/cart.png" alt=""> <span>0</span></a>
         @* @await Component.InvokeAsync("NumberCart")
             <div class="offcanvas-minicart_wrapper" id="miniCart">
                 @await Component.InvokeAsync("HeaderCart")
             </div>*@
-        <div class="price">$0.00</div>
+    @await Component.InvokeAsync("NumberCart")
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__text">
@@ -68,7 +67,7 @@
 
                 <a href="#">Welcome, @User.Identity.Name</a>
                                 <a href="/taikhoan/dang-xuat.html">Log out</a>
-                                                <a href="/tai-khoan-cua-toi.html">TMy account</a>}
+                                                <a href="/tai-khoan-cua-toi.html">My account</a>}
                                             else
                                             {
                                 <a href="/taikhoan/dang-nhap.html">Log in</a>
@@ -100,11 +99,13 @@
                             <a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="/page/huong-dan-mua-hang">Shopping guide</a></li>
-
                                 <li><a href="/cart.html">Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+
+                                    <li><a href="./checkout.html">Check Out</a></li>
+                                }
+                                </ul>
                         </li>
                     </ul>
                 </nav>
@@ -113,9 +114,7 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
                     <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
-
                     @await Component.InvokeAsync("NumberCart")
-                    
                 </div>
                 <div class="offcanvas-minicart_wrapper" id="miniCart">
                     @await Component.InvokeAsync("HeaderCart")

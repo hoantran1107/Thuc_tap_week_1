@@ -24,39 +24,30 @@ namespace ShopBanDo.Controllers
         [Route("shop-product.html", Name = ("ShopProduct"))]
         public IActionResult Index(int? page)
         {
-            try
-            {
-                var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-                var pageSize = 12;
-                //ASNoTracking dont create snapshot when save to database
-                //better performent
-                var lsProduct = _context.Products
-                    .AsNoTracking()
-                    .OrderByDescending(x => x.DateCreated);
-                //IsCustomers IOrderQueryable <> ToList()
-                //Make change in View
-                PagedList<Product> models = new PagedList<Product>(lsProduct, pageNumber, pageSize);
+            
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = 12;
+            //ASNoTracking dont create snapshot when save to database
+            //better performent
+            IEnumerable<Product> item;
 
-                var Categories = _context.Categories;
-                ViewBag.Categories = Categories.ToList();
+            item = _product.GetActiveProducts();
+            //IsCustomers IOrderQueryable <> ToList()
+            //Make change in View
+            PagedList<Product> models = new PagedList<Product>(item, pageNumber, pageSize);
 
-                ViewBag.CurrentPage = pageNumber;
-                ViewBag.Total = models.PageCount;
-                ViewBag.TotalItem = lsProduct.Count();
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.Total = models.PageCount;
+            ViewBag.TotalItem = item.Count();
 
-                return View(models);
-            }
-            catch 
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return View(models);  
             
         }
         [Route("/{Alias}-{id}.html", Name = ("ProductDetails"))]
         public IActionResult Detail(string Alias, int id)
         {
-            try
-            {
+            
                 
                 var product = _context.Products.Include(x => x.Cat).FirstOrDefault(x => x.ProductId == id);
                 if (product == null)
@@ -74,85 +65,55 @@ namespace ShopBanDo.Controllers
 
 
                 return View(product);
-            }
-            catch
-            {
-                return RedirectToAction("Index", "Home");
-            }
+           
           
         }
         [Route("/List/{Alias}-{Catid}.html", Name = ("ListProduct"))]
         public IActionResult List(string Alias, int Catid, int page =1)
         {
-            try
-            {
-                var pageSize = 12;
-                var danhmuc = _context.Categories.Find(Catid);
-                var lsProduct = _context.Products
-                    .AsNoTracking()
-                    .Where(x => x.CatId == Catid)
-                    .OrderByDescending(x => x.DateCreated);
-                //IsCustomers IOrderQueryable <> ToList()
-                //Make change in View
-                PagedList<Product> models = new PagedList<Product>(lsProduct, page, pageSize);
+           
+            var pageSize = 12;
+            var danhmuc = _context.Categories.Find(Catid);
+            IEnumerable<Product> item;
 
-                var Categories = _context.Categories;
-                ViewBag.Categories = Categories.ToList();
+            item = _product.GetActiveProducts();
+            //IsCustomers IOrderQueryable <> ToList()
+            //Make change in View
 
-                ViewBag.CurrentPage = page;
-                ViewBag.Total = models.PageCount;
-                ViewBag.TotalItem = lsProduct.Count();
-                ViewBag.Cat= danhmuc;
-                ViewBag.First = models.FirstItemOnPage;
-                ViewBag.Last = models.LastItemOnPage;
+            PagedList<Product> models = new PagedList<Product>(item, page, pageSize);
+
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.CurrentPage = page;
+            ViewBag.Total = models.PageCount;
+            ViewBag.TotalItem = item.Count();
+            ViewBag.Cat= danhmuc;
+            ViewBag.First = models.FirstItemOnPage;
+            ViewBag.Last = models.LastItemOnPage;
 
 
-                return View(models);
-            }
-            catch
-            {
-                return RedirectToAction("Index", "Home");
-            }
+                return View(models);  
             
         }
         [Route("/search.html", Name = ("SearchProduct"))]
         public IActionResult Search(string searchString, int page = 1)
         {
 
-
             var pageSize = 12;
 
             IEnumerable<Product> item;
 
-            if (searchString != null)
-            {
-                item = _product.FindProduct(searchString);
-
-                if (item.Count() == 0)
-                {
-                    ViewBag.Result = 0;
-                    item = _product.FindProducts();
-                }
-                ViewBag.Key = searchString;
-
-            }
-            else
-            {
-                item = _product.FindProducts();
-            }
+            item = _product.FindProduct(searchString);
+            ViewBag.Key = searchString;
 
             PagedList<Product> models = new PagedList<Product>(item, page, pageSize);
 
-            var Categories = _context.Categories;
-            ViewBag.Categories = Categories.ToList();
-
+            ViewBag.Categories = _context.Categories.ToList();
             ViewBag.CurrentPage = page;
             ViewBag.Total = models.PageCount;
             ViewBag.TotalItem = item.Count();
 
             ViewBag.First = models.FirstItemOnPage;
             ViewBag.Last = models.LastItemOnPage;
-
 
             return View(models);
 

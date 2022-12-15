@@ -12,6 +12,7 @@ namespace ShopBanDo.ModelView
         [Key]
         public int CustomerId { get; set; }
 
+
         [Display(Name = "Full Name")]
         [Required(ErrorMessage = "Full name cannot be empty.")]
         public string FullName { get; set; }

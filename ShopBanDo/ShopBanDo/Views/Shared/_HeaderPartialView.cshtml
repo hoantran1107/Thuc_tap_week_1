@@ -13,14 +13,16 @@
                 <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
             @{ if (User.Identity.IsAuthenticated)
                 {
-    <a href="/tai-khoan-cua-toi.html">My account</a>
+                    <a href="/tai-khoan-cua-toi.html">My account</a>
                     <a href="/taikhoan/dang-xuat.html">Log out</a>
-                                    <a href="#">Welcome, @User.Identity.Name</a>
-                                                    <a href="/tai-khoan-cua-toi.html">My account</a>}
-                                                else
-                                                {
-                                    <a href="/taikhoan/dang-nhap.html">Log in</a>
-                                                    <a href="/dangki/taikhoan.html">Sign in</a> } }
+                    <a href="#">Welcome, @User.Identity.Name</a>
+                    <a href="/tai-khoan-cua-toi.html">My account</a>}
+               else
+               {
+                    <a href="/taikhoan/dang-nhap.html">Log in</a>
+                    <a href="/dangki/taikhoan.html">Sign up</a> 
+               } 
+               }
         </div>
     </div>
     <div class="offcanvas__nav__option">
@@ -71,7 +73,7 @@
                                             else
                                             {
                                 <a href="/taikhoan/dang-nhap.html">Log in</a>
-                                                <a href="/dangki/taikhoan.html">Sign in</a>}
+                                                <a href="/dangki/taikhoan.html">Sign up</a>}
                         </div>
                     </div>
                 </div>

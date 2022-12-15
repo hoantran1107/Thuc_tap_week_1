@@ -22,7 +22,7 @@
     {
 
         private readonly dbshopContext _context;
-  
+
         private CustomerRespository _customer;
 
         private OrderRespository _order;
@@ -56,6 +56,19 @@
                 return Json(data: "Email : " + Email + " đã được sử dụng");
             return Json(data: true);
         }
+        public IActionResult UpdateAddress(string newAddress)
+        {
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            if (taikhoanID != null)
+            {
+                var khachhang = _context.Customers.SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+                khachhang.Address = newAddress;
+                _context.Customers.Update(khachhang);
+                _context.SaveChanges();
+                _notyfService.Success("Change Address successful");
+            }
+            return RedirectToAction("Dashboard");
+        }
 
         [Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
         public IActionResult Dashboard() //done
@@ -69,7 +82,6 @@
             ViewBag.DonHang = lsDonHang;
             return View(khachhang);
         }
-
         public IActionResult DeleteOrder(int id) //done
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -122,7 +134,7 @@
 
             _customer.Add(khachhang, true);
 
-            //Lưu Session MaKh khoi login lai CustomerId 
+            //Lưu Session MaKh khoi login lai CustomerId
             HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
 
@@ -229,7 +241,7 @@
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (taikhoanID != null)
             {
-                //Tra ve view Dashbroad 
+                //Tra ve view Dashbroad
                 var khachhang = _context.Customers
                     .AsNoTracking()
                     .SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));

@@ -50,7 +50,7 @@
             {
                 return NotFound();
             }
-            List<OrderDetail> orderDetail = _context.OrderDetails.Include(o => o.OrderNavigation).Where(x => x.OrderId == id).ToList();
+            List<OrderDetail> orderDetail = _context.OrderDetails.Include(o => o.Product).Where(x => x.OrderId == id).ToList();
             ViewBag.OrderDetails = orderDetail;
             return View(order);
         }

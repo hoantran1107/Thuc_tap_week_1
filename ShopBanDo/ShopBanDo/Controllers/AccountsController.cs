@@ -56,6 +56,19 @@
                 return Json(data: "Email : " + Email + " đã được sử dụng");
             return Json(data: true);
         }
+        public IActionResult UpdateAddress(string newAddress)
+        {
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            if (taikhoanID != null)
+            {
+                var khachhang = _context.Customers.SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+                khachhang.Address = newAddress;
+                _context.Customers.Update(khachhang);
+                _context.SaveChanges();
+                _notyfService.Success("Change Address successful");
+            }
+            return RedirectToAction("Dashboard");
+        }
 
         [Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
         public IActionResult Dashboard() //done

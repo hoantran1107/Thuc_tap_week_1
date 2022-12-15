@@ -66,9 +66,9 @@
                                 <p>Email: @Model.Email</p>
                                 <p>Phone number: @Model.Phone</p>
                                 <p>Address: @Model.Address     <img id="btn" src="~/icon_edit.png" onclick="click_edit_show_form()" height="15px" width="15px" /></p>
-                                <form asp-action="UpdateAddress" id="form_edit_address" style="display = 'none'">
+                                <form asp-action="UpdateAddress" id="form_edit_address" style="display:none">
                                     New Address: <input name="newAddress" type="text" />
-                                    <input id="input_submit" type="submit" value="Submit"/>
+                                    <input id="input_submit" type="submit" value="Submit" />
                                 </form>
 
                             </div>

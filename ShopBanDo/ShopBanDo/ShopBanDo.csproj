@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Areas\Admin\Controllers\AdminAccountsController.cs~RF21f2bc2f.TMP" />
     <None Remove="Areas\Admin\Views\AdminCategories\Create.cshtml~RF14532733.TMP" />
   </ItemGroup>
 
@@ -23,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\images\pages\" />
   </ItemGroup>
 

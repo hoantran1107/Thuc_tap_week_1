@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ShopBanDo.Areas.Admin.Models;
 
 #nullable disable
 
@@ -37,7 +38,7 @@ namespace ShopBanDo.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-DDQN6I1\\HOANTRAN;Initial Catalog=dbshop;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2J5U7E9\\SQLEXPRESS;Initial Catalog=dbshop;Trusted_Connection=True;");
             }
         }
 
@@ -211,7 +212,7 @@ namespace ShopBanDo.Models
 
                 entity.HasOne(d => d.OrderNavigation)
                     .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.OrderId)
+                    .HasForeignKey(d => d.ProductId)
                     .HasConstraintName("FK_OrderDetails_Products");
             });
 
@@ -334,5 +335,7 @@ namespace ShopBanDo.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<ShopBanDo.Areas.Admin.Models.LoginViewModel> LoginViewModel { get; set; }
     }
 }

@@ -1,11 +1,15 @@
 ﻿@using PagedList.Core.Mvc
 @model PagedList.Core.IPagedList<ShopBanDo.Models.Product>
+
 @{
     int PageCurrent = ViewBag.CurrentPage;
     var Categori = ViewBag.Categories;
     string key = ViewBag.Key;
-    ViewData["Title"] = "Thông tin sản phẩm page : " + PageCurrent;
+    ViewData["Title"] = " page: " + PageCurrent;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int first = ViewBag.First;
+    var Products = ViewBag.Product;
+
 }
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
@@ -16,7 +20,8 @@
                     <h4>Shop</h4>
                     <div class="breadcrumb__links">
                         <a href="/">Home page</a>
-                        <span>List Product</span>
+                        <a href="/shop-product.html">List Product</a>
+                        <span> Search @key </span>
                     </div>
                 </div>
             </div>
@@ -26,18 +31,20 @@
 <!-- Breadcrumb Section End -->
 <!-- Shop Section Begin -->
 <section class="shop spad">
+
     <div class="container">
+        <h2 class="header__top__left">Search "@key"</h2>
+        <br />
         <div class="row">
             <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
                         @*search*@
-                        <form asp-route="SearchProduct">
-                            <input type="text" placeholder="Search..." name="searchString">
+                        <form asp-route="SearchProduct" asp-route-page="1">
+                            <input type="text" placeholder="Search..." value="@key" name="searchString">
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
-
                     <div class="shop__sidebar__accordion">
                         <div class="accordion" id="accordionExample">
                             <div class="card">
@@ -45,13 +52,14 @@
                                     <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
                                 </div>
                                 @*Danh mục sản phẩm *@
-                                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                <div id="collapseOne" class="collapse show" data-parent="#collapseOne">
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
                                             <ul class="nice-scroll">
                                                 @foreach (var item in Categori)
                                                 {
                                                     string url = $"/List/{item.Alias}-{item.CatId}.html";
+
                                                     <li><a href="@url">@item.CatName</a></li>
 
                                                 }
@@ -81,7 +89,7 @@
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
                                 </div>
-                                <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                <div id="collapseThree" class="collapse show" data-parent="#collapseThree">
                                     <div class="card-body">
                                         <div class="shop__sidebar__price">
                                             <ul>
@@ -96,6 +104,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             @*Size <div class="card">
                             <div class="card-heading">
                             <a data-toggle="collapse" data-target="#collapseFour">Size</a>
@@ -181,7 +190,7 @@
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
                                 </div>
-                                <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
+                                <div id="collapseSix" class="collapse show" data-parent="#collapseSix">
                                     <div class="card-body">
                                         <div class="shop__sidebar__tags">
                                             <a href="#">Product</a>
@@ -202,9 +211,21 @@
             <div class="col-lg-9">
                 <div class="shop__product__option">
                     <div class="row">
+
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                <p>Showing 1–12 of @ViewBag.TotalItem results</p>
+
+                                @if (@ViewBag.Result == 0)
+                                {
+                                    <p style="color:red;font-size:30px">Not found "@key"</p>
+
+                                }
+                                else
+                                {
+                                    <p>Showing @ViewBag.First – @ViewBag.Last of @ViewBag.TotalItem results</p>
+                                }
+
+
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -280,8 +301,8 @@
                                     </div>
                                     <div class="product__item__text">
                                         <h6>@item.ProductName</h6>
-
-                                        <a href="#" class="add-to-cart"><input hidden asp-for="@item.ProductId" />+ Add To Cart</a>
+                                        @*ADD TO CART*@
+                                        <a href="#" class="add-cart"></a>
                                         <div class="rating">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -304,16 +325,20 @@
                                     </div>
                                 </div>
                             </div>
+
                         }
 
                     }
                 </div>
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-lg-12">
                         <div class="product__pagination">
+                            @* <ul class="pagination">
+                            <a> <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-controller="Product" asp-action="Search" asp-route-searchString="@key"/> </a>
+                            </ul>*@
                             @for (int i = 1; i <= ViewBag.Total; i++)
                             {
-                                <a class="active" href="/shop-product.html?page=@i">@i</a>
+                                <a class="active" asp-controller="Product" asp-action="Search" asp-route-searchString="@key" asp-route-page="@i">@i </a>
                             }
                         </div>
                     </div>
@@ -322,60 +347,3 @@
         </div>
     </div>
 </section>
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            $(function () {
-                $(".add-to-cart").click(function () {
-                    var productid = $('#ProductId').val();
-                    var soLuong = "1";
-                    $.ajax({
-                        url: '/api/cart/add',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: {
-                            productID: productid,
-                            amount: soLuong
-                        },
-                        success: function (response) {
-                            if (response.result == 'Redirect') {
-                                window.location = response.url;
-                            }
-                            else {
-                                loadHeaderCart(); //Add Product success
-                                location.reload();
-                            }
-                            console.log(response); // log to the console to see whether it worked
-                        },
-                        error: function (error) {
-                            alert("There was an error posting the data to the server: " + error.responseText);
-                        }
-                    });
-                });
-
-        @*$(".removecart").click(function () {
-                var productid = $(this).attr("data-productid");
-                $.ajax({
-                url: "api/cart/remove",
-                type: "POST",
-                dataType: "JSON",
-                data: { productID: productid },
-                success: function (result) {
-                if (result.success) {
-                loadHeaderCart();//Reload lai gio hang
-                location.reload();
-                }
-                },
-                error: function (rs) {
-                alert("Remove Cart Error !")
-                }
-                });
-                });*@
-                });
-            function loadHeaderCart() {
-                $('#miniCart').load("/AjaxContent/HeaderCart");
-                $('#numberCart').load("/AjaxContent/NumberCart");
-            }
-        });
-    </script>
-}

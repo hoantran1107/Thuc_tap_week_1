@@ -1,11 +1,27 @@
 ﻿@model ShopBanDo.Models.TinTuc
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = "Blogs page";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string url = $"/tin-tuc/{Model.Alias}-{Model.PostId}.html";
     List<TinTuc> tin = ViewBag.BaiVietLienQuan;
 }
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shop</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home page</a>
+                        <a href="/blogs.html">Blog Pages</a>
+                        <span>Blog Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="blog-hero spad">
     <div class="container">
         <div class="row d-flex justify-content-center">

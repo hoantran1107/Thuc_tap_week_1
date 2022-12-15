@@ -18,15 +18,17 @@ namespace ShopBanDo.Repositories
             _context = context;
         }
         //them 1 record = bang ghi
-        public void Add(T entity)
+        public void Add(T entity, bool saveChange)
         {
             //Set tao EFC.DBSet<> dung de query hoặc lưu trữ
             _context.Set<T>().Add(entity);
+            if(saveChange) _context.SaveChanges();
         }
         //them list cac record
-        public void AddRange(IEnumerable<T> entities)
+        public void AddRange(IEnumerable<T> entities, bool saveChange)
         {
             _context.Set<T>().AddRange(entities);
+            if(saveChange) _context.SaveChanges();
         }
         //Find a set of record that matches pass expression
         public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
@@ -44,14 +46,30 @@ namespace ShopBanDo.Repositories
             return _context.Set<T>().Find(id);
         }
 
-        public void Remove(T entity)
+        public void Remove(T entity, bool saveChange)
         {
             _context.Set<T>().Remove(entity);
+            if(saveChange) _context.SaveChanges();
         }
 
         public void RemoveRange(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
+            _context.SaveChanges();
+        }
+
+        public void RemoveRange(IEnumerable<T> entities, bool saveChange)
+        {
+            _context.Set<T>().RemoveRange(entities);
+            if(saveChange) _context.SaveChanges();
+        }
+
+
+        public void Update(T entity, T entitynew, bool saveChange)
+        {
+            entity = entitynew;
+            _context.Update(entity);
+            if (saveChange) _context.SaveChanges();
         }
     }
 }

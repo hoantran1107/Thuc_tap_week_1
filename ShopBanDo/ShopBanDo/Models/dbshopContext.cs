@@ -209,10 +209,10 @@ namespace ShopBanDo.Models
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_OrderDetails_Orders");
 
-                entity.HasOne(d => d.OrderNavigation)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_OrderDetails_Products");
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_OrderDetails_Products1");
             });
 
             modelBuilder.Entity<Page>(entity =>

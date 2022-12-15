@@ -94,7 +94,7 @@
                     <div class="cart__total">
                         <h6>Order total</h6>
                         <ul>
-                            <li>Thành tiền <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></li>
+                            <li>Total Money <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></li>
                             @* <li>Total <span>$ 169.50</span></li>*@
                         </ul>
                         @if (User.Identity.IsAuthenticated)

@@ -12,12 +12,13 @@ namespace ShopBanDo.ModelView
         [Key]
         public int CustomerId { get; set; }
 
-        [Display(Name = "Full name")]
-        [Required(ErrorMessage = "Enter your full name again")]
+
+        [Display(Name = "Full Name")]
+        [Required(ErrorMessage = "Full name cannot be empty.")]
         public string FullName { get; set; }
 
         [MaxLength(150)]
-        [Required(ErrorMessage = "Enter your email again")]
+        [Required(ErrorMessage = "Email cannot be empty.")]
         [DataType(DataType.EmailAddress)]
         //send ajax request,tra ve kieu json voi action va controller
         //kiem tra email da ton tai
@@ -25,22 +26,22 @@ namespace ShopBanDo.ModelView
         public string Email { get; set; }
 
         [MaxLength(11)]
-        [Required(ErrorMessage = "Enter your phone number")]
-        [Display(Name = "Phone number")]
+        [Required(ErrorMessage = "Phone cannot be empty.")]
+        [Display(Name = "Phone")]
         [DataType(DataType.PhoneNumber)]
         //kiem tra dien thoai da ton tai
         [Remote(action: "ValidatePhone", controller: "Accounts")]
         public string Phone { get; set; }
 
         [Display(Name = "Password")]
-        [Required(ErrorMessage = "Enter your password")]
-        [MinLength(5, ErrorMessage = "Password's length must be at least 5 characters")]
+        [Required(ErrorMessage = "Password cannot be empty.")]
+        [MinLength(5, ErrorMessage = "Passwords must contain at least five characters")]
         public string Password { get; set; }
 
-        [MinLength(5, ErrorMessage = "Password's length must be at least 5 characters")]
-        [Display(Name = "Enter your password again")]
+        [MinLength(5, ErrorMessage = "Passwords must contain at least five characters")]
+        [Display(Name = "Repassword")]
         //so sanh pass
-        [Compare("Password", ErrorMessage = "Password is not correct")]
+        [Compare("Password", ErrorMessage = "Repassword doesn't match")]
         public string ConfirmPassword { get; set; }
     }
 }

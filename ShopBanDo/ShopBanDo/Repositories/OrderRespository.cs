@@ -16,11 +16,21 @@ namespace ShopBanDo.Repositories
             
         }
 
-       /* public IEnumerable<Order> GetOrder()
+        public List<Order> GetListOrderOfCustomer(int CustomerID)
         {
-            var query = from c in _context.Orders.AsQueryable() where c.PaymentDate != null select new { c.Total, c.PaymentDate, c.Paid };
-            var r = from c in query.AsNoTracking().AsEnumerable() select new { c.Total, ShortDate = c.PaymentDate.Value.ToShortDateString(), c.Paid };
-            return r;
-        }*/
+            return _context.Orders
+                        .Include(x => x.TransactStatus)
+                        .AsNoTracking()
+                        .Where(x => x.CustomerId == CustomerID)
+                        .OrderByDescending(x => x.OrderDate)
+                        .ToList();
+        }
+
+        /* public IEnumerable<Order> GetOrder()
+         {
+             var query = from c in _context.Orders.AsQueryable() where c.PaymentDate != null select new { c.Total, c.PaymentDate, c.Paid };
+             var r = from c in query.AsNoTracking().AsEnumerable() select new { c.Total, ShortDate = c.PaymentDate.Value.ToShortDateString(), c.Paid };
+             return r;
+         }*/
     }
 }

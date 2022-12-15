@@ -11,10 +11,11 @@ namespace ShopBanDo.Interface
         T GetById(int id);
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Expression<Func<T, bool>> expression);
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
-        void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
+        void Add(T entity,bool saveChange);
+        void AddRange(IEnumerable<T> entities, bool saveChange);
+        void Remove(T entity,bool saveChange);
+        void Update(T entity,T entitynew, bool saveChange);
+        void RemoveRange(IEnumerable<T> entities,bool saveChange);
 
     }
 }

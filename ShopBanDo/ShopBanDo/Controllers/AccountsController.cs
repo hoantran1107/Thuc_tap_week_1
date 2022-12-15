@@ -22,7 +22,7 @@
     {
 
         private readonly dbshopContext _context;
-  
+
         private CustomerRespository _customer;
 
         private OrderRespository _order;
@@ -69,7 +69,6 @@
             ViewBag.DonHang = lsDonHang;
             return View(khachhang);
         }
-
         public IActionResult DeleteOrder(int id) //done
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -122,7 +121,7 @@
 
             _customer.Add(khachhang, true);
 
-            //Lưu Session MaKh khoi login lai CustomerId 
+            //Lưu Session MaKh khoi login lai CustomerId
             HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
 
@@ -229,7 +228,7 @@
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (taikhoanID != null)
             {
-                //Tra ve view Dashbroad 
+                //Tra ve view Dashbroad
                 var khachhang = _context.Customers
                     .AsNoTracking()
                     .SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));

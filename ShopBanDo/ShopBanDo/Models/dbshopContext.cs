@@ -37,7 +37,7 @@ namespace ShopBanDo.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-DDQN6I1\\HOANTRAN;Initial Catalog=dbshop;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-S67S9UF\\SQLEXPRESS;Initial Catalog=dbshop;Trusted_Connection=True;");
             }
         }
 

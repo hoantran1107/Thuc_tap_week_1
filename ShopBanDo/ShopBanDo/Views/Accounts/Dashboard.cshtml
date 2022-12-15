@@ -7,6 +7,20 @@
     var total = DanhSachDonHang.Sum(x => x.Total).Value.ToString("#,##0");
     ShopBanDo.ModelView.ChangePasswordViewModel changePassword = new ShopBanDo.ModelView.ChangePasswordViewModel();
 }
+<style>
+    #form_edit_address{
+        display : none;
+        font-size: 15px;
+        font-family: "Nunito Sans", sans-serif;
+        color: #3d3d3d;
+        font-weight: 400;
+        line-height: 25px;
+        margin: 0 0 15px 0;
+    }
+    #form_edit_address #input_submit{
+        margin-left: 20px;
+    }
+</style>
 <section class="breadcrumb-option">
     <div class="container">
         <div class="row">
@@ -15,7 +29,7 @@
                     <h4>Shop</h4>
                     <div class="breadcrumb__links">
                         <a href="/">Home page</a>
-                        <span>List Product</span>
+                        <span>My Account</span>
                     </div>
                 </div>
             </div>
@@ -51,7 +65,12 @@
                                 </p>
                                 <p>Email: @Model.Email</p>
                                 <p>Phone number: @Model.Phone</p>
-                                <p>Address: @Model.Address</p>
+                                <p>Address: @Model.Address     <img id="btn" src="~/icon_edit.png" onclick="click_edit_show_form()" height="15px" width="15px" /></p>
+                                <form asp-action="UpdateAddress" id="form_edit_address" style="display = 'none'">
+                                    New Address: <input name="newAddress" type="text" />
+                                    <input id="input_submit" type="submit" value="Submit"/>
+                                </form>
+
                             </div>
                         </div>
                         <div class="tab-pane fade" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
@@ -109,7 +128,6 @@
                                                                 </div>
                                                             </div>
                                                         }
-                                                        
                                                     </tr>
                                                 }
                                             </tbody>
@@ -179,5 +197,15 @@
                 });
             });
         });
+        function click_edit_show_form(){
+            const form = document.getElementById('form_edit_address');
+
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+            }
+            else{
+                form.style.display = 'none';
+            }
+        }
     </script>
 }

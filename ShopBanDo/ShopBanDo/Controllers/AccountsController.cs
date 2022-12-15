@@ -85,12 +85,24 @@ namespace ShopBanDo.Controllers
                     ViewBag.DonHang = lsDonHang;
                     return View(khachhang);
                 }
-
             }
             //else tra lai ve trang login
             return RedirectToAction("Login");
         }
         // cancel order
+        public IActionResult UpdateAddress(string newAddress)
+        {
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            if (taikhoanID != null)
+            {
+                var khachhang = _context.Customers.SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+                khachhang.Address = newAddress;
+                _context.Customers.Update(khachhang);
+                _context.SaveChanges();
+                _notyfService.Success("Change Address successful");
+            }
+            return RedirectToAction("Dashboard");
+        }
         public IActionResult DeleteOrder(int id)
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");

@@ -12,12 +12,13 @@ namespace ShopBanDo.ModelView
         [Key]
         public int CustomerId { get; set; }
 
-        [Display(Name = "Họ và Tên")]
-        [Required(ErrorMessage = "Vui lòng nhập Họ Tên")]
+
+        [Display(Name = "Full Name")]
+        [Required(ErrorMessage = "Full name cannot be empty.")]
         public string FullName { get; set; }
 
         [MaxLength(150)]
-        [Required(ErrorMessage = "Vui lòng nhập Email")]
+        [Required(ErrorMessage = "Email cannot be empty.")]
         [DataType(DataType.EmailAddress)]
         //send ajax request,tra ve kieu json voi action va controller
         //kiem tra email da ton tai
@@ -25,22 +26,22 @@ namespace ShopBanDo.ModelView
         public string Email { get; set; }
 
         [MaxLength(11)]
-        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
-        [Display(Name = "Điện thoại")]
+        [Required(ErrorMessage = "Phone cannot be empty.")]
+        [Display(Name = "Phone")]
         [DataType(DataType.PhoneNumber)]
         //kiem tra dien thoai da ton tai
         [Remote(action: "ValidatePhone", controller: "Accounts")]
         public string Phone { get; set; }
 
-        [Display(Name = "Mật khẩu")]
-        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [MinLength(5, ErrorMessage = "Bạn cần đặt mật khẩu tối thiểu 5 ký tự")]
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "Password cannot be empty.")]
+        [MinLength(5, ErrorMessage = "Passwords must contain at least five characters")]
         public string Password { get; set; }
 
-        [MinLength(5, ErrorMessage = "Bạn cần đặt mật khẩu tối thiểu 5 ký tự")]
-        [Display(Name = "Nhập lại mật khẩu")]
+        [MinLength(5, ErrorMessage = "Passwords must contain at least five characters")]
+        [Display(Name = "Repassword")]
         //so sanh pass
-        [Compare("Password", ErrorMessage = "Nhập lại mật khẩu không đúng")]
+        [Compare("Password", ErrorMessage = "Repassword doesn't match")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -10,14 +10,14 @@ namespace ShopBanDo.ModelView
     {
         [Key]
         [MaxLength(100)]
-        [Required(ErrorMessage = ("Vui lòng nhập Email"))]
-        [Display(Name = "Địa chỉ Email")]
-        [EmailAddress(ErrorMessage = "Sai định dạng Email")]
+        [Required(ErrorMessage = ("Enter your email again"))]
+        [Display(Name = "Email address")]
+        [EmailAddress(ErrorMessage = "Email's format is wrong")]
         public string UserName { get; set; }
 
-        [Display(Name = "Mật khẩu")]
-        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [MinLength(5, ErrorMessage = "Mật khẩu tối thiểu 5 ký tự")]
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "Enter your password again")]
+        [MinLength(5, ErrorMessage = "Password must be at least 5 characters")]
         public string Password { get; set; }
     }
 }

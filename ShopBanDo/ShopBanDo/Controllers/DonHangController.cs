@@ -36,16 +36,16 @@ namespace ShopBanDo.Controllers
                     .FirstOrDefaultAsync(m => m.OrderId == id && Convert.ToInt32(taikhoanID) == m.CustomerId);
                 if (donhang == null) return NotFound();
 
-                var chitietdonhang = _context.OrderDetails
-                    .Include(x => x.OrderNavigation)
-                    .AsNoTracking()
-                    .Where(x => x.OrderId == id)
-                    .OrderBy(x => x.OrderDetailId)
-                    .ToList();
-                XemDonHang donHang = new XemDonHang();
+            var chitietdonhang = _context.OrderDetails
+                .Include(x => x.Product)
+                .AsNoTracking()
+                .Where(x => x.OrderId == id)
+                .OrderBy(x => x.OrderDetailId)
+                .ToList();
+            XemDonHang donHang = new XemDonHang();
                 donHang.DonHang = donhang;
-                donHang.ChiTietDonHang = chitietdonhang;
-                return PartialView("Details", donHang);     
+            donHang.ChiTietDonHang = chitietdonhang;
+            return PartialView("Details", donHang);     
         }
     }
 }

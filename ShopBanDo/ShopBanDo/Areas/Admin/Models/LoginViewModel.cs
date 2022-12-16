@@ -7,14 +7,13 @@ namespace ShopBanDo.Areas.Admin.Models
     {
         [Key]
         [MaxLength(100)]
-        [Required(ErrorMessage = ("Vui lòng nhập Email"))]
-        [Display(Name = "Địa chỉ Email")]
-        [EmailAddress(ErrorMessage = "Sai định dạng Email")]
+        [Required(ErrorMessage = ("Email cannot be empty"))]
+        [Display(Name = "Email Address")]
+        [EmailAddress(ErrorMessage = "Wrong email type")]
         public string Email { get; set; }
 
-        [Display(Name = "Mật khẩu")]
-        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [MinLength(0, ErrorMessage = "Mật khẩu tối thiểu 5 ký tự")]
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "Password cannot be empty")]
         public string Password { get; set; }
     }
 }

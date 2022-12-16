@@ -9,7 +9,6 @@
 }
 <style>
     #form_edit_address{
-        display : none;
         font-size: 15px;
         font-family: "Nunito Sans", sans-serif;
         color: #3d3d3d;
@@ -19,6 +18,28 @@
     }
     #form_edit_address #input_submit{
         margin-left: 20px;
+    }
+
+    #show_hide_address {
+        box-sizing: border-box;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid white;
+        margin-bottom: 10px;
+        min-width: 100px !important;
+        max-width: 300px !important;
+        transition: width 0.1s;
+    }
+
+    #show_hide_address:focus-visible {
+        outline: none;
+    }
+
+    #hide {
+        position: absolute;
+        height: 0;
+        overflow: hidden;
+        white-space: pre;
     }
 </style>
 <section class="breadcrumb-option">
@@ -60,17 +81,31 @@
                     <div class="tab-content myaccount-tab-content" id="account-page-tab-content">
                         <div class="tab-pane fade show active" id="account-dashboard" role="tabpanel" aria-labelledby="account-dashboard-tab">
                             <div class="myaccount-dashboard">
-                                <p>
-                                    Hi, <b>@Model.FullName</b>
-                                </p>
-                                <p>Email: @Model.Email</p>
-                                <p>Phone number: @Model.Phone</p>
-                                <p>Address: @Model.Address     <img id="btn" src="~/icon_edit.png" onclick="click_edit_show_form()" height="15px" width="15px" /></p>
-                                <form asp-action="UpdateAddress" id="form_edit_address" style="display:none">
-                                    New Address: <input name="newAddress" type="text" />
-                                    <input id="input_submit" type="submit" value="Submit" />
+                                <form asp-action="UpdateAddress" id="form_edit_address" style="display = 'none'">
+                                    <table id="table_customer">
+                                        <tr>
+                                            <td colspan="2"><p style="text-align: center">Hi, <b>@Model.FullName</b></p></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>Phone number: @Model.Phone</span>
+                                            </td>
+                                            <td style="text-align: left">
+                                                <span>Email: @Model.Email</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 1px">
+                                            <td style="padding-top: 5px">
+                                                Address:<span id="hide"></span><input id="show_hide_address" name="newAddress" readonly type="text" value="@Model.Address" />
+                                                <img id="btn" src="~/icon_edit.png" onclick="click_edit_show_form()" height="15px" width="15px" />
+                                                
+                                            <td>
+                                                <button id="input_submit" class="btn btn-outline-info" style="display: none">Change Address </button>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </form>
-
                             </div>
                         </div>
                         <div class="tab-pane fade" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
@@ -177,7 +212,7 @@
     </div>
 </main>
 @section Scripts{
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $(".xemdonhang").click(function () {
                 var madonhang = $(this).attr("data-madonhang")
@@ -197,15 +232,30 @@
                 });
             });
         });
-        function click_edit_show_form(){
-            const form = document.getElementById('form_edit_address');
-
-            if (form.style.display === 'none') {
-                form.style.display = 'block';
+        function click_edit_show_form() {
+            var button_submit = document.getElementById('input_submit');
+            var text_readonly = document.getElementById('show_hide_address');
+            if (button_submit.style.display === 'none') {
+                button_submit.style.display = 'block';
+                text_readonly.removeAttribute('readonly');
+                text_readonly.style.borderColor = "black";
             }
-            else{
-                form.style.display = 'none';
+            else {
+                button_submit.style.display = 'none';
+                text_readonly.setAttribute('readonly', true);
+                text_readonly.style.borderColor = "white";
             }
         }
+        const hide = document.getElementById('hide');
+        const txt = document.getElementById('show_hide_address');
+        resize();
+        txt.addEventListener("input", resize);
+
+        function resize() {
+            hide.textContent = txt.value;
+            width_value = hide.offsetWidth + 30;
+            txt.style.width = width_value + "px";
+        }
+
     </script>
 }

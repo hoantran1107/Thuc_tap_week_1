@@ -39,7 +39,6 @@ namespace ShopBanDo.Extension
         private  Task HanleExeptionAsync(HttpContext httpContext,Exception ex)
         {
             httpContext.Response.ContentType = "application/json";
-            httpContext.Response.StatusCode = (int)StatusCodes.Status500InternalServerError;
             return httpContext.Response.WriteAsync(new ErrorDetails
             {
                 StatusCode = httpContext.Response.StatusCode,

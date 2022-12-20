@@ -53,12 +53,9 @@ namespace WebShop.Controllers
                 model.Email = khachhang.Email;
                 model.Phone = khachhang.Phone;
                 model.Address = khachhang.Address;
-                model.PhuongXa = khachhang.District.Value;
-                model.TinhThanh = khachhang.LocationId.Value;
-                model.QuanHuyen = khachhang.Ward.Value;
             }
             //day model sang
-            ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
+         /*   ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
             ViewBag.GioHang = cart;
             return View(model);
         }
@@ -79,10 +76,6 @@ namespace WebShop.Controllers
                 model.Email = khachhang.Email;
                 model.Phone = khachhang.Phone;
                 model.Address = khachhang.Address;
-
-                /*khachhang.LocationId = muaHang.TinhThanh;*/
-                khachhang.District = muaHang.QuanHuyen;
-                khachhang.Ward = muaHang.PhuongXa;
                 khachhang.Address = muaHang.Address;
                 _context.Update(khachhang);
                 _context.SaveChanges();
@@ -95,10 +88,6 @@ namespace WebShop.Controllers
                     Order donhang = new Order();
                     donhang.CustomerId = model.CustomerId;
                     donhang.Address = model.Address;
-                    donhang.LocationId = model.TinhThanh;
-                    donhang.District = model.QuanHuyen;
-                    donhang.Ward = model.PhuongXa;
-
                     donhang.OrderDate = DateTime.Now;
                     donhang.TransactStatusId = 1;//Don hang moi
                     donhang.Deleted = false;
@@ -132,11 +121,11 @@ namespace WebShop.Controllers
             }
             catch
             {
-                ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
+                /*ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
                 ViewBag.GioHang = cart;
                 return View(model);
             }
-            ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
+            /*ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
             ViewBag.GioHang = cart;
             return View(model);
         }
@@ -160,30 +149,12 @@ namespace WebShop.Controllers
                 successVM.DonHangID = donhang.OrderId;
                 successVM.Phone = khachhang.Phone;
                 successVM.Address = khachhang.Address;
-                successVM.PhuongXa = GetNameLocation(donhang.Ward.Value);
-                successVM.TinhThanh = GetNameLocation(donhang.District.Value);
                 return View(successVM);
             }
             catch
             {
                 return View();
             }
-        }
-        public string GetNameLocation(int idlocation)
-        {
-            try
-            {
-                var location = _context.Locations.AsNoTracking().SingleOrDefault(x => x.LocationId == idlocation);
-                if (location != null)
-                {
-                    return location.NameWithType;
-                }
-            }
-            catch
-            {
-                return string.Empty;
-            }
-            return string.Empty;
         }
     }
     }

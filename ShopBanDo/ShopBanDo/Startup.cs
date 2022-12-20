@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopBanDo.Extension;
 using ShopBanDo.Interface;
+using ShopBanDo.MiddleWare;
 using ShopBanDo.Models;
 using ShopBanDo.Repositories;
 using System;
@@ -46,7 +47,7 @@ namespace ShopBanDo
                 config.IsDismissable = true; 
                 config.Position = NotyfPosition.BottomRight; });
             //add services session
-            services.AddSession();
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromDays(1));
             //add authen cho cookie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(p =>
@@ -78,18 +79,23 @@ namespace ShopBanDo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.RegisterMiddleware();
 
             app.UseHttpsRedirection();
-            //su dung session can phai khai bao
-            app.UseSession();
 
+            //su dung wwwroot enable static file to served to client
             app.UseStaticFiles();
+
+            app.UseCookiePolicy();
 
             app.UseRouting();
             //su dung authentication
             app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseSession();
+
+            app.RegisterMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

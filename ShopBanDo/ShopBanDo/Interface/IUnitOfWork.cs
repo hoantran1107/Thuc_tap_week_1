@@ -8,9 +8,9 @@ namespace ShopBanDo.Interface
 {
     public interface IUnitOfWork : IDisposable
     {
-        IGenericRepository<OrderDetail> OrderDetailRepository { get; }
-        IOrderRepository OrderRepository { get; }
+        IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
         IProductRepository ProductRepository { get; }
+        IOrderRepository OrderRepository { get; }
         Task<bool> Commit();
         Task Rollback();
     }

@@ -10,6 +10,7 @@
     using ShopBanDo.Interface;
     using ShopBanDo.Models;
     using ShopBanDo.ModelView;
+    using ShopBanDo.Repositories;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,18 +21,21 @@
         private readonly dbshopContext _context;
         private readonly IOrderRepository _orderRepository;
         private readonly IGenericRepository <OrderDetail> _orderDetailRepository;
+        private readonly IGenericRepository <Customer> _customerRepository;
         private readonly IUnitOfWork _uow;
-        
+            
         public INotyfService _notyfService { get; }
         private readonly ILogger<CheckoutController> _logger;
         public CheckoutController(dbshopContext context,
                                   IOrderRepository orderRepository,
                                   IGenericRepository<OrderDetail> orderDetailRepository,
+                                  IGenericRepository<Customer> customerRepository,
                                   IUnitOfWork uow, 
                                   INotyfService notyfService,
                                   ILogger<CheckoutController> logger)
         {
             _orderRepository = orderRepository;
+            _customerRepository = customerRepository;
             _orderDetailRepository = orderDetailRepository;
             _uow = uow;
             _context = context;
@@ -75,31 +79,40 @@
             ViewBag.GioHang = cart;
             return View(model);
         }
-        // transaction
+
         [HttpPost]
         [Route("checkout.html", Name = "Checkout")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(MuaHangVM muaHang)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             MuaHangVM model = new MuaHangVM();
+
             if (taikhoanID == null)
             {
                 ViewBag.GioHang = cart;
                 return View(model);
             }
-            var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+
+            //var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+            var khachhang = _uow.GetRepository<Customer>().GetAll().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
             model.CustomerId = khachhang.CustomerId;
             model.FullName = khachhang.FullName;
             model.Email = khachhang.Email;
             model.Phone = khachhang.Phone;
             model.Address = khachhang.Address;
-            //khachhang.Address = model.Address;
+            khachhang.Address = muaHang.Address;
             _context.Update(khachhang);
             _context.SaveChanges();
-            if (ModelState.IsValid)
+
+            try
             {
-                //Khoi tao don hang
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.GioHang = cart;
+                    return View(model);
+                }
+
                 Order donhang = new Order();
                 donhang.CustomerId = model.CustomerId;
                 donhang.Address = model.Address;
@@ -109,7 +122,9 @@
                 donhang.Paid = false;
                 donhang.Note = Utilities.StripHTML(model.Note);
                 donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
-                //tao ordertail
+                //_context.Add(donhang);
+                //_context.SaveChanges();
+                _logger.LogInformation("Created Order");
                 foreach (var item in cart)
                 {
                     OrderDetail orderDetail = new OrderDetail();
@@ -119,40 +134,30 @@
                     orderDetail.Total = item.amount * item.product.Price;
                     orderDetail.Price = item.product.Price;
                     orderDetail.CreateDate = DateTime.Now;
-                    try
-                    {
-                        _orderDetailRepository.Add(orderDetail, true);
-                    }
-                    catch (Exception)
-                    {
-                        await _uow.Rollback();
-                        _notyfService.Error("Error!");
-                    }
+                    //_context.Add(orderDetail);
+                    _uow.GetRepository<OrderDetail>().Add(orderDetail, true);
                 }
-                try
-                {
-                    await _orderRepository.CreateOrder(donhang);
-                    await _uow.Commit();
-                    TempData["Success"] = "Success!";
-                    //clear gio hang
-                    HttpContext.Session.Remove("GioHang");
-                    //Xuat thong bao
-                    _notyfService.Success("Your order has created successfully");
-                    //cap nhat thong tin khach hang
-                    return RedirectToAction("Success");
-                }
-                catch (Exception ex)
-                {
-                    await _uow.Rollback();
-                    _notyfService.Error("Error!");
-                }
+                //_context.SaveChanges();
+                await _uow.OrderRepository.CreateOrder(donhang);
+                await _uow.Commit();
+                _logger.LogInformation("Created Order Detail");
+                HttpContext.Session.Remove("GioHang");
+                _notyfService.Success("Checkout success");
+                return RedirectToAction("Success");
             }
-            return RedirectToAction("Index");
+            catch(Exception)
+            {
+                ViewBag.GioHang = cart;
+                _notyfService.Error("Checkout error");
+                await _uow.Rollback();
+                return View(model);
+            }
         }
 
         [Route("dat-hang-thanh-cong.html", Name = "Success")]
         public IActionResult Success()
         {
+
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (string.IsNullOrEmpty(taikhoanID))
             {

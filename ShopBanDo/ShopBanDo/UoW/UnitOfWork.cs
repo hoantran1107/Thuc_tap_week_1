@@ -1,5 +1,7 @@
-﻿using ShopBanDo.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopBanDo.Interface;
 using ShopBanDo.Models;
+using ShopBanDo.Repositories;
 using System.Threading.Tasks;
 
 namespace ShopBanDo.UoW
@@ -15,8 +17,6 @@ namespace ShopBanDo.UoW
 
         public IProductRepository ProductRepository => throw new System.NotImplementedException();
 
-        public IGenericRepository<OrderDetail> OrderDetailRepository => throw new System.NotImplementedException();
-
         public async Task<bool> Commit()
         {
             var success = (await _context.SaveChangesAsync()) > 0;
@@ -28,6 +28,11 @@ namespace ShopBanDo.UoW
 
         public void Dispose() =>
             _context.Dispose();
+
+        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        {
+            return new GenericRepository<TEntity>(_context);
+        }
 
         public Task Rollback()
         {

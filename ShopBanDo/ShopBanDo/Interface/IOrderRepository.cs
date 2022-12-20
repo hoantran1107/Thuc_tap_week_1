@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopBanDo.Interface
 {
-    interface IOrderRepository : IGenericRepository<Order>
+    public interface IOrderRepository : IGenericRepository<Order>
     {
         /*IEnumerable<Order> GetOrder();*/
         public List<Order> GetListOrderOfCustomer(int CustomerID);

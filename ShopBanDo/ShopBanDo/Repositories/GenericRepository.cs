@@ -24,6 +24,13 @@ namespace ShopBanDo.Repositories
             _context.Set<T>().Add(entity);
             if(saveChange) _context.SaveChanges();
         }
+
+        public async void AddAsync(T entity, bool saveChange)
+        {
+            await _context.Set<T>().AddAsync(entity);
+            if (saveChange) await _context.SaveChangesAsync();
+        }
+
         //them list cac record
         public void AddRange(IEnumerable<T> entities, bool saveChange)
         {

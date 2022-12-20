@@ -12,6 +12,7 @@ using ShopBanDo.Interface;
 using ShopBanDo.MiddleWare;
 using ShopBanDo.Models;
 using ShopBanDo.Repositories;
+using ShopBanDo.UoW;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,8 @@ namespace ShopBanDo
             #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IOrderRepository, OrderRespository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             #endregion
 
         }

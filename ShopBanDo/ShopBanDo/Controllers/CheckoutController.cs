@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopBanDo.Extension;
 using ShopBanDo.Helpper;
+using ShopBanDo.Interface;
 using ShopBanDo.Models;
 using ShopBanDo.ModelView;
 
@@ -20,10 +21,20 @@ namespace WebShop.Controllers
     {
 
         private readonly dbshopContext _context;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IGenericRepository <OrderDetail> _orderDetailRepository;
+        private readonly IUnitOfWork _uow;
         
         public INotyfService _notyfService { get; }
-        public CheckoutController(dbshopContext context, INotyfService notyfService)
+        public CheckoutController(dbshopContext context,
+                                  IOrderRepository orderRepository,
+                                  IGenericRepository<OrderDetail> orderDetailRepository,
+                                  IUnitOfWork uow, 
+                                  INotyfService notyfService)
         {
+            _orderRepository = orderRepository;
+            _orderDetailRepository = orderDetailRepository;
+            _uow = uow;
             _context = context;
             _notyfService = notyfService;
         }
@@ -60,75 +71,136 @@ namespace WebShop.Controllers
             ViewBag.GioHang = cart;
             return View(model);
         }
+        //[HttpPost]
+        //[Route("checkout.html", Name = "Checkout")]
+        //public IActionResult Index(MuaHangVM muaHang)
+        //{
+        //    //Lay ra gio hang de xu ly
+        //    var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
+        //    var taikhoanID = HttpContext.Session.GetString("CustomerId");
+        //    MuaHangVM model = new MuaHangVM();
+        //    if (taikhoanID != null)
+        //    {
+        //        var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+        //        model.CustomerId = khachhang.CustomerId;
+        //        model.FullName = khachhang.FullName;
+        //        model.Email = khachhang.Email;
+        //        model.Phone = khachhang.Phone;
+        //        model.Address = khachhang.Address;
+        //        khachhang.Address = muaHang.Address;
+        //        _context.Update(khachhang);
+        //        _context.SaveChanges();
+        //    }
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            //Khoi tao don hang
+        //            Order donhang = new Order();
+        //            donhang.CustomerId = model.CustomerId;
+        //            donhang.Address = model.Address;
+        //            donhang.OrderDate = DateTime.Now;
+        //            donhang.TransactStatusId = 1;//Don hang moi
+        //            donhang.Deleted = false;
+        //            donhang.Paid = false;
+        //            donhang.Note = Utilities.StripHTML(model.Note);
+        //            donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
+        //            _context.Add(donhang);
+        //            _context.SaveChanges();
+        //            //tao ordertail
+        //            foreach (var item in cart)
+        //            {
+        //                OrderDetail orderDetail = new OrderDetail();
+        //                orderDetail.OrderId = donhang.OrderId;
+        //                orderDetail.ProductId = item.product.ProductId;
+        //                orderDetail.Quantity = item.amount;
+        //                orderDetail.Total = item.amount * item.product.Price;
+        //                orderDetail.Price = item.product.Price;
+        //                orderDetail.CreateDate = DateTime.Now;
+        //                _context.Add(orderDetail);
+        //            }
+        //            _context.SaveChanges();
+        //            //clear gio hang
+        //            HttpContext.Session.Remove("GioHang");
+        //            //Xuat thong bao
+        //            _notyfService.Success("Đơn hàng đặt thành công");
+        //            //cap nhat thong tin khach hang
+        //            return RedirectToAction("Success");
+
+
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        /*ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
+        //        ViewBag.GioHang = cart;
+        //        return View(model);
+        //    }
+        //    /*ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
+        //    ViewBag.GioHang = cart;
+        //    return View(model);
+        //}
+        // transaction
         [HttpPost]
         [Route("checkout.html", Name = "Checkout")]
-        public IActionResult Index(MuaHangVM muaHang)
+        public async Task<IActionResult> Index()
         {
-            //Lay ra gio hang de xu ly
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             MuaHangVM model = new MuaHangVM();
-            if (taikhoanID != null)
+            if (ModelState.IsValid)
             {
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
-                model.CustomerId = khachhang.CustomerId;
-                model.FullName = khachhang.FullName;
-                model.Email = khachhang.Email;
-                model.Phone = khachhang.Phone;
-                model.Address = khachhang.Address;
-                khachhang.Address = muaHang.Address;
-                _context.Update(khachhang);
-                _context.SaveChanges();
-            }
-            try
-            {
-                if (ModelState.IsValid)
+                //Khoi tao don hang
+                Order donhang = new Order();
+                donhang.CustomerId = model.CustomerId;
+                donhang.Address = model.Address;
+                donhang.OrderDate = DateTime.Now;
+                donhang.TransactStatusId = 1;//Don hang moi
+                donhang.Deleted = false;
+                donhang.Paid = false;
+                donhang.Note = Utilities.StripHTML(model.Note);
+                donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
+                //tao ordertail
+                foreach (var item in cart)
                 {
-                    //Khoi tao don hang
-                    Order donhang = new Order();
-                    donhang.CustomerId = model.CustomerId;
-                    donhang.Address = model.Address;
-                    donhang.OrderDate = DateTime.Now;
-                    donhang.TransactStatusId = 1;//Don hang moi
-                    donhang.Deleted = false;
-                    donhang.Paid = false;
-                    donhang.Note = Utilities.StripHTML(model.Note);
-                    donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
-                    _context.Add(donhang);
-                    _context.SaveChanges();
-                    //tao ordertail
-                    foreach (var item in cart)
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.OrderId = donhang.OrderId;
+                    orderDetail.ProductId = item.product.ProductId;
+                    orderDetail.Quantity = item.amount;
+                    orderDetail.Total = item.amount * item.product.Price;
+                    orderDetail.Price = item.product.Price;
+                    orderDetail.CreateDate = DateTime.Now;
+                    try
                     {
-                        OrderDetail orderDetail = new OrderDetail();
-                        orderDetail.OrderId = donhang.OrderId;
-                        orderDetail.ProductId = item.product.ProductId;
-                        orderDetail.Quantity = item.amount;
-                        orderDetail.Total = item.amount * item.product.Price;
-                        orderDetail.Price = item.product.Price;
-                        orderDetail.CreateDate = DateTime.Now;
-                        _context.Add(orderDetail);
+                        _orderDetailRepository.Add(orderDetail, true);
                     }
-                    _context.SaveChanges();
+                    catch (Exception)
+                    {
+                        await _uow.Rollback();
+                        _notyfService.Error("Error!");
+                    }
+                }
+                try
+                {
+                    await _orderRepository.CreateOrder(donhang);
+                    await _uow.Commit();
+                    TempData["Success"] = "Success!";
                     //clear gio hang
                     HttpContext.Session.Remove("GioHang");
                     //Xuat thong bao
-                    _notyfService.Success("Đơn hàng đặt thành công");
+                    _notyfService.Success("Your order has created successfully");
                     //cap nhat thong tin khach hang
                     return RedirectToAction("Success");
-
-
+                }
+                catch (Exception ex)
+                {
+                    await _uow.Rollback();
+                    _notyfService.Error("Error!");
                 }
             }
-            catch
-            {
-                /*ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
-                ViewBag.GioHang = cart;
-                return View(model);
-            }
-            /*ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");*/
-            ViewBag.GioHang = cart;
-            return View(model);
+            return RedirectToAction("Index");
         }
+
         [Route("dat-hang-thanh-cong.html", Name = "Success")]
         public IActionResult Success()
         {
@@ -156,5 +228,6 @@ namespace WebShop.Controllers
                 return View();
             }
         }
+        
     }
     }

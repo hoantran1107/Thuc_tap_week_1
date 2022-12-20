@@ -17,12 +17,6 @@ namespace ShopBanDo.ModelView
         public string Phone { get; set; }
         [Required(ErrorMessage = "Enter your address")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "Select your province/city")]
-        public int TinhThanh { get; set; }
-        [Required(ErrorMessage = "Enter your district")]
-        public int QuanHuyen { get; set; }
-        [Required(ErrorMessage = "Enter your ward/communes")]
-        public int PhuongXa { get; set; }
         public int PaymentID { get; set; }
         public string Note { get; set; }
     }

@@ -11,5 +11,6 @@ namespace ShopBanDo.Interface
         //ke thua tu interface IGenericRepository<T>
         //Them 1 phuong thuc GetActiveProducts, tra ve  IEnumerable<Product>
         IEnumerable<Product> GetActiveProducts();
+        Task UpdateStockByOrder(Order order);
     }
 }

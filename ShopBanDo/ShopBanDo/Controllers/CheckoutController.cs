@@ -20,6 +20,7 @@ namespace WebShop.Controllers
     {
 
         private readonly dbshopContext _context;
+        
         public INotyfService _notyfService { get; }
         public CheckoutController(dbshopContext context, INotyfService notyfService)
         {
@@ -62,7 +63,6 @@ namespace WebShop.Controllers
             ViewBag.GioHang = cart;
             return View(model);
         }
-
         [HttpPost]
         [Route("checkout.html", Name = "Checkout")]
         public IActionResult Index(MuaHangVM muaHang)
@@ -185,5 +185,6 @@ namespace WebShop.Controllers
             }
             return string.Empty;
         }
+
     }
     }

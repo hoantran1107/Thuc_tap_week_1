@@ -16,6 +16,9 @@ namespace ShopBanDo.Repositories
             
         }
 
+        public async Task CreateOrder(Order order) =>
+            await _context.Orders.AddAsync(order);
+
         public List<Order> GetListOrderOfCustomer(int CustomerID)
         {
             return _context.Orders

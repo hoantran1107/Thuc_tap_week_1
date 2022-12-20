@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
     using ShopBanDo.Extension;
     using ShopBanDo.Helpper;
     using ShopBanDo.Models;
@@ -18,10 +19,13 @@
 
         public INotyfService _notyfService { get; }
 
-        public CheckoutController(dbshopContext context, INotyfService notyfService)
+        private readonly ILogger<CheckoutController> _logger;
+
+        public CheckoutController(dbshopContext context, INotyfService notyfService,ILogger<CheckoutController> logger)
         {
             _context = context;
             _notyfService = notyfService;
+            _logger = logger;
         }
 
         public List<CartItem> GioHang
@@ -104,7 +108,7 @@
                 donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
                 _context.Add(donhang);
                 _context.SaveChanges();
-
+                _logger.LogInformation("Created Order");
                 foreach (var item in cart)
                 {
                     OrderDetail orderDetail = new OrderDetail();
@@ -117,7 +121,7 @@
                     _context.Add(orderDetail);
                 }
                 _context.SaveChanges();
-
+                _logger.LogInformation("Created Order Detail");
                 HttpContext.Session.Remove("GioHang");
                 _notyfService.Success("Checkout success");
                 return RedirectToAction("Success");

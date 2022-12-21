@@ -102,9 +102,6 @@
             model.Phone = khachhang.Phone;
             model.Address = khachhang.Address;
             khachhang.Address = muaHang.Address;
-            _context.Update(khachhang);
-            _context.SaveChanges();
-
             try
             {
                 if (!ModelState.IsValid)
@@ -122,8 +119,7 @@
                 donhang.Paid = false;
                 donhang.Note = Utilities.StripHTML(model.Note);
                 donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
-                //_context.Add(donhang);
-                //_context.SaveChanges();
+                _uow.GetRepository<Order>().Add(donhang, true);
                 _logger.LogInformation("Created Order");
                 foreach (var item in cart)
                 {
@@ -134,11 +130,9 @@
                     orderDetail.Total = item.amount * item.product.Price;
                     orderDetail.Price = item.product.Price;
                     orderDetail.CreateDate = DateTime.Now;
-                    //_context.Add(orderDetail);
+                    // await _uow add orderDetail
                     _uow.GetRepository<OrderDetail>().Add(orderDetail, true);
                 }
-                //_context.SaveChanges();
-                await _uow.OrderRepository.CreateOrder(donhang);
                 await _uow.Commit();
                 _logger.LogInformation("Created Order Detail");
                 HttpContext.Session.Remove("GioHang");

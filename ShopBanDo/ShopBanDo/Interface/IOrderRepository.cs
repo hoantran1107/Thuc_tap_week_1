@@ -11,7 +11,7 @@ namespace ShopBanDo.Interface
     {
         /*IEnumerable<Order> GetOrder();*/
         public List<Order> GetListOrderOfCustomer(int CustomerID);
-        Task CreateOrder(Order order);
+        void CreateOrder(Order order);
         
     }
 }

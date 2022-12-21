@@ -7,22 +7,37 @@
     using Microsoft.Extensions.Logging;
     using ShopBanDo.Extension;
     using ShopBanDo.Helpper;
+    using ShopBanDo.Interface;
     using ShopBanDo.Models;
     using ShopBanDo.ModelView;
+    using ShopBanDo.Repositories;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class CheckoutController : Controller
     {
         private readonly dbshopContext _context;
-
+        private readonly IOrderRepository _orderRepository;
+        private readonly IGenericRepository <OrderDetail> _orderDetailRepository;
+        private readonly IGenericRepository <Customer> _customerRepository;
+        private readonly IUnitOfWork _uow;
+            
         public INotyfService _notyfService { get; }
-
         private readonly ILogger<CheckoutController> _logger;
-
-        public CheckoutController(dbshopContext context, INotyfService notyfService,ILogger<CheckoutController> logger)
+        public CheckoutController(dbshopContext context,
+                                  IOrderRepository orderRepository,
+                                  IGenericRepository<OrderDetail> orderDetailRepository,
+                                  IGenericRepository<Customer> customerRepository,
+                                  IUnitOfWork uow, 
+                                  INotyfService notyfService,
+                                  ILogger<CheckoutController> logger)
         {
+            _orderRepository = orderRepository;
+            _customerRepository = customerRepository;
+            _orderDetailRepository = orderDetailRepository;
+            _uow = uow;
             _context = context;
             _notyfService = notyfService;
             _logger = logger;
@@ -67,7 +82,7 @@
 
         [HttpPost]
         [Route("checkout.html", Name = "Checkout")]
-        public IActionResult Index(MuaHangVM muaHang)
+        public async Task<IActionResult> Index(MuaHangVM muaHang)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -79,16 +94,14 @@
                 return View(model);
             }
 
-            var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+            //var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+            var khachhang = _uow.GetRepository<Customer>().GetAll().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
             model.CustomerId = khachhang.CustomerId;
             model.FullName = khachhang.FullName;
             model.Email = khachhang.Email;
             model.Phone = khachhang.Phone;
             model.Address = khachhang.Address;
             khachhang.Address = muaHang.Address;
-            _context.Update(khachhang);
-            _context.SaveChanges();
-
             try
             {
                 if (!ModelState.IsValid)
@@ -106,8 +119,7 @@
                 donhang.Paid = false;
                 donhang.Note = Utilities.StripHTML(model.Note);
                 donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
-                _context.Add(donhang);
-                _context.SaveChanges();
+                _uow.GetRepository<Order>().Add(donhang, true);
                 _logger.LogInformation("Created Order");
                 foreach (var item in cart)
                 {
@@ -118,17 +130,20 @@
                     orderDetail.Total = item.amount * item.product.Price;
                     orderDetail.Price = item.product.Price;
                     orderDetail.CreateDate = DateTime.Now;
-                    _context.Add(orderDetail);
+                    // await _uow add orderDetail
+                    _uow.GetRepository<OrderDetail>().Add(orderDetail, true);
                 }
-                _context.SaveChanges();
+                await _uow.Commit();
                 _logger.LogInformation("Created Order Detail");
                 HttpContext.Session.Remove("GioHang");
                 _notyfService.Success("Checkout success");
                 return RedirectToAction("Success");
             }
-            catch
+            catch(Exception)
             {
                 ViewBag.GioHang = cart;
+                _notyfService.Error("Checkout error");
+                await _uow.Rollback();
                 return View(model);
             }
         }

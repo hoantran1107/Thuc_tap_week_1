@@ -16,6 +16,9 @@ namespace ShopBanDo.Repositories
             
         }
 
+        public void CreateOrder(Order order) =>
+            _context.Orders.Add(order);
+
         public List<Order> GetListOrderOfCustomer(int CustomerID)
         {
             return _context.Orders

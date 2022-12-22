@@ -48,17 +48,17 @@ namespace ShopBanDo
                 config.IsDismissable = true; 
                 config.Position = NotyfPosition.BottomRight; });
             //add services session
-            services.AddSession(options => options.IdleTimeout = TimeSpan.FromDays(1));
+            services.AddSession();
             //add authen cho cookie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(p =>
+                .AddCookie(/*p =>
                 {
                     p.Cookie.Name = "UserLoginCookie";
                     p.ExpireTimeSpan = TimeSpan.FromDays(1);
                     //p.LoginPath = "/dang-nhap.html";
                     //p.LogoutPath = "/dang-xuat/html";
                     p.AccessDeniedPath = "/not-found.html";
-                });
+                }*/);
 
             #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -91,7 +91,7 @@ namespace ShopBanDo
             app.UseCookiePolicy();
 
             app.UseRouting();
-            //su dung authentication
+
             app.UseAuthentication();
 
             app.UseAuthorization();

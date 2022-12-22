@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using Serilog;
     using ShopBanDo.Extension;
     using ShopBanDo.Helpper;
     using ShopBanDo.Interface;
@@ -120,7 +121,7 @@
                 donhang.Note = Utilities.StripHTML(model.Note);
                 donhang.Total = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
                 _uow.GetRepository<Order>().Add(donhang, true);
-                _logger.LogInformation("Created Order");
+                Log.Information("Created Order");
                 foreach (var item in cart)
                 {
                     OrderDetail orderDetail = new OrderDetail();
@@ -134,7 +135,8 @@
                     _uow.GetRepository<OrderDetail>().Add(orderDetail, true);
                 }
                 await _uow.Commit();
-                _logger.LogInformation("Created Order Detail");
+                _logger.LogInformation("Oder created");
+                Log.Information("Created Order Detail");
                 HttpContext.Session.Remove("GioHang");
                 _notyfService.Success("Checkout success");
                 return RedirectToAction("Success");
@@ -142,6 +144,7 @@
             catch(Exception)
             {
                 ViewBag.GioHang = cart;
+                Log.Error("Checkout Error");
                 _notyfService.Error("Checkout error");
                 await _uow.Rollback();
                 return View(model);

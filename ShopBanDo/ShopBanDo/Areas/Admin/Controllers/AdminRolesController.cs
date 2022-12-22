@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ShopBanDo.Areas.Admin.Filter;
 using ShopBanDo.Models;
 
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
+    [AuthorizeActionFilter]
     public class AdminRolesController : Controller
     {
         private readonly dbshopContext _context;

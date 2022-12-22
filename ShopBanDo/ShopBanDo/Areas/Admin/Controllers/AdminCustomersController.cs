@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
+using ShopBanDo.Areas.Admin.Filter;
 using ShopBanDo.Models;
 
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeActionFilter]
     public class AdminCustomersController : Controller
     {
         private readonly dbshopContext _context;

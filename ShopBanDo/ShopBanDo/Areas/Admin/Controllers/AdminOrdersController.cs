@@ -5,12 +5,14 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using PagedList.Core;
+    using ShopBanDo.Areas.Admin.Filter;
     using ShopBanDo.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     [Area("Admin")]
+    [AuthorizeActionFilter]
     public class AdminOrdersController : Controller
     {
         private readonly dbshopContext _context;
@@ -27,7 +29,7 @@
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
             var pageSize = 20;
-            var lsOrder = _context.Orders.Include(o => o.Customer).Include(o => o.TransactStatus).OrderBy(x => x.OrderDate);
+            var lsOrder = _context.Orders.Include(o => o.Customer).Include(o => o.TransactStatus).OrderByDescending(x => x.OrderId);
             PagedList<Order> models = new PagedList<Order>(lsOrder, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
             return View(models);

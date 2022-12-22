@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using ShopBanDo.Models;
 using ShopBanDo.ModelView;
 using System;
@@ -72,6 +74,8 @@ namespace ShopBanDo.Controllers
                 //tat ca san pham duoc ghim o trang home
                 ViewBag.AllProducts = lsProducts;
             }
+            Log.Information("Index page");
+            _logger.LogInformation("User:{abc} login", HttpContext.Session.GetString("CustomerId"));
             return View(model);
         }
         [Route("/lien-he.html", Name = "Contact")]

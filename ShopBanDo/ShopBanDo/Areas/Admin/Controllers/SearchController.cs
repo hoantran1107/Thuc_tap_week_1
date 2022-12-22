@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShopBanDo.Areas.Admin.Filter;
 using ShopBanDo.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeActionFilter]
     public class SearchController : Controller
     {
         private readonly dbshopContext _context;

@@ -1,0 +1,62 @@
+﻿@using PagedList.Core.Mvc
+@model ShopBanDo.Models.Customer;
+@{
+    ViewData["Title"] = "Send Email to Customer";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+
+</style>
+
+<table>
+    <tr>
+        <th colspan="2">
+            <h2>Send Email To Customer</h2>
+        </th>
+    </tr>
+    <tr>
+        <td> Choose Email Customer: </td>
+        <td>
+            <form asp-action="CustomerDrop" asp-area="Admin" asp-controller="SendEmail">
+                <div class="row">
+                    <div class="card-body">
+                        <form class="form-sample">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <select class="form-control" id="txtEmail" name="Email" style="min-width: 300px;" asp-items="ViewBag.Email">
+                                            <option disabled selected>Choose Customer Send Email</option>
+                                            @*<option value="">Select all</option>*@
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Title :
+        </td>
+        <td>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Title Email">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Email: 
+        </td>
+        <td>
+            <textarea>
+
+            </textarea>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="submit"/></td>
+    </tr>
+</table>
+

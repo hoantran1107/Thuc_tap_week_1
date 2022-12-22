@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Policy = "Staff")]
+    [AuthorizeActionFilter]
     public class SearchController : Controller
     {
         private readonly dbshopContext _context;

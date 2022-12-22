@@ -16,7 +16,7 @@ using ShopBanDo.Models;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Policy = "Staff")]
+    [AuthorizeActionFilter]
     public class AdminPagesController : Controller
     {
         private readonly dbshopContext _context;

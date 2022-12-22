@@ -12,7 +12,6 @@ using ShopBanDo.Models;
 
 namespace ShopBanDo.Areas.Admin.Controllers
 {
-    [Authorize(Policy ="AdminOnly")]
     [Area("Admin")]
     [AuthorizeActionFilter]
     public class AdminRolesController : Controller

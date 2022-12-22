@@ -6,10 +6,12 @@ using ShopBanDo.Models;
 using MailKit.Security;
 using MimeKit;
 using Microsoft.Extensions.Configuration;
+using ShopBanDo.Areas.Admin.Filter;
 
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeActionFilter]
     public class SendEmailController : Controller
     {
         private readonly dbshopContext _context;

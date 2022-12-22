@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Policy ="Staff")]
+    [AuthorizeActionFilter]
     public class AdminOrdersController : Controller
     {
         private readonly dbshopContext _context;

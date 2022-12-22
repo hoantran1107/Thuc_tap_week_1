@@ -87,7 +87,9 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Email,admin.Email),
-                        new Claim("AccountId", admin.AccountId.ToString())
+                        new Claim("AccountId", admin.AccountId.ToString()),
+                        new Claim(ClaimTypes.Name,admin.Fullname),
+                        new Claim(ClaimTypes.Role,admin.RoleId.ToString())
                     };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -112,5 +114,14 @@ namespace ShopBanDo.Areas.Admin.Controllers
             }
             return View(account);
         }
+
+        [HttpGet]
+        public IActionResult Logout() //done
+        {
+            HttpContext.SignOutAsync();
+            HttpContext.Session.Remove("AccountId");
+            return RedirectToAction("Login");
+        }
     }
+
 }

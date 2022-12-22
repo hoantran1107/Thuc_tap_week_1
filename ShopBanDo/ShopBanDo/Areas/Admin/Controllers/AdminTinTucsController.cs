@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using ShopBanDo.Models;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy ="Staff")]
     public class AdminTinTucsController : Controller
     {
         private readonly dbshopContext _context;

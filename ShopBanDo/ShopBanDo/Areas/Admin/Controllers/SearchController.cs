@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopBanDo.Areas.Admin.Filter;
 using ShopBanDo.Models;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AuthorizeActionFilter]
+    [Authorize(Policy = "Staff")]
     public class SearchController : Controller
     {
         private readonly dbshopContext _context;

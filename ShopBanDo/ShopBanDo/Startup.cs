@@ -16,6 +16,7 @@ using ShopBanDo.UoW;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
@@ -51,15 +52,20 @@ namespace ShopBanDo
             services.AddSession();
             //add authen cho cookie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(/*p =>
+                .AddCookie(p =>
                 {
                     p.Cookie.Name = "UserLoginCookie";
                     p.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    p.LoginPath = "/Admin/AdminAccounts/Login";
                     //p.LoginPath = "/dang-nhap.html";
-                    //p.LogoutPath = "/dang-xuat/html";
-                    p.AccessDeniedPath = "/not-found.html";
-                }*/);
-
+                    p.LogoutPath = "/Home/Index";
+                    p.AccessDeniedPath = "/Admin/AccessDenied";
+                });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", options => options.RequireClaim("Roles", "1"));
+                options.AddPolicy("Staff", options => options.RequireAssertion(context=>context.User.HasClaim(claim=>claim.Value=="1"||claim.Value=="2")));
+            });
             #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IOrderRepository, OrderRespository>();
@@ -88,13 +94,12 @@ namespace ShopBanDo
             //su dung wwwroot enable static file to served to client
             app.UseStaticFiles();
 
-            app.UseCookiePolicy();
-
             app.UseRouting();
 
             app.UseAuthentication();
 
             app.UseAuthorization();
+            app.UseCookiePolicy();
 
             app.UseSession();
 

@@ -9,12 +9,12 @@ using ShopBanDo.Extension;
 using ShopBanDo.Repositories;
 using ShopBanDo.Interface;
 using Newtonsoft.Json;
-using ShopBanDo.Areas.Admin.Filter;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AuthorizeActionFilter]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly dbshopContext _context;

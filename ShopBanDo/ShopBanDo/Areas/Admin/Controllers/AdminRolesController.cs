@@ -12,7 +12,7 @@ using ShopBanDo.Models;
 
 namespace ShopBanDo.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Policy ="AdminOnly")]
     [Area("Admin")]
     [AuthorizeActionFilter]
     public class AdminRolesController : Controller

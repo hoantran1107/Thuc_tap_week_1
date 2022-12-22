@@ -1,7 +1,6 @@
-﻿namespace ShopBanDo.Areas.Admin.Controllers
-{
-    using AspNetCoreHero.ToastNotification.Abstractions;
-    using Microsoft.AspNetCore.Mvc;
+﻿    using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using PagedList.Core;
@@ -11,8 +10,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+namespace ShopBanDo.Areas.Admin.Controllers
+{
     [Area("Admin")]
-    [AuthorizeActionFilter]
+    [Authorize(Policy ="Staff")]
     public class AdminOrdersController : Controller
     {
         private readonly dbshopContext _context;

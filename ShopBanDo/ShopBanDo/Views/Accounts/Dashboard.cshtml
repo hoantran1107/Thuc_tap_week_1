@@ -84,13 +84,15 @@
                                 <form asp-action="UpdateAddress" id="form_edit_address" style="display = 'none'">
                                     <table id="table_customer">
                                         <tr>
-                                            <td colspan="2"><p style="text-align: center">Hi, <b>@Model.FullName</b></p></td>
-                                            
+                                            <td colspan="2"><p>Hi, <b>@Model.FullName</b></p></td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <span>Phone number: @Model.Phone</span>
                                             </td>
+                                            
+                                        </tr>
+                                        <tr>
                                             <td style="text-align: left">
                                                 <span>Email: @Model.Email</span>
                                             </td>
@@ -99,9 +101,11 @@
                                             <td style="padding-top: 5px">
                                                 Address:<span id="hide"></span><input id="show_hide_address" name="newAddress" readonly type="text" value="@Model.Address" />
                                                 <img id="btn" src="~/icon_edit.png" onclick="click_edit_show_form()" height="15px" width="15px" />
-                                                
+                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
-                                                <button id="input_submit" class="btn btn-outline-info" style="display: none">Change Address </button>
+                                                <button id="input_submit" class="btn btn-outline-success" style="display: none">Change Address </button>
                                             </td>
                                         </tr>
                                     </table>
@@ -246,6 +250,7 @@
                 text_readonly.style.borderColor = "white";
             }
         }
+        // auto resize to value
         const hide = document.getElementById('hide');
         const txt = document.getElementById('show_hide_address');
         resize();

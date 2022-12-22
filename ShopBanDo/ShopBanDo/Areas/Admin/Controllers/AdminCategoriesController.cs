@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ using ShopBanDo.Models;
 namespace ShopBanDo.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AuthorizeActionFilter]
+    [Authorize(Policy = "AdminOnly")]
     public class AdminCategoriesController : Controller
     {
         private readonly dbshopContext _context;

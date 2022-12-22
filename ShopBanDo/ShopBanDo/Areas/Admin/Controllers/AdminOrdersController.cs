@@ -122,7 +122,7 @@
             }
             _context.Update(donhang);
             await _context.SaveChangesAsync();
-            _notyfService.Success("Cập nhật trạng thái đơn hàng thành công");
+            _notyfService.Success("Order update success");
             return RedirectToAction(nameof(Index));
         }
 

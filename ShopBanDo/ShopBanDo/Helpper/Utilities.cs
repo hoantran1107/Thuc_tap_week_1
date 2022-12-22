@@ -1,9 +1,14 @@
-﻿using System;
+﻿using MailKit.Security;
+using Microsoft.Extensions.Configuration;
+using MimeKit;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShopBanDo.Helpper
@@ -164,6 +169,48 @@ namespace ShopBanDo.Helpper
             catch
             {
                 return null;
+            }
+        }
+        public static void MessageEmail(string emailFrom,string title, string body, string nameCustomer)
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", false);
+            IConfiguration config = builder.Build();
+
+            string host = config.GetValue<string>("Smtp:Host");
+            int port = config.GetValue<int>("Smtp:Port");
+            string fromEmail = config.GetValue<string>("Smtp:FromEmail");
+            string userName = config.GetValue<string>("Smtp:UserName");
+            string passWord = config.GetValue<string>("Smtp:Password");
+
+            try
+            {
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.Connect(host, port, SecureSocketOptions.SslOnConnect);
+                    client.Authenticate(fromEmail, passWord);
+
+                    var bodyBuilder = new BodyBuilder
+                    {
+                        HtmlBody = $"Hello {nameCustomer}" +
+                        $"<p>{body}</p>" +
+                        "<p>Thank you and best regard<p>" +
+                        "<p>Male Shope Tel:0927479189</p>",
+                    };
+                    var message = new MimeMessage
+                    {
+                        Body = bodyBuilder.ToMessageBody(),
+                    };
+
+                    message.From.Add(new MailboxAddress("Male Shop: ", userName));
+                    message.To.Add(new MailboxAddress("Customer: ", emailFrom));
+                    message.Subject = title;
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex.ToString());
             }
         }
     }

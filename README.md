@@ -9,3 +9,5 @@
 # tai khoan khach
 hoantran1107@gmail.com
 123456
+# lenh tai lai model
+Scaffold-DbContext 'Server=DESKTOP-DDQN6I1\HOANTRAN;Initial Catalog=dbshop;Trusted_Connection=True;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force

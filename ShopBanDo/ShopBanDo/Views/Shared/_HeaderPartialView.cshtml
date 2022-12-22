@@ -6,6 +6,9 @@
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__text">
+        <p>Free shipping, 30-day return or refund guarantee.</p>
+    </div>
     <div class="offcanvas__option">
         <div class="header__top__links">
             @* <a href="/taikhoan/dang-nhap.html">Đăng nhập</a>
@@ -17,22 +20,22 @@
                     <a href="/taikhoan/dang-xuat.html">Log out</a>
                     <a href="#">Welcome, @User.Identity.Name</a>
                     <a href="/tai-khoan-cua-toi.html">My account</a>}
-               else
-               {
+                else
+                {
                     <a href="/taikhoan/dang-nhap.html">Log in</a>
-                    <a href="/dangki/taikhoan.html">Sign up</a> 
-               } 
-               }
+                    <a href="/dangki/taikhoan.html">Sign up</a>
+                }
+            }
         </div>
     </div>
     <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
-        <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
-        @* @await Component.InvokeAsync("NumberCart")
-            <div class="offcanvas-minicart_wrapper" id="miniCart">
-                @await Component.InvokeAsync("HeaderCart")
-            </div>*@
-    @await Component.InvokeAsync("NumberCart")
+        @* <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
+             @await Component.InvokeAsync("NumberCart")
+                <div class="offcanvas-minicart_wrapper" id="miniCart">
+                    @await Component.InvokeAsync("HeaderCart")
+                </div>*@
+        @await Component.InvokeAsync("NumberCart")
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__text">
@@ -46,11 +49,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-7">
-                    @*   <div class="header__top__left">
+                       <div class="header__top__left">
                             <p>Free shipping, 30-day return or refund guarantee.</p>
-                        </div>*@
+                        </div>
                 </div>
-                <div class="col-lg-10 col-md-5">
+                <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
                             @* @if (Context.Session.GetString("CustomerId") != null)
@@ -114,8 +117,8 @@
             </div>
             <div class="col-lg-2 col-md-2">
                 <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a>
+                   @* <a href="#" class="search-switch"><img src="~/Customerassets/img/icon/search.png" alt=""></a>
+                    <a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a> *@
                     @await Component.InvokeAsync("NumberCart")
                 </div>
                 <div class="offcanvas-minicart_wrapper" id="miniCart">

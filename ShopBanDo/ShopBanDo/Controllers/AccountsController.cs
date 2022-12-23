@@ -234,7 +234,7 @@
 
         [HttpGet]
         //[Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
-        [Route("account/loout", Name = "DangXuat")]
+        [Route("account/logout", Name = "DangXuat")]
         public IActionResult Logout() //done
         {
             HttpContext.SignOutAsync();

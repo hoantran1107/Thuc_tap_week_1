@@ -75,8 +75,7 @@ namespace ShopBanDo.Controllers
             var pageSize = 12;
             var danhmuc = _context.Categories.Find(Catid);
             IEnumerable<Product> item;
-
-            item = _product.GetActiveProducts();
+            item = _product.FindId(Catid);
             //IsCustomers IOrderQueryable <> ToList()
             //Make change in View
 

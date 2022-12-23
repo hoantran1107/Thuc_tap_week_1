@@ -57,7 +57,7 @@
                                             <td class="quantity__item">
                                                 <div class="quantity">
                                                     <div class="">
-                                                        <input class="cartItem pro-qty-2" data-mahh="@item.product.ProductId" min="1" data-dongia="@item.product.Price" type="number" value="@item.amount">
+                                                        <input class="cartItem" data-mahh="@item.product.ProductId" min="1" data-dongia="@item.product.Price" type="number" value="@item.amount">
                                                     </div>
                                                 </div>
                                             </td>
@@ -99,11 +99,11 @@
                         </ul>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
+                            <a href="/checkout" class="btn btn-secondary btn-primary-hover">Payment</a>
                         }
                         else
                         {
-                            <a href="taikhoan/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
+                            <a href="account/login?returnUrl=/checkout" class="btn btn-secondary btn-primary-hover">Payment</a>
                         }
                         @*<a href="#" class="primary-btn">Thanh toán</a>*@
                     </div>
@@ -163,7 +163,7 @@
                     success: function (result) {
                         if (result.success) {
                             loadHeaderCart();//Reload lai gio hang
-                            window.location = 'cart.html';
+                            window.location = 'cart';
                         }
                     },
                     error: function (rs) {

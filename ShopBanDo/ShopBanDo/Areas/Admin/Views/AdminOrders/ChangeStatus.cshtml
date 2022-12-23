@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Order Status";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var OrderDetail = ViewBag.OrderDetails;
 }
 
 
@@ -38,6 +39,39 @@
                         </tr>
                     </tbody>
                 </table>
+                <h6>Product in Order</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Amout</th>
+                                <th>Price</th>
+                                <th>Total Money</th>
+                            </tr>
+                            @if (OrderDetail == null)
+                            {
+                                <p>No Order Ye</p>
+                            }
+                            @{else
+                                {
+                                    foreach (OrderDetail item in OrderDetail)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductId</td>
+                                            <td>@item.Product.ProductName</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@item.Product.Price</td>
+                                            <td>@item.Total.Value.ToString("#,##0") VNĐ</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     <div class="card">

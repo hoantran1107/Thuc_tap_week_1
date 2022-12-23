@@ -130,8 +130,15 @@
                             </ul>
                         </div>
                         <div class="product__item__text">
-                            <h6>@item.ProductName</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            @if (item.UnitslnStock.Value > 0)
+                            {
+                                <h6>@item.ProductName</h6>
+                                <a id="@item.ProductId" onclick="" class="add-to-cart">+ Add To Cart</a>
+                            }
+                            else
+                            {
+                                <h6 class="text-muted">@item.ProductName - Out of Stock</h6>
+                            }
                             <div class="rating">
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
@@ -172,8 +179,15 @@
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <h6>@item2.ProductName</h6>
-                                <a href="#" class="add-cart">+ Add To Cart</a>
+                                @if (item2.UnitslnStock.Value > 0)
+                                {
+                                    <h6>@item2.ProductName</h6>
+                                    <a id="@item2.ProductId" onclick="" class="add-to-cart">+ Add To Cart</a>
+                                }
+                                else
+                                {
+                                    <h6 class="text-muted">@item2.ProductName - Out of Stock</h6>
+                                }
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -303,3 +317,60 @@
     </div>
 </section>
 <!-- Latest Blog Section End -->
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart").click(function () {
+                    var productid = this.id;
+                    var soLuong = "1";
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                            amount: soLuong
+                        },
+                        success: function (response) {
+                            if (response.result == 'Redirect') {
+                                window.location = response.url;
+                            }
+                            else {
+                                loadHeaderCart(); //Add Product success
+                                location.reload();
+                            }
+                            console.log(response); // log to the console to see whether it worked
+                        },
+                        error: function (error) {
+                            alert("There was an error posting the data to the server: " + error.responseText);
+                        }
+                    });
+                });
+
+        @*$(".removecart").click(function () {
+                var productid = $(this).attr("data-productid");
+                $.ajax({
+                url: "api/cart/remove",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function (result) {
+                if (result.success) {
+                loadHeaderCart();//Reload lai gio hang
+                location.reload();
+                }
+                },
+                error: function (rs) {
+                alert("Remove Cart Error !")
+                }
+                });
+                });*@
+                        });
+            function loadHeaderCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+            }
+        });
+    </script>
+}

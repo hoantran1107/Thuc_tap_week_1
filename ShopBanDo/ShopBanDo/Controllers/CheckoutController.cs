@@ -22,6 +22,7 @@
         private readonly IOrderRepository _orderRepository;
         private readonly IGenericRepository <OrderDetail> _orderDetailRepository;
         private readonly IGenericRepository <Customer> _customerRepository;
+        private readonly IGenericRepository<ProductRepository> _productRepository;
         private readonly IUnitOfWork _uow;
             
         public INotyfService _notyfService { get; }
@@ -30,12 +31,14 @@
                                   IOrderRepository orderRepository,
                                   IGenericRepository<OrderDetail> orderDetailRepository,
                                   IGenericRepository<Customer> customerRepository,
+                                  IGenericRepository<ProductRepository> productRepository,
                                   IUnitOfWork uow, 
                                   INotyfService notyfService,
                                   ILogger<CheckoutController> logger)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
+            _productRepository = productRepository;
             _orderDetailRepository = orderDetailRepository;
             _uow = uow;
             _context = context;

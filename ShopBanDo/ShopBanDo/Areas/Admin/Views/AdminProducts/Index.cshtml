@@ -16,15 +16,31 @@
     </ol>
 </nav>
 <div class="row m-b-30">
-    <div class="col-lg-8">
+    <div class="col-lg-2">
         <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminProducts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Create new product</span></a>
     </div>
-    <div class="col-lg-4 text-right">
+    <div class="col-lg-2">
+            <a  asp-area="Admin" asp-action="ExportToExcel" asp-controller="Exel" class="btn btn-primary">Export to Excel</a>
+    </div>
+    <div class="col-lg-2">
+        <form enctype="multipart/form-data" asp-area="Admin" asp-controller="Exel" asp-action="ImportProducts">
+            <input class="btn btn-primary" type="submit" value="Import Product Form Exel" />
+            <dl>
+                <dt>
+                    <label>Upload Excel File:</label>
+                </dt>
+                <dd>
+                    <input type="file" id="batchUsers" name="batchUsers">
+                </dd>
 
+            </dl>
+
+        </form>
     </div>
 </div>
 <br />
 <div class="card-body">
+    
     <form class="form-sample">
         <div class="row">
             <div class="col-md-4">
@@ -40,7 +56,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group row">
-                                <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Search product">
+                    <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Search product">
                 </div>
             </div>
         </div>

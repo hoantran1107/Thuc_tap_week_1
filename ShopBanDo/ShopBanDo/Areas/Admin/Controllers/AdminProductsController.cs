@@ -96,6 +96,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
             return View(product);
         }
 
+
+
         // GET: Admin/AdminProducts/Create
         public IActionResult Create()
         {

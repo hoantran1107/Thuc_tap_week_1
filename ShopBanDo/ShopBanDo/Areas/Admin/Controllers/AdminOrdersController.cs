@@ -119,10 +119,33 @@
                 if (donhang.Paid == true) donhang.PaymentDate = DateTime.Now;
                 if (donhang.TransactStatusId == 5) donhang.Deleted = true;
                 if (donhang.TransactStatusId == 3) donhang.ShipDate = DateTime.Now;
+                // update product quantity if TransactStatusId = 4 (delivered)
+                if ((donhang.TransactStatusId == 4) || (donhang.TransactStatusId == 3))
+                {
+                    var orderDetails = _context.OrderDetails.Where(x => x.OrderId == id).ToList();
+                    foreach (var item in orderDetails)
+                    {
+                        var product = _context.Products.FirstOrDefault(x => x.ProductId == item.ProductId);
+                        product.UnitslnStock = product.UnitslnStock - item.Quantity;
+                        _context.Products.Update(product);
+                    }
+                }
+                // update product quantity if TransactStatusId = 6 (returned)
+                if (donhang.TransactStatusId == 6)
+                {
+                    var orderDetails = _context.OrderDetails.Where(x => x.OrderId == id).ToList();
+                    foreach (var item in orderDetails)
+                    {
+                        var product = _context.Products.FirstOrDefault(x => x.ProductId == item.ProductId);
+                        product.UnitslnStock = product.UnitslnStock + item.Quantity;
+                        _context.Products.Update(product);
+                    }
+                }
+
             }
             _context.Update(donhang);
             await _context.SaveChangesAsync();
-            _notyfService.Success("Cập nhật trạng thái đơn hàng thành công");
+            _notyfService.Success("Update order status successfully!");
             return RedirectToAction(nameof(Index));
         }
 

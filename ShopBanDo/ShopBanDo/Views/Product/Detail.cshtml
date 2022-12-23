@@ -4,7 +4,7 @@
     ViewData["Title"] = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Product> list = ViewBag.SanPham;
-    string url = $"/List/{Model.Cat.Alias}-{Model.Cat.CatId}.html";
+    string url = $"/List/{Model.Cat.Alias}-{Model.Cat.CatId}";
 }
 <section class="shop-details">
     <div class="product__details__pic">
@@ -137,13 +137,20 @@
                                 </div>
                             </div>*@
                         <div class="product__details__cart__option">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    @*add to cart*@
-                                    <input id="txtsoLuong" name="txtsoLuong" type="text" step="1" value="1" min="1">
+                            @if (Model.UnitslnStock.Value > 0)
+                            {
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        @*add to cart*@
+                                        <input id="txtsoLuong" name="txtsoLuong" type="text" step="1" value="1" min="1">
+                                    </div>
                                 </div>
-                            </div>
-                            <a href="#"  class="primary-btn add-to-cart"><input hidden asp-for="ProductId" />add to cart</a>
+                                <a href="#" class="primary-btn add-to-cart"><input hidden asp-for="ProductId" />add to cart</a>
+                            }
+                            else
+                            {
+                                <p class="font-weight-bold text-danger">😓 This item currenly out of stock</p>
+                            }
                         </div>
                         <div class="product__details__btns__option">
                             <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
@@ -215,7 +222,7 @@
             {
                 foreach (var item in list)
                 {
-                    string urlsanpham = $"/{item.Alias}-{item.ProductId}.html";
+                    string urlsanpham = $"/{item.Alias}-{item.ProductId}";
                     <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
@@ -223,7 +230,7 @@
                                 <ul class="product__hover">
                                     <li><a href="#"><img src="~/Customerassets/img/icon/heart.png" alt=""></a></li>
                                     <li><a href="@urlsanpham"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                    <li><a href="#"><img src="~/Customerassets/img/icon/detail.png" alt=""><span>Product detail</span></a></li>
+                                    <li><a href="#"><img src="~/Customerassets/img/icon/search.png" alt=""><span>Product detail</span></a></li>
                                 </ul>
                             </div>
                             <div class="product__item__text">

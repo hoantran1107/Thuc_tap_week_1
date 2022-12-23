@@ -23,6 +23,7 @@
         private readonly IOrderRepository _orderRepository;
         private readonly IGenericRepository <OrderDetail> _orderDetailRepository;
         private readonly IGenericRepository <Customer> _customerRepository;
+        private readonly IGenericRepository<ProductRepository> _productRepository;
         private readonly IUnitOfWork _uow;
             
         public INotyfService _notyfService { get; }
@@ -31,12 +32,14 @@
                                   IOrderRepository orderRepository,
                                   IGenericRepository<OrderDetail> orderDetailRepository,
                                   IGenericRepository<Customer> customerRepository,
+                                  IGenericRepository<ProductRepository> productRepository,
                                   IUnitOfWork uow, 
                                   INotyfService notyfService,
                                   ILogger<CheckoutController> logger)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
+            _productRepository = productRepository;
             _orderDetailRepository = orderDetailRepository;
             _uow = uow;
             _context = context;
@@ -57,7 +60,7 @@
             }
         }
 
-        [Route("checkout.html", Name = "Checkout")]
+        [Route("checkout", Name = "Checkout")]
         public IActionResult Index(string returnUrl = null)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
@@ -82,7 +85,7 @@
         }
 
         [HttpPost]
-        [Route("checkout.html", Name = "Checkout")]
+        [Route("checkout", Name = "Checkout")]
         public async Task<IActionResult> Index(MuaHangVM muaHang)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
@@ -151,14 +154,15 @@
             }
         }
 
-        [Route("dat-hang-thanh-cong.html", Name = "Success")]
+        //[Route("dat-hang-thanh-cong.html", Name = "Success")]
+        [Route("oders-success", Name = "Success")]
         public IActionResult Success()
         {
 
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (string.IsNullOrEmpty(taikhoanID))
             {
-                return RedirectToAction("Login", "Accounts", new { returnUrl = "/dat-hang-thanh-cong.html" });
+                return RedirectToAction("Login", "Accounts", new { returnUrl = "/oders-success" });
             }
             var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
             var donhang = _context.Orders

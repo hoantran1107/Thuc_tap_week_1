@@ -74,12 +74,12 @@ namespace ShopBanDo.Controllers
             }
             return View(model);
         }
-        [Route("/lien-he.html", Name = "Contact")]
+        [Route("/contact", Name = "Contact")]
         public IActionResult Contact()
         {
             return View();
         }
-        [Route("/gioi-thieu.html", Name = "About")]
+        [Route("/about", Name = "About")]
         public IActionResult About()
         {
             return View();

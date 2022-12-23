@@ -19,6 +19,10 @@ namespace ShopBanDo.Repositories
         {
             return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
         }
+        public IEnumerable<Product> FindId(int id)
+        {
+            return _context.Products.Where(x => x.CatId==id && x.Active == true).OrderByDescending(x => x.DateCreated);
+        }
         //public IEnumerable<Product> FindProducts()
         //{
         //    return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
@@ -28,11 +32,6 @@ namespace ShopBanDo.Repositories
             if(key != null)
                 return _context.Products.Where(x => x.ProductName!.Contains(key) || x.Alias!.Contains(key));
             return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
-        }
-
-        public Task UpdateStockByOrder(Order order)
-        {
-            throw new NotImplementedException();
         }
     }
 }

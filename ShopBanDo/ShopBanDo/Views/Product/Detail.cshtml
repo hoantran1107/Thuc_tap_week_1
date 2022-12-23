@@ -137,13 +137,20 @@
                                 </div>
                             </div>*@
                         <div class="product__details__cart__option">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    @*add to cart*@
-                                    <input id="txtsoLuong" name="txtsoLuong" type="text" step="1" value="1" min="1">
+                            @if (Model.UnitslnStock.Value > 0)
+                            {
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        @*add to cart*@
+                                        <input id="txtsoLuong" name="txtsoLuong" type="text" step="1" value="1" min="1">
+                                    </div>
                                 </div>
-                            </div>
-                            <a href="#"  class="primary-btn add-to-cart"><input hidden asp-for="ProductId" />add to cart</a>
+                                <a href="#" class="primary-btn add-to-cart"><input hidden asp-for="ProductId" />add to cart</a>
+                            }
+                            else
+                            {
+                                <p class="font-weight-bold text-danger">😓 This item currenly out of stock</p>
+                            }
                         </div>
                         <div class="product__details__btns__option">
                             <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>

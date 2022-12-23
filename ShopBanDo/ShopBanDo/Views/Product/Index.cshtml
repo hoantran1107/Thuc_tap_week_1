@@ -275,12 +275,19 @@
                                             <li>
                                                 <a href="#"><img src="~/Customerassets/img/icon/compare.png" alt=""> <span>Compare</span></a>
                                             </li>
-                                            <li><a href="@url"><img src="~/Customerassets/img/icon/detail.png" alt=""><span>Product detail</span></a></li>
+                                            <li><a href="@url"><img src="~/Customerassets/img/icon/search.png" alt=""><span>Product detail</span></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
-                                        <h6>@item.ProductName</h6>
-                                        <a id="@item.ProductId" onclick="" class="add-to-cart">+ Add To Cart</a>
+                                        @if (item.UnitslnStock.Value > 0)
+                                        {   
+                                            <h6>@item.ProductName</h6>
+                                            <a id="@item.ProductId" onclick="" class="add-to-cart">+ Add To Cart</a>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="text-muted">@item.ProductName - Out of Stock</h6>
+                                        }
                                         <div class="rating">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>

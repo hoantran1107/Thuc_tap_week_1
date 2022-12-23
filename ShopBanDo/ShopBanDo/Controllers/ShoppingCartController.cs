@@ -160,7 +160,7 @@ namespace ShopBanDo.Controllers
             }
         }
         //trang gio hang
-        [Route("cart.html", Name = "Cart")]
+        [Route("cart", Name = "Cart")]
         public IActionResult Index()
         {
             /*List<int> lsProductIDs = new List<int>();

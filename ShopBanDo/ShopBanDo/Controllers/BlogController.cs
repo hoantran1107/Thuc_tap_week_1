@@ -16,7 +16,7 @@ namespace ShopBanDo.Controllers
         {
             _context = context;
         }
-        [Route("blogs.html", Name = ("Blog"))]
+        [Route("blogs", Name = ("Blog"))]
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
@@ -36,7 +36,7 @@ namespace ShopBanDo.Controllers
 
             return View(models);
         }
-        [Route("/tin-tuc/{Alias}-{id}.html", Name = "TinChiTiet")]
+        [Route("/news/{Alias}-{id}", Name = "TinChiTiet")]
         public async Task<IActionResult> Details(int? id)
         {
             //Next Blog 

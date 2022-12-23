@@ -56,7 +56,7 @@
             }
         }
 
-        [Route("checkout.html", Name = "Checkout")]
+        [Route("checkout", Name = "Checkout")]
         public IActionResult Index(string returnUrl = null)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
@@ -81,7 +81,7 @@
         }
 
         [HttpPost]
-        [Route("checkout.html", Name = "Checkout")]
+        [Route("checkout", Name = "Checkout")]
         public async Task<IActionResult> Index(MuaHangVM muaHang)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
@@ -148,14 +148,15 @@
             }
         }
 
-        [Route("dat-hang-thanh-cong.html", Name = "Success")]
+        //[Route("dat-hang-thanh-cong.html", Name = "Success")]
+        [Route("oders-success", Name = "Success")]
         public IActionResult Success()
         {
 
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (string.IsNullOrEmpty(taikhoanID))
             {
-                return RedirectToAction("Login", "Accounts", new { returnUrl = "/dat-hang-thanh-cong.html" });
+                return RedirectToAction("Login", "Accounts", new { returnUrl = "/oders-success" });
             }
             var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
             var donhang = _context.Orders

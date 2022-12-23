@@ -149,6 +149,7 @@
             //
             await HttpContext.SignInAsync(claimsPrincipal);
             _notyfService.Success("Resgister success");
+            Utilities.MessageEmail(khachhang.Email,"Đăng kí thành công","success",khachhang.FullName);
             //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
             return RedirectToAction("Dashboard", "Accounts");
         }

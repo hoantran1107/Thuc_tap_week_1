@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Notyf;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +31,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             _notifyService = notyfService;
             _context = context;
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Admin/AdminAccounts
         public async Task<IActionResult> Index()
         {
@@ -44,7 +46,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             var dbshopContext = _context.Accounts.Include(a => a.Role);
             return View(await dbshopContext.ToListAsync());
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Admin/AdminAccounts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -63,7 +65,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
 
             return View(account);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Admin/AdminAccounts/Create
         public IActionResult Create()
         {
@@ -92,7 +94,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
             return View(account);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Admin/AdminAccounts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -145,7 +147,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
             return View(account);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Admin/AdminAccounts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -186,11 +188,11 @@ namespace ShopBanDo.Areas.Admin.Controllers
         public IActionResult Login(string returnUrl)
         {
             //trang dang nhap
-            var taikhoanID = HttpContext.Session.GetString("AccountId");
-            if (taikhoanID != null)
-            {
-                return RedirectToAction("Login", "AdminAccounts");
-            }
+            //var taikhoanID = HttpContext.Session.GetString("AccountId");
+            //if (taikhoanID != null)
+            //{
+            //    return RedirectToAction("Login", "AdminAccounts");
+            //}
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -237,14 +239,14 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Email,admin.Email),
-                        new Claim("AccountId", admin.AccountId.ToString())
+                        new Claim(ClaimTypes.Name, admin.Fullname),
+                        new Claim("AccountId", admin.AccountId.ToString()),
+                        new Claim("Roles",admin.RoleId.ToString())
                     };
-                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                    await HttpContext.SignInAsync(claimsPrincipal);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,claimsPrincipal);
                     _notifyService.Success("Login Success");
-
                     if (string.IsNullOrEmpty(returnUrl))
                     {
                         return RedirectToAction("Index", "Home", new { Areas = "Admin" });
@@ -260,6 +262,18 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 return RedirectToAction("DangkyTaiKhoan", "Accounts");
             }
             return View(account);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login","AdminAccounts");
+        }
+        [Route("Admin/AccessDenied", Name ="Denied")]
+        [Authorize]
+        public IActionResult ForbidPage()
+        {
+            return View();
         }
     }
 }

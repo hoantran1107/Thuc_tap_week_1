@@ -41,7 +41,7 @@
                                 A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                 commitment to exceptional quality.
                             </p>
-                            <a href="/shop-product.html" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                            <a href="/shop-product" class="primary-btn">Shop now <span class="arrow_right"></span></a>
                             <div class="hero__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Clothing Collections 2030</h2>
-                        <a href="/shop-product.html">Shop now</a>
+                        <a href="/shop-product">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Accessories</h2>
-                        <a href="/shop-product.html">Shop now</a>
+                        <a href="/shop-product">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Shoes Spring 2030</h2>
-                        <a href="/shop-product.html">Shop now</a>
+                        <a href="/shop-product">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
         <div class="row product__filter">
             @foreach (var item in allproduct)
             {
-                string url = $"/{item.Alias}-{item.ProductId}.html";
+                string url = $"/{item.Alias}-{item.ProductId}";
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix all-product">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
@@ -167,7 +167,7 @@
             {
                 foreach (var item2 in item.lsProducts)
                 {
-                    string url = $"/{item2.Alias}-{item2.ProductId}.html";
+                    string url = $"/{item2.Alias}-{item2.ProductId}";
                     <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix @item.category.Alias">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="/images/products/@item2.Thumb">
@@ -279,7 +279,7 @@
             {
                 foreach (var item in Model.TinTucs)
                 {
-                    string url = $"/tin-tuc/{item.Alias}-{item.PostId}.html";
+                    string url = $"/news/{item.Alias}-{item.PostId}";
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="blog__item">
                             <div class="blog__item__pic set-bg" data-setbg="/images/news/@item.Thumb"></div>

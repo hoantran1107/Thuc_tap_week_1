@@ -70,7 +70,8 @@
             return RedirectToAction("Dashboard");
         }
 
-        [Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
+        //[Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
+        [Route("myaccount", Name = "Dashboard")]
         public IActionResult Dashboard() //done
         {
             //lay ra session sau khi dang nhap CustomerID
@@ -100,7 +101,8 @@
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("dangki/taikhoan.html", Name = "DangKy")]
+       // [Route("dangki/taikhoan.html", Name = "DangKy")]
+        [Route("account/register", Name = "DangKy")]
         public IActionResult DangkyTaiKhoan()
         {
             return View();
@@ -108,7 +110,8 @@
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("dangki/taikhoan.html", Name = "DangKy")]
+      //  [Route("dangki/taikhoan.html", Name = "DangKy")]
+        [Route("account/register", Name = "DangKy")]
         public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan) //done
         {
             if (!ModelState.IsValid) return View(taikhoan);
@@ -149,12 +152,15 @@
             //
             await HttpContext.SignInAsync(claimsPrincipal);
             _notyfService.Success("Resgister success");
+            Utilities.MessageEmail(khachhang.Email,"Đăng kí thành công","success",khachhang.FullName);
             //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
             return RedirectToAction("Dashboard", "Accounts");
         }
 
         [AllowAnonymous]
-        [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+       // [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+        [Route("account/login", Name = "DangNhap")]
+
         public IActionResult Login(string returnUrl) //done
         {
             //trang dang nhap
@@ -169,7 +175,8 @@
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+       // [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+        [Route("account/login", Name = "DangNhap")]
         public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl) //done
         {
 
@@ -227,7 +234,8 @@
         }
 
         [HttpGet]
-        [Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
+        //[Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
+        [Route("account/logout", Name = "DangXuat")]
         public IActionResult Logout() //done
         {
             HttpContext.SignOutAsync();
@@ -235,7 +243,8 @@
             return RedirectToAction("Index", "Home");
         }
 
-        [Route("taikhoan/orders.html", Name = "Orders")]
+       // [Route("taikhoan/orders.html", Name = "Orders")]
+        [Route("account/orders", Name = "Orders")]
         public IActionResult DanhSachOrder() //bo
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");

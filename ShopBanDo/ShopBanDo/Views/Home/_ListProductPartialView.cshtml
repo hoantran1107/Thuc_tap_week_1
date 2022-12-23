@@ -3,7 +3,7 @@
 {
     @foreach (var item in Model)
     {
-        string url = $"/{item.Alias}-{item.ProductId}.html";
+        string url = $"/{item.Alias}-{item.ProductId}";
             <div class="product__item">
                 <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
                     <ul class="product__hover">

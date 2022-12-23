@@ -17,7 +17,7 @@
                     <h4>Shop</h4>
                     <div class="breadcrumb__links">
                         <a href="/">Home page</a>
-                        <a href="/shop-product.html">List Product</a>
+                        <a href="/shop-product">List Product</a>
                         <span> @category.CatName</span>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                                             <ul class="nice-scroll">
                                                 @foreach (var item in Categori)
                                                 {
-                                                    string url = $"/List/{item.Alias}-{item.CatId}.html";
+                                                    string url = $"/List/{item.Alias}-{item.CatId}";
 
                                                     <li><a href="@url">@item.CatName</a></li>
 
@@ -82,7 +82,7 @@
                             </div>
                             </div>
                             </div>*@
-                            <div class="card">
+                            @*<div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
                                 </div>
@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                             @*Size <div class="card">
                             <div class="card-heading">
                             <a data-toggle="collapse" data-target="#collapseFour">Size</a>
@@ -182,7 +182,7 @@
                             </div>
                             </div>
                             </div>*@
-                            <div class="card">
+                            @*<div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
                                 </div>
@@ -199,7 +199,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -212,7 +212,7 @@
                                 <p>Showing @ViewBag.First – @ViewBag.Last of @ViewBag.TotalItem results</p>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        @*<div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__right">
                                 <p>Sort by Price:</p>
                                 <select>
@@ -221,7 +221,7 @@
                                     <option value="">$55 - $100</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="row">
@@ -265,7 +265,7 @@
                     {
                         foreach (var item in Model)
                         {
-                            string url = $"/{item.Alias}-{item.ProductId}.html";
+                            string url = $"/{item.Alias}-{item.ProductId}";
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item sale">
 
@@ -325,7 +325,7 @@
                         <div class="product__pagination">
                             @for (int i = 1; i <= ViewBag.Total; i++)
                             {
-                                string url = $"/List/{category.Alias}-{category.CatId}.html";
+                                string url = $"/List/{category.Alias}-{category.CatId}";
                                 <a class="active" href="@url?page=@i">@i</a>
                             }
                         </div>

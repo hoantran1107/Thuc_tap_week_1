@@ -21,7 +21,7 @@ namespace ShopBanDo.Controllers
             _context = context;
             _product = new ProductRepository(context);
         }
-        [Route("shop-product.html", Name = ("ShopProduct"))]
+        [Route("shop-product", Name = ("ShopProduct"))]
         public IActionResult Index(int? page)
         {
             
@@ -44,7 +44,7 @@ namespace ShopBanDo.Controllers
             return View(models);  
             
         }
-        [Route("/{Alias}-{id}.html", Name = ("ProductDetails"))]
+        [Route("/{Alias}-{id}", Name = ("ProductDetails"))]
         public IActionResult Detail(string Alias, int id)
         {
             
@@ -68,15 +68,14 @@ namespace ShopBanDo.Controllers
            
           
         }
-        [Route("/List/{Alias}-{Catid}.html", Name = ("ListProduct"))]
+        [Route("/List/{Alias}-{Catid}", Name = ("ListProduct"))]
         public IActionResult List(string Alias, int Catid, int page =1)
         {
            
             var pageSize = 12;
             var danhmuc = _context.Categories.Find(Catid);
             IEnumerable<Product> item;
-
-            item = _product.GetActiveProducts();
+            item = _product.FindId(Catid);
             //IsCustomers IOrderQueryable <> ToList()
             //Make change in View
 
@@ -94,7 +93,7 @@ namespace ShopBanDo.Controllers
                 return View(models);  
             
         }
-        [Route("/search.html", Name = ("SearchProduct"))]
+        [Route("/search", Name = ("SearchProduct"))]
         public IActionResult Search(string searchString, int page = 1)
         {
 

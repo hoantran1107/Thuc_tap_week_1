@@ -23,7 +23,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
     [Area("Admin")]
     public class ExelController : Controller
     {
-        private  ProductRepository _productservices;
+        private ProductRepository _productservices;
         public IConfiguration Configuration { get; }
         private readonly dbshopContext _context;
         private readonly IUnitOfWork _uow;
@@ -40,38 +40,40 @@ namespace ShopBanDo.Areas.Admin.Controllers
         public async Task<IActionResult> ImportProducts(IFormFile batchUsers)
         {
 
-                if (batchUsers?.Length == 0) return RedirectToAction("Index", "AdminProducts");
-                else
-                {
-                    var stream = batchUsers.OpenReadStream();
-                    List<Product> products = new List<Product>();
-                    
-                        using (var package = new ExcelPackage(stream))
-                        {
-                            var worksheet = package.Workbook.Worksheets.First();//package.Workbook.Worksheets[0];
-                            var rowCount = worksheet.Dimension.Rows;
+            if (batchUsers?.Length == 0) return RedirectToAction("Index", "AdminProducts");
+            else
+            {
+                var stream = batchUsers.OpenReadStream();
+                List<Product> products = new List<Product>();
 
-                            for (var row = 5; row <= rowCount; row++)
-                            {
-                                try
-                                {
-                                    var name = worksheet.Cells[row, 1].Value?.ToString();
-                                    var price = worksheet.Cells[row, 2].Value?.ToString();
-                                    var Discount = worksheet.Cells[row, 3].Value?.ToString();
-                                    var CatId = worksheet.Cells[row, 4].Value?.ToString();
-                                    var UnitslnStock = worksheet.Cells[row, 5].Value?.ToString();
-                                    var Active = worksheet.Cells[row, 6].Value?.ToString();
-                                    var BestSeller = worksheet.Cells[row, 7].Value?.ToString();
-                                    var HomeFlag = worksheet.Cells[row, 8].Value?.ToString();
-                                    var Title = worksheet.Cells[row, 9].Value?.ToString();
-                                    var Tags = worksheet.Cells[row, 10].Value?.ToString();
-                                    var MetaDesc = worksheet.Cells[row, 11].Value?.ToString();
-                                    var MetaKey = worksheet.Cells[row, 12].Value?.ToString();
-                                    var Description = worksheet.Cells[row, 14].Value?.ToString();
-                                    var Anh = worksheet.Cells[row, 13].Value?.ToString();
-                                    if (Anh == "0") Anh = "default.jpg";
+                using (var package = new ExcelPackage(stream))
+                {
+                    var worksheet = package.Workbook.Worksheets.First();//package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
+
+                    for (var row = 5; row <= rowCount; row++)
+                    {
+                        try
+                        {
+                            var id = worksheet.Cells[row, 1].Value?.ToString();
+                            var name = worksheet.Cells[row, 2].Value?.ToString();
+                            var price = worksheet.Cells[row, 3].Value?.ToString();
+                            var Discount = worksheet.Cells[row, 4].Value?.ToString();
+                            var CatId = worksheet.Cells[row, 5].Value?.ToString();
+                            var UnitslnStock = worksheet.Cells[row, 6].Value?.ToString();
+                            var Active = worksheet.Cells[row, 7].Value?.ToString();
+                            var BestSeller = worksheet.Cells[row, 8].Value?.ToString();
+                            var HomeFlag = worksheet.Cells[row, 9].Value?.ToString();
+                            var Title = worksheet.Cells[row, 10].Value?.ToString();
+                            var Tags = worksheet.Cells[row, 11].Value?.ToString();
+                            var MetaDesc = worksheet.Cells[row, 12].Value?.ToString();
+                            var MetaKey = worksheet.Cells[row, 13].Value?.ToString();
+                            var Description = worksheet.Cells[row, 15].Value?.ToString();
+                            var Anh = worksheet.Cells[row, 14].Value?.ToString();
+                            if (Anh == "0") Anh = "default.jpg";
                             var product = new Product()
-                                {
+                            {
+                                
                                 ProductName = Utilities.ToTitleCase(name),
                                 Price = Convert.ToInt32(price),
                                 Discount = Convert.ToInt32(Discount),
@@ -88,21 +90,28 @@ namespace ShopBanDo.Areas.Admin.Controllers
                                 Thumb = Anh,
                                 DateCreated = DateTime.Now,
                                 Alias = Utilities.SEOUrl(name),
-                                };
-                                
-                            
-                            
-                            _uow.GetRepository<Product>().Add(product, true);
-                                }
-                                catch
-                                {
-                                    await _uow.Rollback();
-                                    Console.WriteLine("Something went wrong");
-                                }
+                            };
+                            if (id == null)
+                            {
+                                _uow.GetRepository<Product>().Add(product, true);
                             }
-                            await _uow.Commit();
+                            else
+                            {
+
+                               
+                                product.ProductId = Convert.ToInt32(id);
+                                _context.Update(product);
+                            }
                         }
-                        return RedirectToAction("Index","AdminProducts");
+                        catch
+                        {
+                            await _uow.Rollback();
+                            Console.WriteLine("Something went wrong");
+                        }
+                    }
+                    await _uow.Commit();
+                }
+                return RedirectToAction("Index", "AdminProducts");
             }
         }
         public IActionResult ExportToExcel()
@@ -131,42 +140,44 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
                 }
 
-                worksheet.Cells["A4"].Value = "Product Name";
-                worksheet.Cells["B4"].Value = "Price";
-                worksheet.Cells["C4"].Value = "Discount";
-                worksheet.Cells["D4"].Value = "CatId";
-                worksheet.Cells["E4"].Value = "UnitslnStock";
-                worksheet.Cells["F4"].Value = "Active";
-                worksheet.Cells["G4"].Value = "BestSeller";
-                worksheet.Cells["H4"].Value = "HomeFlag";
-                worksheet.Cells["I4"].Value = "Title";
-                worksheet.Cells["J4"].Value = "Tags";
-                worksheet.Cells["K4"].Value = "MetaDesc";
-                worksheet.Cells["L4"].Value = "MetaKey";
-                worksheet.Cells["M4"].Value = "Thumb";
-                worksheet.Cells["N4"].Value = "Description";
-                worksheet.Cells["A4:N4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A4:N4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
-                worksheet.Cells["A4:N4"].Style.Font.Bold = true;
+                worksheet.Cells["A4"].Value = "Id";
+                worksheet.Cells["B4"].Value = "Product Name";
+                worksheet.Cells["C4"].Value = "Price";
+                worksheet.Cells["D4"].Value = "Discount";
+                worksheet.Cells["E4"].Value = "CatId";
+                worksheet.Cells["F4"].Value = "UnitslnStock";
+                worksheet.Cells["G4"].Value = "Active";
+                worksheet.Cells["H4"].Value = "BestSeller";
+                worksheet.Cells["I4"].Value = "HomeFlag";
+                worksheet.Cells["J4"].Value = "Title";
+                worksheet.Cells["K4"].Value = "Tags";
+                worksheet.Cells["L4"].Value = "MetaDesc";
+                worksheet.Cells["M4"].Value = "MetaKey";
+                worksheet.Cells["N4"].Value = "Thumb";
+                worksheet.Cells["O4"].Value = "Description";
+                worksheet.Cells["A4:O4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A4:O4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:O4"].Style.Font.Bold = true;
 
                 row = 5;
                 foreach (var user in users)
                 {
-                    worksheet.Cells[row, 1].Value = user.ProductName;
-                    worksheet.Cells[row, 2].Value = user.Price;
-                    worksheet.Cells[row, 3].Value = user.Discount;
-                    worksheet.Cells[row, 4].Value = user.CatId;
-                    worksheet.Cells[row, 5].Value = user.UnitslnStock;
-                    worksheet.Cells[row, 6].Value = user.Active;
-                    worksheet.Cells[row, 7].Value = user.BestSeller;
-                    worksheet.Cells[row, 8].Value = user.HomeFlag;
-                    worksheet.Cells[row, 9].Value = user.Title;
-                    worksheet.Cells[row, 10].Value = user.Tags;
-                    worksheet.Cells[row, 11].Value = user.MetaDesc;
-                    worksheet.Cells[row, 12].Value = user.MetaKey;
-                    worksheet.Cells[row, 13].Value = user.Thumb;
-                    worksheet.Cells[row, 14].Value = user.Description;
-                    
+                    worksheet.Cells[row, 1].Value = user.ProductId;
+                    worksheet.Cells[row, 2].Value = user.ProductName;
+                    worksheet.Cells[row, 3].Value = user.Price;
+                    worksheet.Cells[row, 4].Value = user.Discount;
+                    worksheet.Cells[row, 5].Value = user.CatId;
+                    worksheet.Cells[row, 6].Value = user.UnitslnStock;
+                    worksheet.Cells[row, 7].Value = user.Active;
+                    worksheet.Cells[row, 8].Value = user.BestSeller;
+                    worksheet.Cells[row, 9].Value = user.HomeFlag;
+                    worksheet.Cells[row, 10].Value = user.Title;
+                    worksheet.Cells[row, 11].Value = user.Tags;
+                    worksheet.Cells[row, 12].Value = user.MetaDesc;
+                    worksheet.Cells[row, 13].Value = user.MetaKey;
+                    worksheet.Cells[row, 14].Value = user.Thumb;
+                    worksheet.Cells[row, 15].Value = user.Description;
+
                     row++;
                 }
 

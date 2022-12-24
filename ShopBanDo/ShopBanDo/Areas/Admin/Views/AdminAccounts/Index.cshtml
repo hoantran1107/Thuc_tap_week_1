@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ShopBanDo.Models.Account>
 
 @{
-    ViewData["Title"] = "Danh sách tài khoản";
+    ViewData["Title"] = "Manage account";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <p></p>
@@ -50,12 +50,6 @@
                         Email
                     </th>
                     <th>
-                        Password
-                    </th>
-                    <th>
-                        Salt
-                    </th>
-                    <th>
                         Status
                     </th>
                     <th>
@@ -87,12 +81,6 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Password)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Salt)
                             </td>
                             <td>
                                 @{

@@ -29,7 +29,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
             var pageSize = 20;
-            var lsOrder = _context.Orders.Include(o => o.Customer).Include(o => o.TransactStatus).OrderBy(x => x.OrderDate);
+            var lsOrder = _context.Orders.Include(o => o.Customer).Include(o => o.TransactStatus).OrderByDescending(x => x.OrderDate);
             PagedList<Order> models = new PagedList<Order>(lsOrder, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
             return View(models);
@@ -97,6 +97,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
                 return NotFound();
             }
             ViewData["Trangthai"] = new SelectList(_context.TransactStatuses, "TransactStatusId", "Status", order.TransactStatusId);
+            List<OrderDetail> orderDetail = _context.OrderDetails.Include(o => o.Product).Where(x => x.OrderId == id).ToList();
+            ViewBag.OrderDetails = orderDetail;
             return PartialView("ChangeStatus", order);
         }
 
@@ -148,6 +150,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
             _context.Update(donhang);
             await _context.SaveChangesAsync();
             _notyfService.Success("Order update success");
+            List<OrderDetail> orderDetail = _context.OrderDetails.Include(o => o.Product).Where(x => x.OrderId == id).ToList();
+            ViewBag.OrderDetails = orderDetail;
             return RedirectToAction(nameof(Index));
         }
 

@@ -131,7 +131,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
 
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "List Products ";
-                using (var r = worksheet.Cells["A1:N1"])
+                using (var r = worksheet.Cells["A1:O1"])
                 {
                     r.Merge = true;
                     r.Style.Font.Color.SetColor(Color.White);
@@ -139,7 +139,17 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
                 }
-
+                
+                worksheet.Cells["A2"].Value = "Product without no id mean create and with id mean update ";
+                using (var r = worksheet.Cells["A2:O2"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(40, 50, 93));
+                }
+                
                 worksheet.Cells["A4"].Value = "Id";
                 worksheet.Cells["B4"].Value = "Product Name";
                 worksheet.Cells["C4"].Value = "Price";

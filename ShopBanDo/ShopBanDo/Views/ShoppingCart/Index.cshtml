@@ -47,17 +47,18 @@
                                         <tr>
                                             <td class="product__cart__item">
                                                 <div class="product__cart__item__pic">
-                                                    <img src="~/images/products/@item.product.Thumb" alt="@item.product.Alias">
+                                                    <img width="180" height="200" src="~/images/products/@item.product.Thumb" alt="@item.product.Alias">
                                                 </div>
                                                 <div class="product__cart__item__text">
                                                     <h6>@item.product.ProductName</h6>
-                                                    <h5>@item.product.Price.Value.ToString("#,##0") VND</h5>
+                                                    <h5>Price @item.product.Price.Value.ToString("#,##0")VND</h5>
+                                                    <h5>Stock left @item.product.UnitslnStock </h5>
                                                 </div>
                                             </td>
                                             <td class="quantity__item">
                                                 <div class="quantity">
                                                     <div class="">
-                                                        <input class="cartItem" data-mahh="@item.product.ProductId" min="1" data-dongia="@item.product.Price" type="number" value="@item.amount">
+                                                        <input style="width:50px" class="cartItem" data-mahh="@item.product.ProductId" min="1" data-dongia="@item.product.Price" type="number" value="@item.amount" oninput="this.value = !!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : null">
                                                     </div>
                                                 </div>
                                             </td>
@@ -71,25 +72,25 @@
                         </table>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="continue__btn">
                                 <a href="/shop-product.html">Continue shopping</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                <a href="#" class="clear"><i class="fa fa-spinner"></i> Clear cart</a>
+                            </div>
+                        </div> <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="continue__btn update__btn">
+                                <a href="#" class="update"><i class="fa fa-spinner"></i> Update cart</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="cart__discount">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
-                        </form>
+                        
                     </div>
                     <div class="cart__total">
                         <h6>Order total</h6>
@@ -121,15 +122,84 @@
 @section Scripts{
     <script>
         $(function () {
-            function loadHeaderCart() {
+            $(".update").click(function loadHeaderCart() {
                 $('#miniCart').load("/AjaxContent/HeaderCart");
                 $('#numberCart').load("/AjaxContent/NumberCart");
-            }
+                window.location = 'cart';
+            });
+
+            function loadCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+                window.location = 'cart';
+            };
             // code xoa san pham khi so luong =0;
 
+            $(".cartItem").change(function () {
+                var productid = $(this).attr("data-mahh");
+                var soluong = parseInt($(this).val());
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soluong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            @* loadHeaderCart();*@//Reload lai gio hang
+                           @* window.location = 'cart';*@
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Cart Update Error !")
+                    }
+                });
+            });
 
+            $(".cartItem").click(function () {
+                var productid = $(this).attr("data-mahh");
+                var soluong = parseInt($(this).val());
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soluong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            @*loadHeaderCart();*@//Reload lai gio hang
+                           @* window.location = 'cart';*@
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Cart Update Error !")
+                    }
+                });
+            });
 
+            
 
+            $(".clear").click(function () {
+                $.ajax({
+                    url: "api/cart/clear",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {  },
+                    success: function (result) {
+                        if (result.success) {
+                            loadCart();//Reload lai gio hang
+                            location.reload();
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            });
 
             $(".removecart").click(function () {
                 var productid = $(this).attr("data-mahh");
@@ -140,7 +210,7 @@
                     data: { productID: productid },
                     success: function (result) {
                         if (result.success) {
-                            loadHeaderCart();//Reload lai gio hang
+                            loadCart();//Reload lai gio hang
                             location.reload();
                         }
                     },
@@ -149,7 +219,7 @@
                     }
                 });
             });
-            $(".cartItem").click(function () {
+            @*$(".cartItem").click(function () {
                 var productid = $(this).attr("data-mahh");
                 var soluong = parseInt($(this).val());
                 $.ajax({
@@ -170,7 +240,7 @@
                         alert("Cart Update Error !")
                     }
                 });
-            });
+            });*@
         });
     </script>
 }

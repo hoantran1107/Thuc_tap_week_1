@@ -179,7 +179,6 @@
         [Route("account/login", Name = "DangNhap")]
         public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl) //done
         {
-
             if (!ModelState.IsValid) return View(customer);
 
             //kiem tra co phai email hop le hay ko
@@ -201,6 +200,7 @@
             if (khachhang.Password != pass)
             {
                 _notyfService.Error("Wrong email or password");
+                ViewBag.ReturnUrl = returnUrl;
                 return View(customer);
             }
             //kiem tra xem account co bi disable hay khong

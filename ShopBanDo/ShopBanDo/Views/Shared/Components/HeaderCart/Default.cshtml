@@ -24,7 +24,7 @@
             </ul>
         </div>
         <div class="minicart-item_total">
-            <span>Tổng tiền</span>
+            <span>Total Money</span>
             <span class="ammount">@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span>
         </div>
         <div class="group-btn_wrap d-grid gap-2">
@@ -35,20 +35,121 @@
             }
             else
             {
-                <a href="account/login?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Payment</a>
+                <a href="account/login?returnUrl=/checkout" class="btn btn-secondary btn-primary-hover">Payment</a>
             }
+           
         </div>
     </div>
 }
 else
 {
-  <div class="harmic-offcanvas-body">
+    <div class="harmic-offcanvas-body">
         <div class="minicart-content">
             <div class="minicart-heading">
                 <h4 class="mb-0">Cart's empty</h4>
                 <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
             </div>
         </div>
-   </div>
+    </div>
 }
+@section Scripts{
+    <script>
+        $(function () {
+            function loadCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+                window.location = '#';
+            };
+            $(".update").click(function loadHeaderCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+                window.location = '#';
+            });
+            // code xoa san pham khi so luong =0;
+
+            $(".cartItem").click(function () {
+                var productid = $(this).attr("data-mahh");
+                var soluong = parseInt($(this).val());
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soluong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            @* loadHeaderCart();*@//Reload lai gio hang
+                           @* window.location = 'cart';*@
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Cart Update Error !")
+                    }
+                });
+            });
+
+            $(".clear").click(function () {
+                $.ajax({
+                    url: "api/cart/clear",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {},
+                    success: function (result) {
+                        if (result.success) {
+                            loadCart();//Reload lai gio hang
+                            location.reload();
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            });
+
+            $(".removecart").click(function () {
+                var productid = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { productID: productid },
+                    success: function (result) {
+                        if (result.success) {
+                            loadCart();//Reload lai gio hang
+                            location.reload();
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            });
+            @* $(".cartItem").click(function () {
+                var productid = $(this).attr("data-mahh");
+                var soluong = parseInt($(this).val());
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soluong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();//Reload lai gio hang
+                            window.location = 'cart';
+                        }
+                    },
+                    error: function (rs) {
+                        alert("Cart Update Error !")
+                    }
+                });
+            });*@
+        });
+        </script>
+        }
+
 

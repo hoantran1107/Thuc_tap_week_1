@@ -33,5 +33,12 @@ namespace ShopBanDo.Repositories
                 return _context.Products.Where(x => x.ProductName!.Contains(key) || x.Alias!.Contains(key));
             return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
         }
+        public int GetProductStock(int id)
+        {
+            var Stock = _context.Products.AsNoTracking().Where(x => x.ProductId == id).FirstOrDefault().UnitslnStock;
+            if (Stock == null) throw new Exception("No Stock in Product");
+            else
+            return (int)Stock;
+        }
     }
 }

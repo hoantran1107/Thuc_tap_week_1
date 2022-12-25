@@ -45,7 +45,7 @@ namespace ShopBanDo
 
             //vi tri cua services notify
             services.AddNotyf(config => { 
-                config.DurationInSeconds = 10; 
+                config.DurationInSeconds = 5; 
                 config.IsDismissable = true; 
                 config.Position = NotyfPosition.BottomRight; });
             //add services session

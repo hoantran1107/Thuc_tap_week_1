@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShopBanDo.Repositories;
 
 namespace ShopBanDo.Controllers
 {
@@ -16,6 +17,7 @@ namespace ShopBanDo.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly dbshopContext _context;
+        private readonly ProductRepository _product;
 
         public INotyfService _notyfService { get; }
 
@@ -23,6 +25,7 @@ namespace ShopBanDo.Controllers
         {
             _context = context;
             _notyfService = notyfService;
+            _product = new ProductRepository(context);
         }
 
         public List<CartItem> GioHang
@@ -56,10 +59,11 @@ namespace ShopBanDo.Controllers
                     if (amount.HasValue)
                     {
 
-                    
-                    item.amount = item.amount + amount.Value;
-                    //luu lai session
-                    HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
+                    int stock = _product.GetProductStock(productID);
+                        if (amount + item.amount > stock) item.amount = stock;
+                        else item.amount = item.amount + amount.Value;
+                        //luu lai session
+                        HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
                     }
                     else
                     {
@@ -82,7 +86,7 @@ namespace ShopBanDo.Controllers
                 //Luu lai Session
                 //Set<T>("key",value)
                 HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
-                _notyfService.Success("Thêm sản phẩm thành công");
+                _notyfService.Success("Add product Success");
                 /*return RedirectToAction("Index");*/
                 //trả về json tiếp tục mua hàng
                 return Json(new { success = true });
@@ -128,15 +132,22 @@ namespace ShopBanDo.Controllers
             {
                 if (cart != null)
                 {
+                    
                     CartItem item = cart.SingleOrDefault(p => p.product.ProductId == productID);
                     if (item != null && amount.HasValue) // da co -> cap nhat so luong
                     {
-                        item.amount = amount.Value;
+                        int stock = _product.GetProductStock(productID);
+                        if (amount  < stock) item.amount = amount.Value;
+                        else
+                        {
+                            item.amount = stock;
+                            _notyfService.Warning("Amout more than stock");
+                        }
                     }
                     //Luu lai session
                     HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
                 }
-                return Json(new { success = true });
+                return Json(new { success = true});
             }
             catch
             {

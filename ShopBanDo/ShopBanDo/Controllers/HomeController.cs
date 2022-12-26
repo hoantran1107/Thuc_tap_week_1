@@ -29,7 +29,7 @@ namespace ShopBanDo.Controllers
             HomeViewVM model = new HomeViewVM();
             //lay ra san pham duoc xuat hien o trang home
             var lsProducts = _context.Products.AsNoTracking()
-                .Where(x => x.Active == true && x.HomeFlag == true)
+                .Where(x => x.Active == true && x.HomeFlag == true && x.UnitslnStock >0)
                 .OrderByDescending(x => x.DateCreated)
                 .ToList();
             //tao ra 1 list productHomeVM

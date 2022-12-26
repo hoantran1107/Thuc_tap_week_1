@@ -17,11 +17,11 @@ namespace ShopBanDo.Repositories
 
         public IEnumerable<Product> GetActiveProducts()
         {
-            return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
+            return _context.Products.Where(x => x.Active == true && x.UnitslnStock > 0).OrderByDescending(x => x.DateCreated);
         }
         public IEnumerable<Product> FindId(int id)
         {
-            return _context.Products.Where(x => x.CatId==id && x.Active == true).OrderByDescending(x => x.DateCreated);
+            return _context.Products.Where(x => x.CatId==id && x.Active == true && x.UnitslnStock >0).OrderByDescending(x => x.DateCreated);
         }
         //public IEnumerable<Product> FindProducts()
         //{

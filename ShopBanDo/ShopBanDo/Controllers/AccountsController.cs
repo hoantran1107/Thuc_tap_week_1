@@ -10,6 +10,7 @@
     using ShopBanDo.Helpper;
     using ShopBanDo.Models;
     using ShopBanDo.ModelView;
+    using ShopBanDo.NewFolder;
     using ShopBanDo.Repositories;
     using System;
     using System.Collections.Generic;
@@ -17,7 +18,6 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    [Authorize]
     public class AccountsController : Controller
     {
 
@@ -69,7 +69,7 @@
             }
             return RedirectToAction("Dashboard");
         }
-
+        [AuthoriteFilter]
         //[Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
         [Route("myaccount", Name = "Dashboard")]
         public IActionResult Dashboard() //done
@@ -236,6 +236,7 @@
         [HttpGet]
         //[Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
         [Route("account/logout", Name = "DangXuat")]
+        [AuthoriteFilter]
         public IActionResult Logout() //done
         {
             HttpContext.SignOutAsync();
@@ -271,6 +272,7 @@
             return RedirectToAction("Login");
         }
 
+        [AuthoriteFilter]
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel model) //done
         {

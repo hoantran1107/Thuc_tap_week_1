@@ -11,12 +11,14 @@
     using ShopBanDo.Interface;
     using ShopBanDo.Models;
     using ShopBanDo.ModelView;
+    using ShopBanDo.NewFolder;
     using ShopBanDo.Repositories;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    
     public class CheckoutController : Controller
     {
         private readonly dbshopContext _context;
@@ -59,7 +61,7 @@
                 return gh;
             }
         }
-
+        [AuthoriteFilter]
         [Route("checkout", Name = "Checkout")]
         public IActionResult Index(string returnUrl = null)
         {
@@ -83,7 +85,7 @@
             ViewBag.GioHang = cart;
             return View(model);
         }
-
+        [AuthoriteFilter]
         [HttpPost]
         [Route("checkout", Name = "Checkout")]
         public async Task<IActionResult> Index(MuaHangVM muaHang)
@@ -155,6 +157,7 @@
         }
 
         //[Route("dat-hang-thanh-cong.html", Name = "Success")]
+        [AuthoriteFilter]
         [Route("oders-success", Name = "Success")]
         public IActionResult Success()
         {

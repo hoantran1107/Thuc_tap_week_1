@@ -297,5 +297,59 @@
             _notyfService.Success("Change password success");
             return RedirectToAction("Dashboard", "Accounts");
         }
+        [HttpGet]
+        [Route("account/forgotpassword", Name = "ForgotPassWord")]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [Route("account/forgotpassword", Name = "ForgotPassWord")]
+        public IActionResult ForgotPassword(string Email)
+        {
+            var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
+            if(khachhang == null)
+            {
+                _notyfService.Error("This email does not exist");
+                return View();
+            }
+            else
+            {
+                string link = $"https://localhost:5001/resetpassword/{Email.Trim()}";
+                Utilities.MessageEmail(Email.Trim(),"Reset Password",link,khachhang.FullName);
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+            }
+        }
+        [Route("/resetpassword/{Email}", Name = ("ResetPassword"))]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string email)
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("/resetpassword/{Email}", Name = ("ResetPassword"))]
+        public IActionResult ResetPassword(ResetPasswordModelView model, string email)
+        {
+            var taikhoan = _customer.FindCustomerUsingUserEmail(email);
+
+            string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
+            taikhoan.Password = passnew;
+
+            _customer.UpdatePass(taikhoan, true);
+            _notyfService.Success("Change password success");
+            return RedirectToAction("Dashboard");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
     }
+
 }

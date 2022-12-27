@@ -331,7 +331,7 @@
             return View();
         }
         [HttpPost]
-        [AllowAnonymous]
+        [AuthoriteFilter]
         [Route("/resetpassword/{Email}", Name = ("ResetPassword"))]
         public IActionResult ResetPassword(ResetPasswordModelView model, string email)
         {
@@ -341,6 +341,7 @@
             taikhoan.Password = passnew;
 
             _customer.UpdatePass(taikhoan, true);
+            HttpContext.Session.SetString("CustomerId", taikhoan.CustomerId.ToString());
             _notyfService.Success("Change password success");
             return RedirectToAction("Dashboard");
         }

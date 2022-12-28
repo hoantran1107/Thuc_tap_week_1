@@ -99,19 +99,37 @@ namespace ShopBanDo.Areas.Admin.Controllers
             ViewData["Trangthai"] = new SelectList(_context.TransactStatuses, "TransactStatusId", "Status", order.TransactStatusId);
             List<OrderDetail> orderDetail = _context.OrderDetails.Include(o => o.Product).Where(x => x.OrderId == id).ToList();
             ViewBag.OrderDetails = orderDetail;
+
+            var list_TransacStatues = _context.TransactStatuses;
+            List<SelectListItem> transactStatuses = new List<SelectListItem>();
+            foreach (TransactStatus item in list_TransacStatues)
+            {
+                if (order.TransactStatusId > item.TransactStatusId)
+                {
+                    transactStatuses.Add(new SelectListItem { Text = item.Status, Value = item.TransactStatusId.ToString(), Disabled = true });
+                }
+                else
+                {
+                    transactStatuses.Add(new SelectListItem { Text = item.Status, Value = item.TransactStatusId.ToString(), Disabled = false });
+                }
+            }
+            ViewBag.TransactStatuses = transactStatuses;
+
+            ViewData["Trangthai"] = new SelectList(_context.TransactStatuses, "TransactStatusId", "Status", order.TransactStatusId);
             return PartialView("ChangeStatus", order);
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeStatus(int id, [Bind("OrderId,CustomerId,OrderDate,ShipDate,TransactStatusId,Deleted,Paid,PaymentDate,PaymentId,Note,Total,LocationId,District,Ward,Address")] Order order)
         {
+            bool checkStatus = false;
             if (id != order.OrderId)
             {
                 return NotFound();
             }
             if (!ModelState.IsValid)
             {
-                ViewData["Trangthai"] = new SelectList(_context.TransactStatuses, "TransactStatusId", "Status", order.TransactStatusId);
+                
                 return PartialView("ChangeStatus", order);
             }
             var donhang = await _context.Orders.AsNoTracking().Include(x => x.Customer).FirstOrDefaultAsync(x => x.OrderId == id);
@@ -119,19 +137,28 @@ namespace ShopBanDo.Areas.Admin.Controllers
             {
                 donhang.Paid = order.Paid;
                 donhang.Deleted = order.Deleted;
+                if(donhang.TransactStatusId == 3) checkStatus = true;
                 donhang.TransactStatusId = order.TransactStatusId;
                 if (donhang.Paid == true) donhang.PaymentDate = DateTime.Now;
                 if (donhang.TransactStatusId == 5) donhang.Deleted = true;
                 if (donhang.TransactStatusId == 3) donhang.ShipDate = DateTime.Now;
                 // update product quantity if TransactStatusId = 4 (delivered)
-                if ((donhang.TransactStatusId == 4) || (donhang.TransactStatusId == 3))
+                if (donhang.TransactStatusId == 3 && checkStatus == false)
                 {
                     var orderDetails = _context.OrderDetails.Where(x => x.OrderId == id).ToList();
                     foreach (var item in orderDetails)
                     {
                         var product = _context.Products.FirstOrDefault(x => x.ProductId == item.ProductId);
+                        
                         product.UnitslnStock = product.UnitslnStock - item.Quantity;
-                        _context.Products.Update(product);
+                        if(product.UnitslnStock < 0)
+                        {
+                            _notyfService.Error("Out of Stock"); 
+                        }
+                        else
+                        {
+                            _context.Products.Update(product);
+                        }
                     }
                 }
                 // update product quantity if TransactStatusId = 6 (returned)
@@ -151,6 +178,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             _notyfService.Success("Order update success");
             List<OrderDetail> orderDetail = _context.OrderDetails.Include(o => o.Product).Where(x => x.OrderId == id).ToList();
+
             ViewBag.OrderDetails = orderDetail;
             return RedirectToAction(nameof(Index));
         }

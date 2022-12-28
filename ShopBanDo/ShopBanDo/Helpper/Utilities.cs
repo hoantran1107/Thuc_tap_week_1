@@ -194,7 +194,7 @@ namespace ShopBanDo.Helpper
                         HtmlBody = $"Hello {nameCustomer}" +
                         $"<p>{body}</p>" +
                         "<p>Thank you and best regard<p>" +
-                        "<p>Male Shope Tel:0927479189</p>",
+                        "<p>Male Shop Tel:0927479189</p>",
                     };
                     var message = new MimeMessage
                     {

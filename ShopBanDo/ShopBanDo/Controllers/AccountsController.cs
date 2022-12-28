@@ -43,7 +43,7 @@
         {
             var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Phone.ToLower() == Phone.ToLower());
             if (khachhang != null)
-                return Json(data: "Số điện thoại : " + Phone + "đã được sử dụng");
+                return Json(data: "This phone nummber : " + Phone + "already used");
             return Json(data: true);
         }
 
@@ -53,7 +53,7 @@
         {
             var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
             if (khachhang != null)
-                return Json(data: "Email : " + Email + " đã được sử dụng");
+                return Json(data: "This Email : " + Email + " already used");
             return Json(data: true);
         }
         public IActionResult UpdateAddress(string newAddress)
@@ -331,7 +331,7 @@
             return View();
         }
         [HttpPost]
-        [AuthoriteFilter]
+        [AllowAnonymous]
         [Route("/resetpassword/{Email}", Name = ("ResetPassword"))]
         public IActionResult ResetPassword(ResetPasswordModelView model, string email)
         {

@@ -17,7 +17,6 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
     public class AccountsController : Controller
     {
 
@@ -152,7 +151,8 @@
             //
             await HttpContext.SignInAsync(claimsPrincipal);
             _notyfService.Success("Resgister success");
-            Utilities.MessageEmail(khachhang.Email,"Đăng kí thành công","success",khachhang.FullName);
+            string body = $"<p>Thank you for creating your Male Shop account. </p><span>We look forward to reading your posts and hope you will enjoy the space that we created for our customers.</span>";
+            Utilities.MessageEmail(khachhang.Email,"Register Successful",body,khachhang.FullName);
             //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
             return RedirectToAction("Dashboard", "Accounts");
         }
@@ -320,7 +320,9 @@
             else
             {
                 string link = $"https://localhost:5001/resetpassword/{Email.Trim()}";
-                Utilities.MessageEmail(Email.Trim(),"Reset Password",link,khachhang.FullName);
+                string button = $"<a class = 'button' href = '{link}'> click here to reset password </a>";
+                string body = $"<p>Someone requested a new password for your Shop Male account. </p> {button} <p>If you didn’t make this request, then you can ignore this email 🙂 </p>"; 
+                Utilities.MessageEmail(Email.Trim(),"Reset Password",body,khachhang.FullName);
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
         }
@@ -341,8 +343,22 @@
             taikhoan.Password = passnew;
 
             _customer.UpdatePass(taikhoan, true);
+            //Lưu Session MaKh khoi login lai CustomerId
             HttpContext.Session.SetString("CustomerId", taikhoan.CustomerId.ToString());
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+
+            //Identity ten dinh danh , DUA Vao ten dinh danh
+            var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name,taikhoan.FullName),
+                            new Claim("CustomerId", taikhoan.CustomerId.ToString())
+                        };
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            //
+            HttpContext.SignInAsync(claimsPrincipal);
             _notyfService.Success("Change password success");
+            
             return RedirectToAction("Dashboard");
         }
 

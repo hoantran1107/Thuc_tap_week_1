@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -165,6 +167,19 @@ namespace ShopBanDo.Helpper
             {
                 return null;
             }
+        }
+        public static async Task<string> UploadFileForEmployee(IFormFile File)
+        {
+            var FolderPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/images/Admin", Path.GetFileNameWithoutExtension(File.FileName));
+            Directory.CreateDirectory(FolderPath);
+            var GetParentFolderPath=Directory.GetParent(FolderPath);
+            var GetParentFolder = new DirectoryInfo(GetParentFolderPath.ToString()).Name;
+            var GetSubFoler=new DirectoryInfo(FolderPath).Name;
+            string CombinePath = GetParentFolder + "/" + GetSubFoler;
+            var FilePath=Path.Combine(FolderPath, File.FileName);
+            using var filestream=new FileStream(FilePath, FileMode.Create);
+            await File.CopyToAsync(filestream);
+            return CombinePath;
         }
     }
 }

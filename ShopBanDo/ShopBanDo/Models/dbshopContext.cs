@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ShopBanDo.Areas.Admin.Models;
 
 #nullable disable
 
@@ -38,13 +37,13 @@ namespace ShopBanDo.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-2J5U7E9\\SQLEXPRESS;Initial Catalog=dbshop;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2J5U7E9\\SQLEXPRESS;Database=dbshop;Integrated Security=true;TrustServerCertificate=true;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<Account>(entity =>
             {
@@ -55,6 +54,10 @@ namespace ShopBanDo.Models
                 entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.Fullname).HasMaxLength(50);
+
+                entity.Property(e => e.ImageName).HasMaxLength(50);
+
+                entity.Property(e => e.ImagePath).HasMaxLength(50);
 
                 entity.Property(e => e.LastLogin).HasColumnType("datetime");
 
@@ -335,7 +338,5 @@ namespace ShopBanDo.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<ShopBanDo.Areas.Admin.Models.LoginViewModel> LoginViewModel { get; set; }
     }
 }

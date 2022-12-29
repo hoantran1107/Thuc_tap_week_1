@@ -9,7 +9,7 @@
             <div class="profile-desc">
                 <div class="profile-pic">
                     <div class="count-indicator">
-                        <img class="img-xs rounded-circle " src="~/Adminassets/images/faces/face15.jpg" alt="">
+                        <img class="img-xs rounded-circle " src="@Url.Content("~/images/"+User.FindFirst("ImagePath").Value.ToString()+"/"+User.FindFirst("ImageName").Value.ToString())" alt="">
                         <span class="count bg-success"></span>
                     </div>
                     <div class="profile-name">
@@ -30,7 +30,7 @@
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item preview-item">
+                    <a asp-area="Admin" asp-controller="AdminChangePassword" asp-action="Edit" asp-route-id="@Convert.ToInt32(User.FindFirst("UserId").Value.ToString())" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-onepassword  text-info"></i>

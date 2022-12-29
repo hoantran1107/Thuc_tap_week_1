@@ -17,6 +17,8 @@ namespace ShopBanDo.Models
         public int? RoleId { get; set; }
         public DateTime? LastLogin { get; set; }
         public DateTime? CreateDate { get; set; }
+        public string? ImagePath { get; set; }
+        public string? ImageName { get; set; }
 
         public virtual Role Role { get; set; }
     }

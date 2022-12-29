@@ -9,7 +9,7 @@
             <div class="profile-desc">
                 <div class="profile-pic">
                     <div class="count-indicator">
-                        <img class="img-xs rounded-circle " src="~/Adminassets/images/faces/face15.jpg" alt="">
+                        <img class="img-xs rounded-circle " src="@Url.Content("~/images/"+User.FindFirst("ImagePath").Value.ToString()+"/"+User.FindFirst("ImageName").Value.ToString())" alt="">
                         <span class="count bg-success"></span>
                     </div>
                     <div class="profile-name">
@@ -29,7 +29,7 @@
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item preview-item">
+                    <a asp-area="Admin" asp-controller="AdminChangePassword" asp-action="Edit" asp-route-id="@Convert.ToInt32(User.FindFirst("UserId").Value.ToString())" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-onepassword  text-info"></i>
@@ -94,8 +94,10 @@
             </div>
         </li>
         @*Quản lý khách hàng*@
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-4" aria-expanded="false" aria-controls="ui-basic">
+        @if (User.HasClaim("Roles", "1"))
+        {
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic-4" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -105,12 +107,16 @@
             <div class="collapse" id="ui-basic-4">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="AdminCustomers" asp-action="Index">List of customers</a></li>
+                  
                 </ul>
             </div>
         </li>
+        }
         @*Quản lý hệ thống*@
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-6" aria-expanded="false" aria-controls="ui-basic">
+        @if (User.HasClaim("Roles", "1"))
+        {
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic-6" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -125,6 +131,7 @@
                 </ul>
             </div>
         </li>
+        }
         @*Quản lý tin tức*@
         <li class="nav-item menu-items">
             <a class="nav-link" aria-expanded="false" aria-controls="ui-basic" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Index">

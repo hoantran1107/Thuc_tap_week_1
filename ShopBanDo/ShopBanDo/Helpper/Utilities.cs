@@ -1,3 +1,6 @@
+
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 ﻿using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -171,6 +174,19 @@ namespace ShopBanDo.Helpper
                 return null;
             }
         }
+        public static async Task<string> UploadFileForEmployee(IFormFile File)
+        {
+            var FolderPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/images/Admin", Path.GetFileNameWithoutExtension(File.FileName));
+            Directory.CreateDirectory(FolderPath);
+            var GetParentFolderPath=Directory.GetParent(FolderPath);
+            var GetParentFolder = new DirectoryInfo(GetParentFolderPath.ToString()).Name;
+            var GetSubFoler=new DirectoryInfo(FolderPath).Name;
+            string CombinePath = GetParentFolder + "/" + GetSubFoler;
+            var FilePath=Path.Combine(FolderPath, File.FileName);
+            using var filestream=new FileStream(FilePath, FileMode.Create);
+            await File.CopyToAsync(filestream);
+            return CombinePath;
+        }
         public static void MessageEmail(string emailFrom,string title, string body, string nameCustomer)
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", false);
@@ -212,6 +228,7 @@ namespace ShopBanDo.Helpper
             {
                 Log.Error(ex.ToString());
             }
+
         }
     }
 }

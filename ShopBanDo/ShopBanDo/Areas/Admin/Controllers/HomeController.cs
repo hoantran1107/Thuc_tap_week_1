@@ -18,6 +18,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly dbshopContext _context;
+        //private readonly ShowAdminAvatarViewModel _adminAvatarViewModel;
         private OrderRespository _order;
         private ProductRepository _product;
         private GenericRepository<Customer> _customer;
@@ -27,12 +28,17 @@ namespace ShopBanDo.Areas.Admin.Controllers
             _order = new OrderRespository(context);
             _product = new ProductRepository(context);
             _customer = new GenericRepository<Customer>(context);
+            //_adminAvatarViewModel= adminAvatarViewModel;
         }
         public ActionResult Index()
         {
+            
             DateTime datenow = DateTime.Parse(DateTime.Now.ToShortDateString());
             Tab();
             AreaChar(datenow.AddDays(-14),datenow);
+            var accountAvatar = _context.Accounts.FirstOrDefault(x => x.AccountId == Convert.ToInt32(User.FindFirst("UserId").Value));
+            //_adminAvatarViewModel.ImagePath = accountAvatar.ImagePath;
+            //_adminAvatarViewModel.ImageName = accountAvatar.ImageName;
             return View();
         }
         [HttpPost]

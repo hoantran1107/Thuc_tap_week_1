@@ -248,6 +248,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     HttpContext.Session.SetString("AccountId", admin.AccountId.ToString());
                     var taikhoanID = HttpContext.Session.GetString("AccountId");
                     //Identity
+
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Email,admin.Email),
@@ -255,8 +256,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
                         new Claim("UserId",admin.AccountId.ToString()),
                         new Claim("AccountId", admin.AccountId.ToString()),
                         new Claim("Roles",admin.RoleId.ToString()),
-                        new Claim("ImagePath",admin.ImagePath),
-                        new Claim("ImageName",admin.ImageName)
+                        new Claim("ImagePath",admin.ImagePath == null ? "face15.jpg" : admin.ImagePath ),
+                        new Claim("ImageName",admin.ImagePath == null ? "face15.jpg" : admin.ImageName)
                     };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -274,7 +275,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             }
             catch
             {
-                return RedirectToAction("DangkyTaiKhoan", "Accounts");
+                return RedirectToAction("Login");
             }
             return View(account);
         }

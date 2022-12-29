@@ -94,11 +94,16 @@
                                 @Html.DisplayFor(modelItem => item.Role.RoleName)
                             </td>
                             <td>
+                                @*Tai khoan co rol admin thi chi co the tu huy chinh minh, ko the xoa
+                                    tai khoan khac.Chi co nguoi dung co role SuperAdmin la toan quyen xoa tat ca cac tai khoan*@
+                            @if (item.AccountId == Convert.ToInt32(User.FindFirst("UserId").Value)||User.HasClaim("Roles","4"))
+                            {
                                 <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AccountId">Edit</a>
                                 <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.AccountId">Detail</a>
-                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
 
-                            </td>
+                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+                            }
+                    </td>
                         </tr>
                     }
                 }

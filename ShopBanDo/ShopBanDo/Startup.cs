@@ -64,8 +64,8 @@ namespace ShopBanDo
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", options => options.RequireClaim("Roles", "1"));
-                options.AddPolicy("Staff", options => options.RequireAssertion(context=>context.User.HasClaim(claim=>claim.Value=="1"||claim.Value=="2")));
+                options.AddPolicy("AdminOnly", options => options.RequireAssertion(context=>context.User.HasClaim(claim=>claim.Value=="1"||claim.Value=="4")));
+                options.AddPolicy("Staff", options => options.RequireAssertion(context=>context.User.HasClaim(claim=>claim.Value=="1"||claim.Value=="2"||claim.Value=="4")));
             });
             #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));

@@ -11,6 +11,7 @@
             <h4 class="card-title">Change Password</h4>
             <p class="card-description"> Change Password </p>
             <form enctype="multipart/form-data" method="post" asp-action="Edit" class="forms-sample">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="AccountId" />
                 <div class="form-group">
                     <label for="exampleInputName1">Email</label>
@@ -23,24 +24,24 @@
                 <div class="form-group">
                     <label for="exampleInputPassword4">Password</label>
                     <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password" asp-for="Phone">
+                    <span asp-validation-for="Phone"></span>
                 </div>
                 <div class="form-group">
                     <label for="ConfirmPassword">Confirm Password</label>
                     <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm Password" name="ConfirmPassword">
                 </div>
                 <div class="form-group">
-                    <label for="Active">Active</label>
-                    <input type="checkbox" class="form-control" id="Active" placeholder="Confirm Password" checked asp-for="Active" readonly>
+                    <input type="hidden" class="form-control" id="Active" placeholder="Confirm Password" asp-for="Active" >
                 </div>
                 <div class="form-group">
                     <label for="Role">Role</label>
-                    <select class="form-control" asp-for="RoleId" asp-items="@ViewBag.RoleId">
+                    <select class="form-control" asp-for="RoleId" asp-items="@ViewBag.RoleId" hidden>
                         <option value="" selected disabled>Select Role</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>File upload</label>
-                    <input type="file" class="form-controll" name="UploadImage" />
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupFile01">Upload</label>
+                    <input type="file" class="form-control" id="inputGroupFile01" name="UploadImage">
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <button class="btn btn-dark">Cancel</button>

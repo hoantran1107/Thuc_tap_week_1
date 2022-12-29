@@ -2,42 +2,78 @@
 @{
     ViewData["Title"] = "Order Status";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var OrderDetail = ViewBag.OrderDetails;
+    int count = 1;
 }
 
-
-    <h5 class="modal-title">Order Detail</h5>
+<style>
+    td{
+        width:400px;
+    }
+    #total{
+        font-size: larger;
+        color: red;
+        
+    }
+</style>
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Order Detail #@Model.OrderId</h4>
+            <h4 class="card-title">Order Detail: @Model.OrderId.ToString().Trim('#')</h4>
             <div class="table-responsive">
                 <table class="product-info-table m-t-20">
                     <tbody>
                         <tr>
-                            <td>ID:</td>
-                            <td>#@Model.OrderId</td>
+                            <td colspan="2" style="text-align: center"><h5>Customer: @Model.Customer.FullName</h5></td>
                         </tr>
                         <tr>
-                            <td>Order Date:</td>
-                            <td>@Model.OrderDate</td>
+                            <td>Order Date:&ensp; @Model.OrderDate</td>
+                            <td>Phone: &ensp; @Model.Customer.Phone</td>
                         </tr>
+
                         <tr>
-                            <td>Customer:</td>
-                            <td>@Model.Customer.FullName</td>
-                        </tr>
-                        <tr>
-                            <td>Phone:</td>
-                            <td>@Model.Customer.Phone</td>
-                        </tr>
-                        <tr>
-                            <td>Customer Address:</td>
-                            <td>@Model.Customer.Address</td>
-                        </tr>
-                        <tr>
-                            <td>Total:</td>
-                            <td>@Model.Total.Value.ToString("#,##0") VNĐ</td>
+                        <td colspan="2">Customer Address: @Model.Customer.Address</td>
                         </tr>
                     </tbody>
                 </table>
+                <br />
+                <h4>Product in Order</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th>STT</th>
+                                <th>Product</th>
+                                <th>Amout</th>
+                                <th>Price</th>
+                                <th>Total Money</th>
+                            </tr>
+                            @if (OrderDetail == null)
+                            {
+                                <p>No Order</p>
+                            }
+                        @{
+                            else
+                            {
+                                foreach (OrderDetail item in OrderDetail)
+                                {
+                                    <tr>
+                                        <td>@(count++)</td>
+                                        <td>@item.Product.ProductName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Product.Price</td>
+                                        <td>@item.Total.Value.ToString("#,##0") VNĐ</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="4" style="text-align: right"><b style="font-size: larger"> Total money of products: </b></td>
+                                    <td> <b id="total">@Model.Total.Value.ToString("#,##0") VNĐ</b></td>
+                                </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     <div class="card">
@@ -48,27 +84,27 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Status Chose</label>
-                            <select class="form-control" asp-for="TransactStatusId" asp-items="@ViewBag.TrangThai" required>
+                            <h4>Status Chose</h4>
+                            <select class="form-control" asp-for="TransactStatusId" asp-items="@ViewBag.TransactStatuses" required>
                                 <option value="0" disabled selected>Select Status</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Paid" /> Paid
-                        </label>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            Deleted<input class="form-check-input" asp-for="Deleted"/>
-                        </label>
-                    </div>
+                </div>
+                <h4> Paid </h4>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Paid" /> Paid
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Deleted" />  Deleted
+                    </label>
                 </div>
                 <button type="submit" class="btn btn-success">Save</button>
             </form>
         </div>
-
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ShopBanDo.Models.Account>
 
 @{
-    ViewData["Title"] = "Danh sách tài khoản";
+    ViewData["Title"] = "Manage account";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <p></p>
@@ -50,12 +50,6 @@
                         Email
                     </th>
                     <th>
-                        Password
-                    </th>
-                    <th>
-                        Salt
-                    </th>
-                    <th>
                         Status
                     </th>
                     <th>
@@ -89,12 +83,6 @@
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Password)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Salt)
-                            </td>
-                            <td>
                                 @{
                                     if (item.Active)
                                     {
@@ -121,8 +109,8 @@
                             </td>
                             <td>
                                 <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AccountId">Edit</a>
-                                <a class="btn btn-danger btn-sm" asp-action="Details" asp-route-id="@item.AccountId">Detail</a>
-                                <a class="btn btn-light btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+                                <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.AccountId">Detail</a>
+                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
 
                             </td>
                         </tr>

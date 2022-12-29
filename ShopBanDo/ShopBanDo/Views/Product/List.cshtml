@@ -17,7 +17,7 @@
                     <h4>Shop</h4>
                     <div class="breadcrumb__links">
                         <a href="/">Home page</a>
-                        <a href="/shop-product.html">List Product</a>
+                        <a href="/shop-product">List Product</a>
                         <span> @category.CatName</span>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                                             <ul class="nice-scroll">
                                                 @foreach (var item in Categori)
                                                 {
-                                                    string url = $"/List/{item.Alias}-{item.CatId}.html";
+                                                    string url = $"/List/{item.Alias}-{item.CatId}";
 
                                                     <li><a href="@url">@item.CatName</a></li>
 
@@ -82,7 +82,7 @@
                             </div>
                             </div>
                             </div>*@
-                            <div class="card">
+                            @*<div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
                                 </div>
@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                             @*Size <div class="card">
                             <div class="card-heading">
                             <a data-toggle="collapse" data-target="#collapseFour">Size</a>
@@ -182,7 +182,7 @@
                             </div>
                             </div>
                             </div>*@
-                            <div class="card">
+                            @*<div class="card">
                                 <div class="card-heading">
                                     <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
                                 </div>
@@ -199,7 +199,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -212,7 +212,7 @@
                                 <p>Showing @ViewBag.First – @ViewBag.Last of @ViewBag.TotalItem results</p>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        @*<div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__right">
                                 <p>Sort by Price:</p>
                                 <select>
@@ -221,7 +221,7 @@
                                     <option value="">$55 - $100</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="row">
@@ -265,7 +265,7 @@
                     {
                         foreach (var item in Model)
                         {
-                            string url = $"/{item.Alias}-{item.ProductId}.html";
+                            string url = $"/{item.Alias}-{item.ProductId}";
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item sale">
 
@@ -284,9 +284,15 @@
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
-                                        <h6>@item.ProductName</h6>
-                                        @*ADD TO CART*@
-                                        <a href="#" class="add-cart"></a>
+                                        @if (item.UnitslnStock.Value > 0)
+                                        {
+                                            <h6>@item.ProductName</h6>
+                                            <a id="@item.ProductId" onclick="" class="add-to-cart">+ Add To Cart</a>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="text-muted">@item.ProductName - Out of Stock</h6>
+                                        }
                                         <div class="rating">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -319,7 +325,7 @@
                         <div class="product__pagination">
                             @for (int i = 1; i <= ViewBag.Total; i++)
                             {
-                                string url = $"/List/{category.Alias}-{category.CatId}.html";
+                                string url = $"/List/{category.Alias}-{category.CatId}";
                                 <a class="active" href="@url?page=@i">@i</a>
                             }
                         </div>
@@ -336,3 +342,60 @@
         </div>
     </div>
 </section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart").click(function () {
+                    var productid = this.id;
+                    var soLuong = "1";
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                            amount: soLuong
+                        },
+                        success: function (response) {
+                            if (response.result == 'Redirect') {
+                                window.location = response.url;
+                            }
+                            else {
+                                loadHeaderCart(); //Add Product success
+                                location.reload();
+                            }
+                            console.log(response); // log to the console to see whether it worked
+                        },
+                        error: function (error) {
+                            alert("There was an error posting the data to the server: " + error.responseText);
+                        }
+                    });
+                });
+
+        @*$(".removecart").click(function () {
+                var productid = $(this).attr("data-productid");
+                $.ajax({
+                url: "api/cart/remove",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function (result) {
+                if (result.success) {
+                loadHeaderCart();//Reload lai gio hang
+                location.reload();
+                }
+                },
+                error: function (rs) {
+                alert("Remove Cart Error !")
+                }
+                });
+                });*@
+                        });
+            function loadHeaderCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+            }
+        });
+    </script>
+}

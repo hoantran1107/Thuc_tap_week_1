@@ -17,7 +17,11 @@ namespace ShopBanDo.Repositories
 
         public IEnumerable<Product> GetActiveProducts()
         {
-            return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
+            return _context.Products.Where(x => x.Active == true && x.UnitslnStock > 0).OrderByDescending(x => x.DateCreated);
+        }
+        public IEnumerable<Product> FindId(int id)
+        {
+            return _context.Products.Where(x => x.CatId==id && x.Active == true && x.UnitslnStock >0).OrderByDescending(x => x.DateCreated);
         }
         //public IEnumerable<Product> FindProducts()
         //{
@@ -28,6 +32,13 @@ namespace ShopBanDo.Repositories
             if(key != null)
                 return _context.Products.Where(x => x.ProductName!.Contains(key) || x.Alias!.Contains(key));
             return _context.Products.Where(x => x.Active == true).OrderByDescending(x => x.DateCreated);
+        }
+        public int GetProductStock(int id)
+        {
+            var Stock = _context.Products.AsNoTracking().Where(x => x.ProductId == id).FirstOrDefault().UnitslnStock;
+            if (Stock == null) throw new Exception("No Stock in Product");
+            else
+            return (int)Stock;
         }
     }
 }

@@ -2,7 +2,7 @@
 @model PagedList.Core.IPagedList<ShopBanDo.Models.Order>
 @using ShopBanDo.Extension 
 @{
-    ViewData["Title"] = "Customer Order- Page : " + ViewBag.CurrentPage;
+    ViewData["Title"] = "Customer Order - Page : " + ViewBag.CurrentPage;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <p></p>
@@ -54,7 +54,7 @@
                 Total Money
             </th>
             <th>
-                Transation
+                Transaction
             </th>
             <th>
                 Deleted
@@ -111,8 +111,11 @@
                         }
                     </td>
                     <td>
-                      @*  <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminOrders" asp-action="Edit" asp-route-id="@item.OrderId">Update</a>
-                        <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminOrders" asp-action="Details" asp-route-id="@item.OrderId">Detail</a>*@
+                        @*  <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminOrders" asp-action="Edit" asp-route-id="@item.OrderId">Update</a>
+                        <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="AdminOrders" asp-action="Details" asp-route-id="@item.OrderId">Detail</a>
+
+                        *@
+                        
                         <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="AdminOrders" asp-action="ChangeStatus" asp-route-id="@item.OrderId">Change Status</a>
                       @*  <a class="btn btn-light btn-sm" asp-area="Admin" asp-controller="AdminOrders" asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>*@
 

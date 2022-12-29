@@ -16,14 +16,14 @@
                 <a href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a>*@
             @{ if (User.Identity.IsAuthenticated)
                 {
-                    <a href="/tai-khoan-cua-toi.html">My account</a>
-                    <a href="/taikhoan/dang-xuat.html">Log out</a>
+                    <a href="/myaccount">My account</a>
+                    <a href="/account/logout">Log out</a>
                     <a href="#">Welcome, @User.Identity.Name</a>
-                    <a href="/tai-khoan-cua-toi.html">My account</a>}
+                    <a href="/myaccount">My account</a>}
                 else
                 {
-                    <a href="/taikhoan/dang-nhap.html">Log in</a>
-                    <a href="/dangki/taikhoan.html">Sign up</a>
+                    <a href="/account/login">Log in</a>
+                    <a href="/account/register">Sign up</a>
                 }
             }
         </div>
@@ -71,12 +71,12 @@
 
 
                 <a href="#">Welcome, @User.Identity.Name</a>
-                                <a href="/taikhoan/dang-xuat.html">Log out</a>
-                                                <a href="/tai-khoan-cua-toi.html">My account</a>}
+                                <a href="/account/logout">Log out</a>
+                                                <a href="/myaccount">My account</a>}
                                             else
                                             {
-                                <a href="/taikhoan/dang-nhap.html">Log in</a>
-                                                <a href="/dangki/taikhoan.html">Sign up</a>}
+                                <a href="/account/login">Log in</a>
+                                                <a href="/account/register">Sign up</a>}
                         </div>
                     </div>
                 </div>
@@ -96,20 +96,15 @@
                     <ul>
 
                         <li @*class="active"*@><a href="/">Home</a></li>
-                        <li><a href="/shop-product.html">Shop</a></li>
-                        <li><a href="/gioi-thieu.html">About us</a></li>
-                        <li><a href="/blogs.html">Blog</a></li>
-                        <li><a href="/lien-he.html">Contact</a></li>
+                        <li><a href="/shop-product">Shop</a></li>
+                        <li><a href="/about">About us</a></li>
+                        <li><a href="/blogs">Blog</a></li>
+                        <li><a href="/contact">Contact</a></li>
                         <li>
                             <a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="/page/huong-dan-mua-hang">Shopping guide</a></li>
-                                <li><a href="/cart.html">Cart</a></li>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                }
+                                <li><a href="/cart">Cart</a></li>
                                 </ul>
                         </li>
                     </ul>

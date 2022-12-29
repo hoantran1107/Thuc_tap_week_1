@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ShopBanDo.Models.Role>
 
 @{
-    ViewData["Title"] = "Quản trị quyền truy cập";
+    ViewData["Title"] = "Manage access roles";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <p></p>
@@ -16,9 +16,6 @@
             </th>
             <th>
                Role's name
-            </th>
-            <th>
-               Description
             </th>
             <th></th>
         </tr>
@@ -35,12 +32,9 @@
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
                 <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.RoleId">Edit</a>
-                <a class="btn btn-danger btn-sm" asp-action="Details" asp-route-id="@item.RoleId">Detail</a> 
-                <a class="btn btn-light btn-sm" asp-action="Delete" asp-route-id="@item.RoleId">Delete</a>
+                <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.RoleId">Detail</a> 
+                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.RoleId">Delete</a>
                
             </td>
         </tr>

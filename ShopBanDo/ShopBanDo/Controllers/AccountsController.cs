@@ -10,14 +10,13 @@
     using ShopBanDo.Helpper;
     using ShopBanDo.Models;
     using ShopBanDo.ModelView;
+    using ShopBanDo.NewFolder;
     using ShopBanDo.Repositories;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
-    [Authorize]
     public class AccountsController : Controller
     {
 
@@ -43,7 +42,7 @@
         {
             var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Phone.ToLower() == Phone.ToLower());
             if (khachhang != null)
-                return Json(data: "Số điện thoại : " + Phone + "đã được sử dụng");
+                return Json(data: "This phone nummber : " + Phone + "already used");
             return Json(data: true);
         }
 
@@ -53,7 +52,7 @@
         {
             var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
             if (khachhang != null)
-                return Json(data: "Email : " + Email + " đã được sử dụng");
+                return Json(data: "This Email : " + Email + " already used");
             return Json(data: true);
         }
         public IActionResult UpdateAddress(string newAddress)
@@ -69,8 +68,9 @@
             }
             return RedirectToAction("Dashboard");
         }
-
-        [Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
+        [AuthoriteFilter]
+        //[Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
+        [Route("myaccount", Name = "Dashboard")]
         public IActionResult Dashboard() //done
         {
             //lay ra session sau khi dang nhap CustomerID
@@ -100,7 +100,8 @@
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("dangki/taikhoan.html", Name = "DangKy")]
+       // [Route("dangki/taikhoan.html", Name = "DangKy")]
+        [Route("account/register", Name = "DangKy")]
         public IActionResult DangkyTaiKhoan()
         {
             return View();
@@ -108,7 +109,8 @@
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("dangki/taikhoan.html", Name = "DangKy")]
+      //  [Route("dangki/taikhoan.html", Name = "DangKy")]
+        [Route("account/register", Name = "DangKy")]
         public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan) //done
         {
             if (!ModelState.IsValid) return View(taikhoan);
@@ -149,12 +151,16 @@
             //
             await HttpContext.SignInAsync(claimsPrincipal);
             _notyfService.Success("Resgister success");
+            string body = $"<p>Thank you for creating your Male Shop account. </p><span>We look forward to reading your posts and hope you will enjoy the space that we created for our customers.</span>";
+            Utilities.MessageEmail(khachhang.Email,"Register Successful",body,khachhang.FullName);
             //dang ki thanh cong tra ve trang dashbroad khong can dang nhap lai
             return RedirectToAction("Dashboard", "Accounts");
         }
 
         [AllowAnonymous]
-        [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+       // [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+        [Route("account/login", Name = "DangNhap")]
+
         public IActionResult Login(string returnUrl) //done
         {
             //trang dang nhap
@@ -169,10 +175,10 @@
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+       // [Route("taikhoan/dang-nhap.html", Name = "DangNhap")]
+        [Route("account/login", Name = "DangNhap")]
         public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl) //done
         {
-
             if (!ModelState.IsValid) return View(customer);
 
             //kiem tra co phai email hop le hay ko
@@ -194,6 +200,7 @@
             if (khachhang.Password != pass)
             {
                 _notyfService.Error("Wrong email or password");
+                ViewBag.ReturnUrl = returnUrl;
                 return View(customer);
             }
             //kiem tra xem account co bi disable hay khong
@@ -227,7 +234,9 @@
         }
 
         [HttpGet]
-        [Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
+        //[Route("taikhoan/dang-xuat.html", Name = "DangXuat")]
+        [Route("account/logout", Name = "DangXuat")]
+        [AuthoriteFilter]
         public IActionResult Logout() //done
         {
             HttpContext.SignOutAsync();
@@ -235,7 +244,8 @@
             return RedirectToAction("Index", "Home");
         }
 
-        [Route("taikhoan/orders.html", Name = "Orders")]
+       // [Route("taikhoan/orders.html", Name = "Orders")]
+        [Route("account/orders", Name = "Orders")]
         public IActionResult DanhSachOrder() //bo
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
@@ -262,6 +272,7 @@
             return RedirectToAction("Login");
         }
 
+        [AuthoriteFilter]
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel model) //done
         {
@@ -286,5 +297,76 @@
             _notyfService.Success("Change password success");
             return RedirectToAction("Dashboard", "Accounts");
         }
+        [HttpGet]
+        [Route("account/forgotpassword", Name = "ForgotPassWord")]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [Route("account/forgotpassword", Name = "ForgotPassWord")]
+        public IActionResult ForgotPassword(string Email)
+        {
+            var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
+            if(khachhang == null)
+            {
+                _notyfService.Error("This email does not exist");
+                return View();
+            }
+            else
+            {
+                string link = $"https://localhost:5001/resetpassword/{Email.Trim()}";
+                string button = $"<a class = 'button' href = '{link}'> click here to reset password </a>";
+                string body = $"<p>Someone requested a new password for your Shop Male account. </p> {button} <p>If you didn’t make this request, then you can ignore this email 🙂 </p>"; 
+                Utilities.MessageEmail(Email.Trim(),"Reset Password",body,khachhang.FullName);
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+            }
+        }
+        [Route("/resetpassword/{Email}", Name = ("ResetPassword"))]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string email)
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("/resetpassword/{Email}", Name = ("ResetPassword"))]
+        public IActionResult ResetPassword(ResetPasswordModelView model, string email)
+        {
+            var taikhoan = _customer.FindCustomerUsingUserEmail(email);
+
+            string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
+            taikhoan.Password = passnew;
+
+            _customer.UpdatePass(taikhoan, true);
+            //Lưu Session MaKh khoi login lai CustomerId
+            HttpContext.Session.SetString("CustomerId", taikhoan.CustomerId.ToString());
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+
+            //Identity ten dinh danh , DUA Vao ten dinh danh
+            var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name,taikhoan.FullName),
+                            new Claim("CustomerId", taikhoan.CustomerId.ToString())
+                        };
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            //
+            HttpContext.SignInAsync(claimsPrincipal);
+            _notyfService.Success("Change password success");
+            
+            return RedirectToAction("Dashboard");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
     }
+
 }

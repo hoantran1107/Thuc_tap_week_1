@@ -228,8 +228,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     //neu khong ton tai khoan ve trang dang ky
                     if (admin == null)
                     {
-                        _notifyService.Error("Thông tin đăng nhập chưa chính xác");
-                        /*return RedirectToAction("DangkyTaiKhoan");*/
+                        ViewBag.Noty = "Incorrect Username or Password";
                         return View(account);
                     }
 
@@ -238,7 +237,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     //string pass = account.Password;
                     if (admin.Password != pass)
                     {
-                        _notifyService.Error("Thông tin đăng nhập chưa chính xác");
+                        ViewBag.Noty = "Incorrect Username or Password";
                         return View(account);
                     }
                     //kiem tra xem account co bi disable hay khong
@@ -261,10 +260,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,claimsPrincipal);
-                    _notifyService.Success("Đăng nhập thành công");
-
+                    _notifyService.Success($"{admin.Email} is login");
                     if (string.IsNullOrEmpty(returnUrl))
                     {
                         return RedirectToAction("Index", "Home", new { Areas = "Admin" });

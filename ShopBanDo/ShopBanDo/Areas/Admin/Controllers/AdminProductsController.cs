@@ -57,8 +57,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
             // danh muc
             ViewData["Danhmuc"] = new SelectList(_context.Categories, "CatId", "CatName",CatID);
             List<SelectListItem> isInStock = new List<SelectListItem>();
-            isInStock.Add(new SelectListItem() { Text = "Còn hàng", Value = "1" });
-            isInStock.Add(new SelectListItem() { Text = "Hết hàng", Value = "0" });
+            isInStock.Add(new SelectListItem() { Text = "In stock", Value = "1" });
+            isInStock.Add(new SelectListItem() { Text = "Out of Stock", Value = "0" });
             ViewData["isInStock"] = isInStock;
 
             //stick save CatID when navigation
@@ -95,6 +95,8 @@ namespace ShopBanDo.Areas.Admin.Controllers
 
             return View(product);
         }
+
+
 
         // GET: Admin/AdminProducts/Create
         public IActionResult Create()

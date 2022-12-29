@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using ShopBanDo.Interface;
 using ShopBanDo.MiddleWare;
 using ShopBanDo.Models;
 using ShopBanDo.Repositories;
+using ShopBanDo.UoW;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +46,7 @@ namespace ShopBanDo
 
             //vi tri cua services notify
             services.AddNotyf(config => { 
-                config.DurationInSeconds = 10; 
+                config.DurationInSeconds = 5; 
                 config.IsDismissable = true; 
                 config.Position = NotyfPosition.BottomRight; });
             //add services session
@@ -68,6 +70,8 @@ namespace ShopBanDo
             #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IOrderRepository, OrderRespository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             #endregion
 
         }

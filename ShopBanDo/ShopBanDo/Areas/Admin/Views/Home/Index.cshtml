@@ -7,6 +7,7 @@
     var TodayOrder = ViewBag.TotalOrder;
     var startdate = ViewBag.Start.ToString("yyyy-MM-dd");
     var enddate = ViewBag.End.ToString("yyyy-MM-dd");
+    var product = ViewBag.product;
 }
 
 <div class="content-wrapper">
@@ -117,8 +118,41 @@
                         </div>
                         <br />
                         <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <h4 class="card-title">Area chart</h4>
+                        <h4 class="card-title">Income chart</h4>
                         <canvas id="areaChart" style="height:250px"></canvas>
+                    </div>
+                    <h4>Product with low stock (below 10)</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>ProductID</th>
+                                    <th>Product Name</th>
+                                    <th>UnitslnStock</th>
+                                    <th>Price</th>
+                                </tr>
+                                @if (product == null)
+                                {
+                                    <h4>No Product with low stock</h4>
+                                }
+                                @{
+                                    else
+                                    {
+                                        foreach (Product item in product)
+                                        {
+
+                                            <tr>
+                                                <td>@(item.ProductId)</td>
+                                                <td>@item.ProductName</td>
+                                                <td>@item.UnitslnStock</td>
+                                                <td>@item.Price</td>
+                                            </tr>
+                                        }
+                                       
+                                    }
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

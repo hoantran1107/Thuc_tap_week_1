@@ -136,6 +136,11 @@ namespace ShopBanDo.Areas.Admin.Controllers
             {
                 try
                 {
+                    string salt = Utilities.GetRandomKey();
+                    account.Salt = salt;
+                    account.Password = (account.Phone + salt.Trim()).ToMD5();
+                    account.CreateDate = DateTime.Now;
+                    _notifyService.Success("Success");
                     _context.Update(account);
                     await _context.SaveChangesAsync();
                 }
@@ -229,6 +234,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
 
                     //ton tai thi hash lai pass = thong tin pass nhap + salt cua tai khoan do
                     string pass = (account.Password + admin.Salt.Trim()).ToMD5();
+                    //string pass = account.Password;
                     if (admin.Password != pass)
                     {
                         ViewBag.Noty = "Incorrect Username or Password";
@@ -241,14 +247,16 @@ namespace ShopBanDo.Areas.Admin.Controllers
                     //Luu Session MaKh
                     HttpContext.Session.SetString("AccountId", admin.AccountId.ToString());
                     var taikhoanID = HttpContext.Session.GetString("AccountId");
-
                     //Identity
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Email,admin.Email),
                         new Claim(ClaimTypes.Name, admin.Fullname),
+                        new Claim("UserId",admin.AccountId.ToString()),
                         new Claim("AccountId", admin.AccountId.ToString()),
-                        new Claim("Roles",admin.RoleId.ToString())
+                        new Claim("Roles",admin.RoleId.ToString()),
+                        new Claim("ImagePath",admin.ImagePath),
+                        new Claim("ImageName",admin.ImageName)
                     };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

@@ -95,8 +95,10 @@
             </div>
         </li>
         @*Quản lý khách hàng*@
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-4" aria-expanded="false" aria-controls="ui-basic">
+        @if (User.HasClaim("Roles", "1"))
+        {
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic-4" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -110,6 +112,7 @@
                 </ul>
             </div>
         </li>
+        }
         @*Quản lý danh số*@
         <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic-5" aria-expanded="false" aria-controls="ui-basic">
@@ -128,8 +131,10 @@
             </div>
         </li>
         @*Quản lý hệ thống*@
-        <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic-6" aria-expanded="false" aria-controls="ui-basic">
+        @if (User.HasClaim("Roles", "1"))
+        {
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic-6" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -145,6 +150,7 @@
                 </ul>
             </div>
         </li>
+        }
         @*Quản lý tin tức*@
         <li class="nav-item menu-items">
             <a class="nav-link" aria-expanded="false" aria-controls="ui-basic" asp-area="Admin" asp-controller="AdminTinTucs" asp-action="Index">

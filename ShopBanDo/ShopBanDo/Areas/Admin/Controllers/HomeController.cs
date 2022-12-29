@@ -36,7 +36,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
             DateTime datenow = DateTime.Parse(DateTime.Now.ToShortDateString());
             Tab();
             AreaChar(datenow.AddDays(-14),datenow);
-            var accountAvatar = _context.Accounts.FirstOrDefault(x => x.AccountId == Convert.ToInt32(User.FindFirst("UserId").Value));
+            //var accountAvatar = _context.Accounts.FirstOrDefault(x => x.AccountId == Convert.ToInt32(User.FindFirst("UserId").Value));
             //_adminAvatarViewModel.ImagePath = accountAvatar.ImagePath;
             //_adminAvatarViewModel.ImageName = accountAvatar.ImageName;
             return View();

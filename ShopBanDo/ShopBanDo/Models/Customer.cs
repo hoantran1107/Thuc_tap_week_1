@@ -1,5 +1,4 @@
-﻿using ShopBanDo.Areas.Admin.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -31,6 +30,5 @@ namespace ShopBanDo.Models
 
         public virtual Location Location { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-
     }
 }

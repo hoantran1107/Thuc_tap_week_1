@@ -9,7 +9,7 @@
 # tai khoan khach
 hoantran1107@gmail.com
 123456
-# tai khoan khach
+# tai khoan admin
 admin@gmail.com
 123456
 # lenh tai lai model

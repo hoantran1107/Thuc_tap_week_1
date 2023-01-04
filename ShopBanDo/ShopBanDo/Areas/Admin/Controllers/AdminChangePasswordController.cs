@@ -121,13 +121,14 @@ namespace ShopBanDo.Areas.Admin.Controllers
                         account.Salt = salt;
                         account.Password = (account.Phone + salt.Trim()).ToMD5();
                         account.CreateDate = DateTime.Now;
+                        //account.Active = true;
                         _notifyService.Success("Success");
                         _context.Update(account);
                         await _context.SaveChangesAsync();
                     }
                     else
                     {
-                        _notifyService.Warning("Password is not match or");
+                        _notifyService.Warning("Password is not match");
                         ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
                         return View(account);
                     }

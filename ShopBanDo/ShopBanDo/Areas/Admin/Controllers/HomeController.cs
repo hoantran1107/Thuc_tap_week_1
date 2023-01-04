@@ -36,9 +36,10 @@ namespace ShopBanDo.Areas.Admin.Controllers
             DateTime datenow = DateTime.Parse(DateTime.Now.ToShortDateString());
             Tab();
             AreaChar(datenow.AddDays(-14),datenow);
-            var accountAvatar = _context.Accounts.FirstOrDefault(x => x.AccountId == Convert.ToInt32(User.FindFirst("UserId").Value));
+            //var accountAvatar = _context.Accounts.FirstOrDefault(x => x.AccountId == Convert.ToInt32(User.FindFirst("UserId").Value));
             //_adminAvatarViewModel.ImagePath = accountAvatar.ImagePath;
             //_adminAvatarViewModel.ImageName = accountAvatar.ImageName;
+            TabProductLowStock();
             return View();
         }
         [HttpPost]
@@ -46,6 +47,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
         {
             Tab();
             AreaChar(start, end);
+            TabProductLowStock();
             return View();
         }
         private void Tab()
@@ -91,6 +93,14 @@ namespace ShopBanDo.Areas.Admin.Controllers
             ViewBag.Count = ListIncome.Count();
             ViewBag.Start = start;
             ViewBag.End = end;
+        }
+
+        private void TabProductLowStock()
+        {
+            //thong ke sản phẩm gân hết hàng
+
+            var product = _context.Products.Where(x => x.UnitslnStock < 10 && x.Active == true);
+            ViewBag.product = product;
         }
     }
 }

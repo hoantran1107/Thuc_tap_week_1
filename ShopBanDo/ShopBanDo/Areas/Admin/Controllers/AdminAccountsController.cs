@@ -257,7 +257,7 @@ namespace ShopBanDo.Areas.Admin.Controllers
                         new Claim("AccountId", admin.AccountId.ToString()),
                         new Claim("Roles",admin.RoleId.ToString()),
                         new Claim("ImagePath",admin.ImagePath == null ? "face15.jpg" : admin.ImagePath ),
-                        new Claim("ImageName",admin.ImagePath == null ? "face15.jpg" : admin.ImageName)
+                        new Claim("ImageName",admin.ImageName == null ? "face15.jpg" : admin.ImageName)
                     };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
